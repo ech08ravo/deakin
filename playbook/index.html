@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Oral Assessments Playbook - SEBE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #f7f8fc;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2C3E50 0%, #3498db 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            background: #2C3E50;
+            padding: 0;
+            list-style: none;
+            justify-content: centre;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            flex: 1;
+            min-width: 150px;
+            max-width: 200px;
+        }
+
+        .nav-tab button {
+            width: 100%;
+            padding: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-tab button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-tab button.active {
+            background: #3498db;
+        }
+
+        .nav-tab button.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #F39C12;
+        }
+
+        /* Content Sections */
+        .content {
+            padding: 40px;
+            min-height: 500px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        /* Assessment Cards (JISC Postcard Style) */
+        .assessment-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .assessment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            padding: 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .card-header.individual {
+            background: linear-gradient(135deg, #17A2B8 0%, #138496 100%);
+        }
+
+        .card-header.group {
+            background: linear-gradient(135deg, #27AE60 0%, #229954 100%);
+        }
+
+        .card-header.mixed {
+            background: linear-gradient(135deg, #F39C12 0%, #E67E22 100%);
+        }
+
+        .card-header.teamwork {
+            background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%);
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .card-type {
+            font-size: 0.9em;
+            opacity: 0.95;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-section {
+            margin-bottom: 20px;
+        }
+
+        .card-section h4 {
+            color: #2C3E50;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+        }
+
+        .card-section h4::before {
+            content: '▶';
+            margin-right: 8px;
+            color: #3498db;
+            font-size: 0.8em;
+        }
+
+        .skills-list {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .skills-list li {
+            padding: 5px 0;
+            color: #555;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .skills-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #27AE60;
+            font-weight: bold;
+        }
+
+        .formats {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .formats p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        /* Filter Buttons */
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+            color: #3498db;
+        }
+
+        .filter-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        .filter-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        /* Tooltips */
+        .time-tooltip {
+            position: relative;
+            cursor: help;
+        }
+
+        .time-tooltip:hover .tooltip-content {
+            display: block !important;
+        }
+
+        .tooltip-content {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2C3E50;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            z-index: 1000;
+            margin-bottom: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .tooltip-content::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #2C3E50;
+        }
+
+        /* Advanced Filters */
+        .advanced-filters-toggle {
+            width: 100%;
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #2C3E50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+
+        .advanced-filters-toggle:hover {
+            background: #f8f9fa;
+        }
+
+        .advanced-filters-toggle:focus {
+            outline: 3px solid #3498db;
+            outline-offset: 2px;
+        }
+
+        .advanced-filters-panel {
+            display: none;
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 10px;
+            animation: slideDown 0.3s ease;
+        }
+
+        .advanced-filters-panel.open {
+            display: block;
+        }
+
+        .filter-group {
+            margin-bottom: 25px;
+        }
+
+        .filter-group label {
+            display: block;
+            font-weight: bold;
+            color: #2C3E50;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .slider-container {
+            position: relative;
+            padding: 10px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ecf0f1;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .slider-value {
+            display: inline-block;
+            min-width: 60px;
+            padding: 5px 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #2C3E50;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .filter-results-count {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #2C3E50;
+        }
+
+        .reset-filters-btn {
+            width: 100%;
+            padding: 12px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .reset-filters-btn:hover {
+            background: #c0392b;
+        }
+
+        /* How To Button */
+        .how-to-btn {
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .how-to-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .how-to-content {
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 2000px;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .nav-tab {
+                min-width: 100px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Model Container Styles */
+        .model-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .model-title {
+            font-size: 1.8em;
+            color: #2C3E50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .model-components {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .component-bar {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 5px solid #3498db;
+            transition: transform 0.2s;
+        }
+
+        .component-bar:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .component-bar.individual {
+            border-left-color: #17A2B8;
+        }
+
+        .component-bar.group {
+            border-left-color: #27AE60;
+        }
+
+        .component-percent {
+            background: #2C3E50;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 20px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .component-details {
+            flex: 1;
+        }
+
+        .component-name {
+            font-weight: bold;
+            color: #2C3E50;
+            margin-bottom: 5px;
+        }
+
+        .component-desc {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .component-type {
+            padding: 5px 15px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.85em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .component-type.individual {
+            background: #17A2B8;
+        }
+
+        .component-type.group {
+            background: #27AE60;
+        }
+
+        .model-summary {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #ecf0f1;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2C3E50;
+        }
+
+        .summary-label {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        /* Implementation Guide */
+        .guide-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .guide-section h3 {
+            color: #2C3E50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .guide-section h3::before {
+            content: '🎯';
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .guide-list {
+            list-style: none;
+            padding-left: 20px;
+        }
+
+        .guide-list li {
+            padding: 8px 0;
+            color: #555;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .guide-list li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #27AE60 0%, #3498db 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .highlight-box h3 {
+            margin-bottom: 10px;
+            font-size: 1.4em;
+        }
+
+        .highlight-box p {
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Interactive Oral Assessments Playbook</h1>
+            <p>SEBE Assessment Models for AI-Enhanced Education</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <ul class="nav-tabs">
+            <li class="nav-tab">
+                <button class="active" onclick="showTab('overview')">Overview</button>
+            </li>
+            <li class="nav-tab">
+                <button onclick="showTab('individual')">Individual</button>
+            </li>
+            <li class="nav-tab">
+                <button onclick="showTab('group')">Group</button>
+            </li>
+            <li class="nav-tab">
+                <button onclick="showTab('models')">% Models</button>
+            </li>
+            <li class="nav-tab">
+                <button onclick="showTab('implementation')">Implementation</button>
+            </li>
+        </ul>
+
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Overview Tab -->
+            <div id="overview" class="tab-content active">
+                <h2>Generalised Assessment Model = 100%</h2>
+                
+                <div class="model-container" style="margin-bottom: 30px; text-align: center;">
+                    <canvas id="generalModelChart" width="800" height="600" style="max-width: 800px; margin: 0 auto; display: block;"></canvas>
+                    <p style="color: #666; font-size: 0.95em; margin-top: 20px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        The generalised assessment model balances individual and group components, ensuring students demonstrate both disciplinary knowledge and collaborative skills.
+                    </p>
+                </div>
+
+                <h3 style="margin-top: 40px; margin-bottom: 20px;">Assessment Examples by Category</h3>
+                <p style="color: #666; margin-bottom: 20px;">
+                    Select filters below to explore different assessment types, year levels, and percentage models.
+                </p>
+
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="filterCards('all')">All Types</button>
+                    <button class="filter-btn" onclick="filterCards('individual')">Individual Only</button>
+                    <button class="filter-btn" onclick="filterCards('group')">Group Only</button>
+                    <button class="filter-btn" onclick="filterCards('mixed')">Mixed</button>
+                    <button class="filter-btn" onclick="filterCards('year1')">Year 1</button>
+                    <button class="filter-btn" onclick="filterCards('year2')">Year 2</button>
+                    <button class="filter-btn" onclick="filterCards('year3')">Year 3</button>
+                    <button class="filter-btn" onclick="filterCards('teamwork')" style="background: #9b59b6; color: white; border-color: #9b59b6;">Assessing Teamwork</button>
+                </div>
+
+                <!-- Advanced Filters -->
+                <button class="advanced-filters-toggle" 
+                        onclick="toggleAdvancedFilters()" 
+                        aria-expanded="false" 
+                        aria-controls="advanced-filters-panel"
+                        id="advanced-filters-toggle-btn">
+                    <span>🔍 Advanced Filters</span>
+                    <span id="toggle-icon">▼</span>
+                </button>
+
+                <div id="advanced-filters-panel" class="advanced-filters-panel" role="region" aria-labelledby="advanced-filters-toggle-btn">
+                    <div class="filter-group">
+                        <label for="cohort-slider">
+                            Cohort Size: <span class="slider-value" id="cohort-value">0-500</span> students
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="500" value="500" class="slider" id="cohort-slider" 
+                                   aria-label="Filter by cohort size" 
+                                   oninput="updateSliderValue('cohort', this.value); applyFilters()">
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="groupsize-slider">
+                            Group Size: <span class="slider-value" id="groupsize-value">0-20</span> members
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="20" value="20" class="slider" id="groupsize-slider" 
+                                   aria-label="Filter by group size" 
+                                   oninput="updateSliderValue('groupsize', this.value); applyFilters()">
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="time-slider">
+                            Time Required: <span class="slider-value" id="time-value">0-30</span> minutes
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="30" value="30" class="slider" id="time-slider" 
+                                   aria-label="Filter by time required" 
+                                   oninput="updateSliderValue('time', this.value); applyFilters()">
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="groups-slider">
+                            Number of Groups: <span class="slider-value" id="groups-value">0-100</span> groups
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="100" value="100" class="slider" id="groups-slider" 
+                                   aria-label="Filter by number of groups" 
+                                   oninput="updateSliderValue('groups', this.value); applyFilters()">
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="assessors-slider">
+                            Number of Assessors: <span class="slider-value" id="assessors-value">0-5</span> assessors
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="5" value="5" class="slider" id="assessors-slider" 
+                                   aria-label="Filter by number of assessors" 
+                                   oninput="updateSliderValue('assessors', this.value); applyFilters()">
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="mode-slider">
+                            Assessment Mode: <span class="slider-value" id="mode-value">All modes</span>
+                        </label>
+                        <div class="slider-container">
+                            <input type="range" min="0" max="2" value="2" step="1" class="slider" id="mode-slider" 
+                                   aria-label="Filter by assessment mode" 
+                                   oninput="updateModeSlider(this.value); applyFilters()">
+                            <div style="display: flex; justify-content: space-between; font-size: 0.85em; color: #666; margin-top: 5px;">
+                                <span>Live in person</span>
+                                <span>Live online</span>
+                                <span>Recorded upload</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="filter-results-count" id="filter-results-count" role="status" aria-live="polite">
+                        Showing all assessments
+                    </div>
+
+                    <button class="reset-filters-btn" onclick="resetFilters()" aria-label="Reset all filters">
+                        Reset All Filters
+                    </button>
+                </div>
+
+                <div class="cards-grid" id="assessment-cards-container">
+                    <!-- Cards will be dynamically generated here -->
+                </div>
+            </div>
+
+            <!-- Individual Tab -->
+            <div id="individual" class="tab-content">
+                <h2>Individual Assessment Types</h2>
+                <div class="cards-grid" id="individual-cards-container">
+                    <!-- Individual cards will be generated here -->
+                </div>
+            </div>
+
+            <!-- Group Tab -->
+            <div id="group" class="tab-content">
+                <h2>Group Assessment Types</h2>
+                <div class="cards-grid" id="group-cards-container">
+                    <!-- Group cards will be generated here -->
+                </div>
+            </div>
+
+            <!-- Percentage Models Tab -->
+            <div id="models" class="tab-content">
+                <h2>Assessment Percentage Models</h2>
+                
+                <div class="model-container">
+                    <h3 class="model-title">Standard Model (20-10-40-10-20)</h3>
+                    <div class="model-components">
+                        <div class="component-bar individual">
+                            <span class="component-percent">20%</span>
+                            <div class="component-details">
+                                <div class="component-name">Knowledge Tests</div>
+                                <div class="component-desc">Discipline-specific content assessment</div>
+                            </div>
+                            <span class="component-type individual">Individual</span>
+                        </div>
+                        
+                        <div class="component-bar group">
+                            <span class="component-percent">10%</span>
+                            <div class="component-details">
+                                <div class="component-name">Project Brief</div>
+                                <div class="component-desc">Group task with formative peer review</div>
+                            </div>
+                            <span class="component-type group">Group</span>
+                        </div>
+                        
+                        <div class="component-bar group">
+                            <span class="component-percent">40%</span>
+                            <div class="component-details">
+                                <div class="component-name">Project Completion</div>
+                                <div class="component-desc">Final group deliverable with summative peer review</div>
+                            </div>
+                            <span class="component-type group">Group</span>
+                        </div>
+                        
+                        <div class="component-bar individual">
+                            <span class="component-percent">10%</span>
+                            <div class="component-details">
+                                <div class="component-name">Reflection</div>
+                                <div class="component-desc">Identify strengths, weaknesses, and future goals</div>
+                            </div>
+                            <span class="component-type individual">Individual</span>
+                        </div>
+                        
+                        <div class="component-bar individual">
+                            <span class="component-percent">20%</span>
+                            <div class="component-details">
+                                <div class="component-name">Oral Validation</div>
+                                <div class="component-desc">Individual presentation to stakeholder</div>
+                            </div>
+                            <span class="component-type individual">Individual</span>
+                        </div>
+                    </div>
+                    
+                    <div class="model-summary">
+                        <div class="summary-item">
+                            <div class="summary-value">50%</div>
+                            <div class="summary-label">Individual Assessment</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value">50%</div>
+                            <div class="summary-label">Group Assessment</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="model-container">
+                    <h3 class="model-title">Alternative Model (30-20-30-20)</h3>
+                    <div class="model-components">
+                        <div class="component-bar individual">
+                            <span class="component-percent">30%</span>
+                            <div class="component-details">
+                                <div class="component-name">Individual Oral Defence</div>
+                                <div class="component-desc">Comprehensive knowledge demonstration</div>
+                            </div>
+                            <span class="component-type individual">Individual</span>
+                        </div>
+                        
+                        <div class="component-bar group">
+                            <span class="component-percent">20%</span>
+                            <div class="component-details">
+                                <div class="component-name">Team Research</div>
+                                <div class="component-desc">Collaborative investigation</div>
+                            </div>
+                            <span class="component-type group">Group</span>
+                        </div>
+                        
+                        <div class="component-bar group">
+                            <span class="component-percent">30%</span>
+                            <div class="component-details">
+                                <div class="component-name">Group Presentation</div>
+                                <div class="component-desc">Professional team delivery</div>
+                            </div>
+                            <span class="component-type group">Group</span>
+                        </div>
+                        
+                        <div class="component-bar individual">
+                            <span class="component-percent">20%</span>
+                            <div class="component-details">
+                                <div class="component-name">Portfolio & Reflection</div>
+                                <div class="component-desc">Individual learning journey</div>
+                            </div>
+                            <span class="component-type individual">Individual</span>
+                        </div>
+                    </div>
+                    
+                    <div class="model-summary">
+                        <div class="summary-item">
+                            <div class="summary-value">50%</div>
+                            <div class="summary-label">Individual Assessment</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="summary-value">50%</div>
+                            <div class="summary-label">Group Assessment</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Implementation Tab -->
+            <div id="implementation" class="tab-content">
+                <h2>Implementation Guide for AI-Enhanced Assessment</h2>
+                
+                <div class="guide-section">
+                    <h3>Key Opportunities</h3>
+                    <ul class="guide-list">
+                        <li>Use marking time for face-to-face feedback sessions</li>
+                        <li>AI assists project assessment via rubrics</li>
+                        <li>Focus on individual understanding validation</li>
+                        <li>Schedule oral defence in Weeks 13-14</li>
+                        <li>Bring markers into learning spaces</li>
+                        <li>Use contact hours for feedback rather than content delivery</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h3>Assessment Balance</h3>
+                    <ul class="guide-list">
+                        <li>Discipline content assessed by subject experts</li>
+                        <li>Transferable skills assessed by employability team</li>
+                        <li>ULOs assured per unit</li>
+                        <li>Skills assured per trimester</li>
+                        <li>Physical demonstration in labs</li>
+                        <li>Oral demonstration of knowledge</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h3>Student Development Path</h3>
+                    <ul class="guide-list">
+                        <li>Build confidence progressively from Year 1</li>
+                        <li>Start with formative assessment</li>
+                        <li>Move to summative validation</li>
+                        <li>Maintain human connection throughout</li>
+                        <li>Support belonging & mentoring</li>
+                        <li>Focus on employability outcomes</li>
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h3>AI Integration Strategies</h3>
+                    <ul class="guide-list">
+                        <li>Students use AI to self-assess against rubrics</li>
+                        <li>Free up time for individual oral validation</li>
+                        <li>Focus on authentication OF learning</li>
+                        <li>Maintain assessment FOR learning</li>
+                        <li>Keep human in the learning journey</li>
+                        <li>Use technology to enhance, not replace, interaction</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h3>Core Principle</h3>
+                    <p>
+                        The goal is authentication OF learning while maintaining assessment FOR learning.
+                        Interactive oral assessments ensure students can articulate their knowledge and skills
+                        in an AI-enhanced world.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // JSON Data Structure
+        const assessmentData = {
+            "assessments": [
+                {
+                    "id": "conference",
+                    "title": "Conference Presentation",
+                    "type": "mixed",
+                    "year": "year3",
+                    "totalWeight": 60,
+                    "metadata": {
+                        "cohort": 342,
+                        "numberOfGroups": 61,
+                        "groupSizeMin": 6,
+                        "groupSizeMax": 6,
+                        "mode": "person",
+                        "timeMinutes": 20,
+                        "timeBreakdown": "10 mins presentation; 5 mins questions; 5 mins oral defense",
+                        "numberOfAssessors": 2
+                    },
+                    "unitGradeDistribution": [
+                        { "component": "Conference", "percentage": 60, "color": "#F39C12" },
+                        { "component": "Case Studies", "percentage": 40, "color": "#95a5a6" }
+                    ],
+                    "taskBreakdown": [
+                        { "component": "Project Plan (S&P/Form)", "percentage": 10, "type": "group" },
+                        { "component": "Abstract", "percentage": 5, "type": "group" },
+                        { "component": "Research Presentation (S&P/Summ)", "percentage": 35, "type": "group" },
+                        { "component": "Oral Defence (Q&A)", "percentage": 10, "type": "individual" }
+                    ],
+                    "howToImplement": {
+                        "overview": "Third year students form teams, design and run their own research project and then present their results to their peers at an end of trimester conference. They are assessed by an assessment panel made up of academics from across the course (discipline experts), senior T&L from the School and Third Space.",
+                        "assessmentProcess": [
+                            "Teams are assessed as a team – professionalism, cohesion, scientific communication and scientific procedures and analysis",
+                            "Audience are invited to ask questions of the presenters",
+                            "Assessment panel asks questions of each individual and provide an individual mark based on their oral response, against a rubric",
+                            "Questions based on the scientific method, results and analysis (requires discipline experts)",
+                            "Questions related to teamwork experience and social responsibility (e.g., how UN SDGs aligned/informed their project)"
+                        ],
+                        "note": "Initially students shared concerns about a task that counts to 60% of their mark, but feedback showed that once they understood the breakup of the marking and the support across the trimester they were complimentary of this unit."
+                    }
+                },
+                {
+                    "id": "mootcourt",
+                    "title": "Moot Court",
+                    "type": "individual",
+                    "year": "year2",
+                    "totalWeight": 25,
+                    "metadata": {
+                        "cohort": 79,
+                        "numberOfGroups": 5,
+                        "groupSizeMin": 15,
+                        "groupSizeMax": 17,
+                        "mode": "online",
+                        "timeMinutes": 10,
+                        "timeBreakdown": "2 X 5 students: 15% peer, 85% tutor",
+                        "numberOfAssessors": 2
+                    },
+                    "unitGradeDistribution": [
+                        { "component": "Moot Court", "percentage": 25, "color": "#17A2B8" },
+                        { "component": "Online Tests (2x20%)", "percentage": 40, "color": "#3498db" },
+                        { "component": "Crime Scene Analysis", "percentage": 30, "color": "#27ae60" },
+                        { "component": "Case Assessment", "percentage": 15, "color": "#9b59b6" }
+                    ],
+                    "taskBreakdown": [
+                        { 
+                            "component": "Individual Oral Assessment", 
+                            "percentage": 100, 
+                            "type": "individual", 
+                            "description": "The Moot Court assessment is entirely based on the student's performance as a forensic expert witness, including their literature review, expert testimony, and professional presentation in the courtroom environment." 
+                        }
+                    ],
+                    "howToImplement": {
+                        "overview": "Students take on the role of a professional forensic expert witness in a two-way question session between the student (acting as a forensic expert) and a staff member (acting as counsel). The unit brings together future frontiers in forensic science with a view to developing a student's career transition as they approach the final stages of their degree.",
+                        "topicsCovered": [
+                            "Advanced crime scene examination",
+                            "Illicit drugs and clandestine expert evidence",
+                            "Role of the media",
+                            "Fires and explosives",
+                            "Ballistics and identification sciences",
+                            "Quality assurance and professional ethics"
+                        ],
+                        "assessmentProcess": [
+                            "Demonstration of technical, analytical, interpretation and communication skills within each of the three practicals (group assessment with individualised marks via peer review)",
+                            "Students explain and defend their analysis of a given scenario through a literature review",
+                            "Students deliver evidence in a professional courtroom environment",
+                            "Assessment by Unit Chair and peers on professional presentation and quality of testimony"
+                        ]
+                    }
+                },
+                {
+                    "id": "pitch",
+                    "title": "Project Pitch",
+                    "type": "group",
+                    "year": "year2",
+                    "totalWeight": 40,
+                    "metadata": {
+                        "cohort": 98,
+                        "numberOfGroups": 29,
+                        "groupSizeMin": 3,
+                        "groupSizeMax": 6,
+                        "mode": "online",
+                        "timeMinutes": null,
+                        "timeBreakdown": "Data to be collected",
+                        "numberOfAssessors": null
+                    },
+                    "unitGradeDistribution": [
+                        { "component": "Project Brief", "percentage": 20, "color": "#27AE60" },
+                        { "component": "Project Presentation", "percentage": 20, "color": "#2ECC71" },
+                        { "component": "Client Evaluation", "percentage": 15, "color": "#3498db" },
+                        { "component": "Professional Portfolio", "percentage": 45, "color": "#95a5a6" }
+                    ],
+                    "taskBreakdown": [
+                        { "component": "Project Brief - Oral (Video) S&P/Form", "percentage": 20, "type": "group" },
+                        { "component": "Project Presentation (S&P/Summ) + Q&A", "percentage": 20, "type": "group" }
+                    ],
+                    "howToImplement": {
+                        "overview": "A Professional Practice core unit within the Bachelor of Science. In this unit, students will apply scientific knowledge, processes and techniques in a team-based project and communicate the value of science to a range of audiences.",
+                        "keyElements": [
+                            "Team-based scientific project",
+                            "Video brief for project planning",
+                            "Final presentation to diverse audience (clients, academics, fellow students)",
+                            "Audience Q&A session",
+                            "Peer review components (formative and summative)",
+                            "Students articulate project importance and outcomes at appropriate level for diverse audience"
+                        ]
+                    }
+                },
+                {
+                    "id": "poster",
+                    "title": "Poster Conference",
+                    "type": "individual",
+                    "year": "year3",
+                    "totalWeight": 20,
+                    "metadata": {
+                        "cohort": 74,
+                        "numberOfGroups": 28,
+                        "groupSizeMin": 0,
+                        "groupSizeMax": 0,
+                        "mode": "person",
+                        "timeMinutes": null,
+                        "timeBreakdown": "Data to be collected",
+                        "numberOfAssessors": null
+                    },
+                    "unitGradeDistribution": [
+                        { "component": "Written Tests (2x20%)", "percentage": 40, "color": "#3498db" },
+                        { "component": "Poster Conference", "percentage": 20, "color": "#17A2B8" },
+                        { 
+                            "component": "Practicals", 
+                            "percentage": 40, 
+                            "color": "#95a5a6", 
+                            "breakdown": [
+                                { "component": "Pre-lab questions", "percentage": 5 },
+                                { "component": "Lab reports", "percentage": 35 }
+                            ]
+                        }
+                    ],
+                    "taskBreakdown": [
+                        { 
+                            "component": "Individual Poster Presentation", 
+                            "percentage": 100, 
+                            "type": "individual", 
+                            "description": "Students submit poster online and bring a printed version to the poster presentation session. Students present and answer questions from staff and students who attend the poster conference." 
+                        }
+                    ],
+                    "skillsAssessed": [
+                        "Visual communication",
+                        "Scientific communication",
+                        "Synthesis of complex information",
+                        "Public speaking",
+                        "Q&A skills"
+                    ]
+                },
+                {
+                    "id": "debate",
+                    "title": "Debate",
+                    "type": "group",
+                    "year": "year3",
+                    "totalWeight": 20,
+                    "metadata": {
+                        "cohort": 308,
+                        "numberOfGroups": 68,
+                        "groupSizeMin": 3,
+                        "groupSizeMax": 3,
+                        "mode": "upload",
+                        "timeMinutes": 4,
+                        "timeBreakdown": "4 turn-taking; S&P assessment in FF + reflection",
+                        "numberOfAssessors": null
+                    },
+                    "unitGradeDistribution": [
+                        { "component": "Class Tests (2x15%)", "percentage": 30, "color": "#3498db" },
+                        { "component": "Debate", "percentage": 20, "color": "#27AE60" },
+                        { "component": "Post-prac Analyses (4x5%)", "percentage": 20, "color": "#9b59b6" },
+                        { "component": "Lab Skills Challenge", "percentage": 30, "color": "#95a5a6" }
+                    ],
+                    "taskBreakdown": [
+                        { "component": "Presentation Quality", "percentage": 15, "type": "group" },
+                        { "component": "Teamwork Reflection (500 words)", "percentage": 5, "type": "individual" }
+                    ],
+                    "howToImplement": {
+                        "format": "Groups choose from provided topics. One student argues for, one against, third is moderator.",
+                        "requirements": "Evidence-based arguments using scientific articles on controversial cell biology topics and societal impact.",
+                        "assessment": "15% presentation quality (group), 5% teamwork reflection (individual).",
+                        "detailedOverview": "Groups choose from a provided list of controversial topics in cell biology. One student argues for, another argues against, and the third acts as moderator providing background and conclusion. Students discuss controversial topics and their impact on society while demonstrating communication and teamwork skills."
+                    },
+                    "skillsAssessed": [
+                        "Argumentation skills",
+                        "Research abilities",
+                        "Quick thinking",
+                        "Team strategy"
+                    ]
+                },
+                {
+                    "id": "teampivot",
+                    "title": "Team Pivot - Authentic Teamwork Assessment",
+                    "type": "teamwork",
+                    "year": "year2-3",
+                    "totalWeight": 50,
+                    "metadata": {
+                        "cohort": null,
+                        "numberOfGroups": null,
+                        "groupSizeMin": null,
+                        "groupSizeMax": null,
+                        "mode": null,
+                        "timeMinutes": null,
+                        "timeBreakdown": "Data to be collected",
+                        "numberOfAssessors": null
+                    },
+                    "unitGradeDistribution": [
+                        { "component": "Project Proposal", "percentage": 20, "color": "#27AE60" },
+                        { "component": "Final Report", "percentage": 10, "color": "#2ECC71" },
+                        { "component": "Supervised AoL Task", "percentage": 20, "color": "#9b59b6" },
+                        { "component": "Other Assessments", "percentage": 50, "color": "#95a5a6" }
+                    ],
+                    "taskBreakdown": [
+                        { "component": "Project Proposal (Form/Summ)", "percentage": 20, "type": "group" },
+                        { "component": "Final Report (Light Touch)", "percentage": 10, "type": "group" },
+                        { "component": "Supervised AoL Team Task (Live)", "percentage": 20, "type": "team+individual" }
+                    ],
+                    "framework": [
+                        "Team Formation (skill-interest profiles)",
+                        "Team Agreement (charter & roles)",
+                        "Project Proposal (20%)",
+                        "Jigsaw Skill-Building (distributed expertise)",
+                        "Final Report (10%)",
+                        "Supervised AoL Task (20% - adaptive challenge)",
+                        "Efficient marking logistics"
+                    ],
+                    "howToImplement": {
+                        "overview": "An innovative approach for implementing collaborative team-based learning with embedded Assurance of Learning (AoL). After learners co-construct a group project artefact, they bring the artefact and their notes to the interview. The assessor introduces a novel idea, constraint, or variation, and then observes the team collaborating to construct a new, updated artefact in real-time.",
+                        "keyFeatures": [
+                            {
+                                "name": "Team Formation",
+                                "description": "Student-directed grouping based on skills and interests using Padlet"
+                            },
+                            {
+                                "name": "Team Agreement",
+                                "description": "Formalised collaboration parameters, roles, values, and conflict resolution"
+                            },
+                            {
+                                "name": "Jigsaw Learning",
+                                "description": "Each member develops expertise in specific components (data collection, analysis, visualization) then teaches their team"
+                            },
+                            {
+                                "name": "Supervised AoL Task",
+                                "description": "Face-to-face assessment where teams adapt to a new variable in real-time, demonstrating authentic capability"
+                            }
+                        ],
+                        "assessmentBenefits": [
+                            "Direct observation of skills acquisition for accreditation",
+                            "Scalable with sustainable workloads (~1 hour marking per student)",
+                            "Authentic skill development mirroring industry scenarios",
+                            "Balances individual accountability with team development"
+                        ],
+                        "tools": [
+                            "Padlet for team formation",
+                            "FeedbackFruits for peer/self-review",
+                            "Team Building templates and Charter templates",
+                            "Observation rubrics for live assessment"
+                        ]
+                    }
+                }
+            ]
+        };
+
+        // Function to generate assessment card HTML
+        function generateAssessmentCard(assessment) {
+            const m = assessment.metadata;
+            const modeText = m.mode === 'person' ? 'Live in person' : 
+                           m.mode === 'online' ? 'Live online' : 
+                           m.mode === 'upload' ? 'Recorded upload' : '❓';
+            
+            const groupSizeText = m.groupSizeMin === 0 && m.groupSizeMax === 0 ? '👤 Individual' :
+                                m.groupSizeMin === m.groupSizeMax ? `${m.groupSizeMin}-${m.groupSizeMax}` :
+                                `${m.groupSizeMin}-${m.groupSizeMax}`;
+            
+            const typeText = assessment.type === 'mixed' ? 'Group + Individual' :
+                           assessment.type === 'teamwork' ? 'Group + Individual' :
+                           assessment.type.charAt(0).toUpperCase() + assessment.type.slice(1);
+            
+            const yearText = assessment.year === 'year2-3' ? 'Year 2-3' :
+                           assessment.year.replace('year', 'Year ');
+
+            let html = `
+                <div class="assessment-card" 
+                     data-type="${assessment.type}" 
+                     data-year="${assessment.year}"
+                     data-cohort="${m.cohort || -1}"
+                     data-groupmin="${m.groupSizeMin || -1}"
+                     data-groupmax="${m.groupSizeMax || -1}"
+                     data-groups="${m.numberOfGroups || -1}"
+                     data-minutes="${m.timeMinutes || -1}"
+                     data-assessors="${m.numberOfAssessors || -1}"
+                     data-mode="${m.mode || ''}">
+                    <div class="card-header ${assessment.type}">
+                        <div class="card-title">${assessment.title}</div>
+                        <div class="card-type">${typeText} • ${yearText} • ${assessment.totalWeight}%</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-section">
+                            <h4>Unit Grade Distribution</h4>
+                            <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
+                                <canvas id="${assessment.id}UnitChart" width="120" height="120" style="max-width: 120px;"></canvas>
+                                <div style="flex: 1;">
+                                    <p style="color: #2C3E50; font-weight: bold; margin-bottom: 5px;">Total Unit Assessment</p>
+                                    ${assessment.unitGradeDistribution.map(comp => 
+                                        `<p style="color: #666; font-size: 0.9em;">• ${comp.component}: ${comp.percentage}%</p>`
+                                    ).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-section">
+                            <h4>${assessment.title} Task Breakdown: ${assessment.totalWeight}%</h4>
+                            ${generateTaskBreakdown(assessment)}
+                        </div>
+                        
+                        ${assessment.framework ? `
+                        <div class="card-section">
+                            <h4>Seven-Step Framework</h4>
+                            <ul class="skills-list">
+                                ${assessment.framework.map(step => `<li>${step}</li>`).join('')}
+                            </ul>
+                        </div>
+                        ` : ''}
+                        
+                        ${assessment.skillsAssessed ? `
+                        <div class="card-section">
+                            <h4>Assesses/Develops</h4>
+                            <ul class="skills-list">
+                                ${assessment.skillsAssessed.map(skill => `<li>${skill}</li>`).join('')}
+                            </ul>
+                        </div>
+                        ` : ''}
+                        
+                        ${assessment.howToImplement ? `
+                        <button class="how-to-btn" onclick="toggleHowTo('${assessment.id}')">
+                            How To Implement ▼
+                        </button>
+                        <div id="${assessment.id}-howto" class="how-to-content" style="display: none;">
+                            ${generateHowToImplement(assessment.howToImplement)}
+                        </div>
+                        ` : ''}
+                        
+                        <div class="assessment-metadata" style="display: flex; flex-wrap: wrap; gap: 15px; padding: 20px; background: #f8f9fa; border-radius: 10px; margin-top: 20px; font-size: 0.95em;">
+                            <div class="metadata-item" style="flex: 1; min-width: 150px;">
+                                <span style="margin-right: 5px;" title="Cohort size">👥</span>
+                                <strong>${m.cohort || '❓'}</strong> ${m.cohort ? 'students' : ''}
+                            </div>
+                            <div class="metadata-item" style="flex: 1; min-width: 150px;">
+                                <span style="margin-right: 5px;" title="Number of groups">📊</span>
+                                <strong>${m.numberOfGroups || '❓'}</strong> ${m.numberOfGroups ? 'groups' : ''}
+                            </div>
+                            <div class="metadata-item" style="flex: 1; min-width: 150px;">
+                                <span style="margin-right: 5px;" title="Group size range">👪</span>
+                                <strong>${groupSizeText}</strong> ${groupSizeText !== '👤 Individual' && m.groupSizeMax > 0 ? 'members' : ''}
+                            </div>
+                            <div class="metadata-item" style="flex: 1; min-width: 180px;">
+                                <span style="margin-right: 5px;" title="Assessment mode">💻</span>
+                                <strong>${modeText}</strong>
+                            </div>
+                            <div class="metadata-item" style="flex: 1; min-width: 150px;">
+                                <span style="margin-right: 5px;" title="Total time required" class="time-tooltip">⏱️</span>
+                                <strong>${m.timeMinutes || '❓'}</strong> ${m.timeMinutes ? 'min' : ''}
+                                ${m.timeBreakdown ? `<div class="tooltip-content" style="display: none;">${m.timeBreakdown}</div>` : ''}
+                            </div>
+                            <div class="metadata-item" style="flex: 1; min-width: 150px;">
+                                <span style="margin-right: 5px;" title="Number of assessors">👨‍🏫</span>
+                                <strong>${m.numberOfAssessors || '❓'}</strong> ${m.numberOfAssessors ? 'assessors' : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
+
+        function generateTaskBreakdown(assessment) {
+            if (assessment.taskBreakdown.length === 1 && assessment.taskBreakdown[0].description) {
+                return `
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #${assessment.type === 'individual' ? '17A2B8' : '27AE60'};">
+                        <p style="color: #2C3E50; font-weight: bold; margin-bottom: 8px;">${assessment.taskBreakdown[0].percentage}% ${assessment.taskBreakdown[0].component}</p>
+                        <p style="color: #666; font-size: 0.9em; margin: 0;">${assessment.taskBreakdown[0].description}</p>
+                    </div>
+                `;
+            } else {
+                const borderColor = assessment.type === 'group' ? '#27AE60' : assessment.type === 'teamwork' ? '#9b59b6' : '#F39C12';
+                return `
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9em;">
+                        <tr style="background: #f8f9fa;">
+                            <th style="padding: 8px; text-align: left; border-bottom: 2px solid ${borderColor};">Component</th>
+                            <th style="padding: 8px; text-align: center; border-bottom: 2px solid ${borderColor};">%</th>
+                            <th style="padding: 8px; text-align: center; border-bottom: 2px solid ${borderColor};">Type</th>
+                        </tr>
+                        ${assessment.taskBreakdown.map((task, index) => `
+                            <tr>
+                                <td style="padding: 8px; ${index < assessment.taskBreakdown.length - 1 ? 'border-bottom: 1px solid #ecf0f1;' : ''}">${task.component}</td>
+                                <td style="padding: 8px; text-align: center; font-weight: bold; ${index < assessment.taskBreakdown.length - 1 ? 'border-bottom: 1px solid #ecf0f1;' : ''}">${task.percentage}%</td>
+                                <td style="padding: 8px; text-align: center; ${index < assessment.taskBreakdown.length - 1 ? 'border-bottom: 1px solid #ecf0f1;' : ''}">
+                                    <span style="background: ${task.type === 'individual' ? '#17A2B8' : task.type === 'team+individual' ? '#9b59b6' : '#27AE60'}; color: white; padding: 2px 8px; border-radius: 10px; font-size: 0.85em;">${task.type === 'team+individual' ? 'Team+Ind' : task.type.charAt(0).toUpperCase() + task.type.slice(1)}</span>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </table>
+                `;
+            }
+        }
+
+        function generateHowToImplement(howTo) {
+            if (!howTo) return '';
+            
+            let html = `<p style="font-size: 0.9em; color: #555; line-height: 1.6; margin-top: 15px;">`;
+            
+            if (howTo.overview) {
+                html += `<strong>Overview:</strong><br>${howTo.overview}<br><br>`;
+            }
+            
+            if (howTo.topicsCovered && howTo.topicsCovered.length > 0) {
+                html += `<strong>Topics Covered:</strong><br>`;
+                html += howTo.topicsCovered.map(topic => `• ${topic}`).join('<br>');
+                html += '<br><br>';
+            }
+            
+            if (howTo.keyElements && howTo.keyElements.length > 0) {
+                html += `<strong>Key Elements:</strong><br>`;
+                html += howTo.keyElements.map(elem => `• ${elem}`).join('<br>');
+                html += '<br><br>';
+            }
+            
+            if (howTo.keyFeatures && howTo.keyFeatures.length > 0) {
+                html += `<strong>Key Features:</strong><br>`;
+                html += howTo.keyFeatures.map(feature => 
+                    `• <strong>${feature.name}:</strong> ${feature.description}`
+                ).join('<br>');
+                html += '<br><br>';
+            }
+            
+            if (howTo.assessmentProcess && howTo.assessmentProcess.length > 0) {
+                html += `<strong>Assessment Process:</strong><br>`;
+                html += howTo.assessmentProcess.map(proc => `• ${proc}`).join('<br>');
+                html += '<br><br>';
+            }
+            
+            if (howTo.assessmentBenefits && howTo.assessmentBenefits.length > 0) {
+                html += `<strong>Assessment Benefits:</strong><br>`;
+                html += howTo.assessmentBenefits.map(benefit => `• ${benefit}`).join('<br>');
+                html += '<br><br>';
+            }
+            
+            if (howTo.tools && howTo.tools.length > 0) {
+                html += `<strong>Tools:</strong><br>`;
+                html += howTo.tools.map(tool => `• ${tool}`).join('<br>');
+                html += '<br><br>';
+            }
+            
+            if (howTo.format) {
+                html += `<strong>Format:</strong> ${howTo.format}<br><br>`;
+            }
+            
+            if (howTo.requirements) {
+                html += `<strong>Requirements:</strong> ${howTo.requirements}<br><br>`;
+            }
+            
+            if (howTo.assessment) {
+                html += `<strong>Assessment:</strong> ${howTo.assessment}<br><br>`;
+            }
+            
+            if (howTo.detailedOverview) {
+                html += `${howTo.detailedOverview}<br><br>`;
+            }
+            
+            if (howTo.note) {
+                html += `<em>Note: ${howTo.note}</em>`;
+            }
+            
+            html += `</p>`;
+            return html;
+        }
+
+        // Function to draw small pie charts
+        function drawSmallPieChart(canvasId, data, totalValue = 100) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const centerX = 60;
+            const centerY = 60;
+            const radius = 45;
+            
+            let currentAngle = -Math.PI / 2;
+            
+            data.forEach(item => {
+                const sliceAngle = (item.percentage / totalValue) * 2 * Math.PI;
+                
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                ctx.lineTo(centerX, centerY);
+                ctx.fillStyle = item.color;
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                if (item.percentage >= 15) {
+                    const textAngle = currentAngle + sliceAngle / 2;
+                    const textX = centerX + Math.cos(textAngle) * (radius * 0.65);
+                    const textY = centerY + Math.sin(textAngle) * (radius * 0.65);
+                    
+                    ctx.fillStyle = '#fff';
+                    ctx.font = 'bold 11px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(item.percentage + '%', textX, textY);
+                }
+                
+                currentAngle += sliceAngle;
+            });
+        }
+
+        // Function to draw general model chart
+        function drawGeneralModelChart() {
+            const canvas = document.getElementById('generalModelChart');
+            if (!canvas) return;
+            
+            const ctx = canvas.getContext('2d');
+            const centerX = 400;
+            const centerY = 300;
+            const radius = 100;
+            
+            const data = [
+                { label: 'Discipline Specific Knowledge', value: 20, color: '#17A2B8', shortLabel: 'Discipline Knowledge', percentage: '20%' },
+                { label: 'Group Task - Project Brief', value: 10, color: '#27AE60', shortLabel: 'Project Brief', percentage: '10%' },
+                { label: 'Group Task - Project Completed', value: 40, color: '#2ECC71', shortLabel: 'Project Completed', percentage: '40%' },
+                { label: 'Reflection', value: 10, color: '#3498db', shortLabel: 'Reflection', percentage: '10%' },
+                { label: 'Individual Oral Validation', value: 20, color: '#138496', shortLabel: 'Oral Validation', percentage: '20%' }
+            ];
+            
+            let currentAngle = -Math.PI / 2;
+            const total = 100;
+            const sliceData = [];
+            
+            data.forEach(item => {
+                const sliceAngle = (item.value / total) * 2 * Math.PI;
+                const midAngle = currentAngle + sliceAngle / 2;
+                
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                ctx.lineTo(centerX, centerY);
+                ctx.fillStyle = item.color;
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 4;
+                ctx.stroke();
+                
+                sliceData.push({
+                    ...item,
+                    midAngle: midAngle,
+                    startAngle: currentAngle,
+                    endAngle: currentAngle + sliceAngle
+                });
+                
+                currentAngle += sliceAngle;
+            });
+            
+            sliceData.forEach(item => {
+                const labelRadius = radius + 35;
+                const lineStartX = centerX + Math.cos(item.midAngle) * (radius + 5);
+                const lineStartY = centerY + Math.sin(item.midAngle) * (radius + 5);
+                const lineMidX = centerX + Math.cos(item.midAngle) * labelRadius;
+                const lineMidY = centerY + Math.sin(item.midAngle) * labelRadius;
+                
+                const isRight = Math.cos(item.midAngle) > 0;
+                const lineEndX = lineMidX + (isRight ? 45 : -45);
+                const lineEndY = lineMidY;
+                
+                ctx.beginPath();
+                ctx.moveTo(lineStartX, lineStartY);
+                ctx.lineTo(lineMidX, lineMidY);
+                ctx.lineTo(lineEndX, lineEndY);
+                ctx.strokeStyle = '#2C3E50';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                const textX = lineEndX + (isRight ? 5 : -5);
+                ctx.font = 'bold 13px Arial';
+                ctx.textAlign = isRight ? 'left' : 'right';
+                ctx.textBaseline = 'bottom';
+                
+                ctx.fillStyle = '#2C3E50';
+                ctx.fillText(item.shortLabel, textX, lineEndY - 2);
+                
+                ctx.font = 'bold 15px Arial';
+                ctx.fillStyle = item.color;
+                ctx.textBaseline = 'top';
+                ctx.fillText(item.percentage, textX, lineEndY + 2);
+            });
+        }
+
+        // Generate all cards on page load
+        function initializeCards() {
+            const overviewContainer = document.getElementById('assessment-cards-container');
+            const individualContainer = document.getElementById('individual-cards-container');
+            const groupContainer = document.getElementById('group-cards-container');
+            
+            assessmentData.assessments.forEach(assessment => {
+                const cardHtml = generateAssessmentCard(assessment);
+                overviewContainer.innerHTML += cardHtml;
+                
+                if (assessment.type === 'individual') {
+                    individualContainer.innerHTML += cardHtml;
+                } else if (assessment.type === 'group') {
+                    groupContainer.innerHTML += cardHtml;
+                }
+            });
+            
+            // Draw all pie charts after cards are generated
+            setTimeout(() => {
+                assessmentData.assessments.forEach(assessment => {
+                    drawSmallPieChart(`${assessment.id}UnitChart`, assessment.unitGradeDistribution);
+                });
+            }, 100);
+        }
+
+        // Tab Navigation
+        function showTab(tabName) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            const buttons = document.querySelectorAll('.nav-tab button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Toggle Advanced Filters
+        function toggleAdvancedFilters() {
+            const panel = document.getElementById('advanced-filters-panel');
+            const button = document.getElementById('advanced-filters-toggle-btn');
+            const icon = document.getElementById('toggle-icon');
+            
+            if (panel.classList.contains('open')) {
+                panel.classList.remove('open');
+                button.setAttribute('aria-expanded', 'false');
+                icon.textContent = '▼';
+            } else {
+                panel.classList.add('open');
+                button.setAttribute('aria-expanded', 'true');
+                icon.textContent = '▲';
+            }
+        }
+
+        // Update slider value displays
+        function updateSliderValue(sliderId, value) {
+            const valueSpan = document.getElementById(sliderId + '-value');
+            valueSpan.textContent = '0-' + value;
+        }
+
+        // Update mode slider display
+        function updateModeSlider(value) {
+            const valueSpan = document.getElementById('mode-value');
+            const modes = ['Live in person only', 'Live in person & Live online', 'All modes'];
+            valueSpan.textContent = modes[value];
+        }
+
+        // Apply all filters
+        function applyFilters() {
+            const cards = document.querySelectorAll('.assessment-card');
+            const cohortMax = parseInt(document.getElementById('cohort-slider').value);
+            const groupsizeMax = parseInt(document.getElementById('groupsize-slider').value);
+            const timeMax = parseInt(document.getElementById('time-slider').value);
+            const groupsMax = parseInt(document.getElementById('groups-slider').value);
+            const assessorsMax = parseInt(document.getElementById('assessors-slider').value);
+            const modeValue = parseInt(document.getElementById('mode-slider').value);
+            
+            let visibleCount = 0;
+            
+            cards.forEach(card => {
+                if (card.style.display === 'none' && !card.dataset.cohort) {
+                    return;
+                }
+                
+                const cohort = parseInt(card.dataset.cohort) || -1;
+                const groupmax = parseInt(card.dataset.groupmax) || -1;
+                const groups = parseInt(card.dataset.groups) || -1;
+                const minutes = parseInt(card.dataset.minutes) || -1;
+                const assessors = parseInt(card.dataset.assessors) || -1;
+                const mode = card.dataset.mode;
+                
+                let show = true;
+                
+                if (cohort > 0 && cohort > cohortMax) show = false;
+                if (groupmax > 0 && groupmax > groupsizeMax) show = false;
+                if (minutes > 0 && minutes > timeMax) show = false;
+                if (groups > 0 && groups > groupsMax) show = false;
+                if (assessors > 0 && assessors > assessorsMax) show = false;
+                
+                if (mode && modeValue < 2) {
+                    const validModes = modeValue === 0 ? ['person'] : ['person', 'online'];
+                    if (!validModes.includes(mode)) show = false;
+                }
+                
+                if (show) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            
+            const resultCount = document.getElementById('filter-results-count');
+            if (visibleCount === cards.length) {
+                resultCount.textContent = 'Showing all assessments';
+            } else {
+                resultCount.textContent = `Showing ${visibleCount} of ${cards.length} assessments`;
+            }
+        }
+
+        // Reset all filters
+        function resetFilters() {
+            document.getElementById('cohort-slider').value = 500;
+            document.getElementById('groupsize-slider').value = 20;
+            document.getElementById('time-slider').value = 30;
+            document.getElementById('groups-slider').value = 100;
+            document.getElementById('assessors-slider').value = 5;
+            document.getElementById('mode-slider').value = 2;
+            
+            updateSliderValue('cohort', 500);
+            updateSliderValue('groupsize', 20);
+            updateSliderValue('time', 30);
+            updateSliderValue('groups', 100);
+            updateSliderValue('assessors', 5);
+            updateModeSlider(2);
+            
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            buttons[0].classList.add('active');
+            
+            const cards = document.querySelectorAll('.assessment-card');
+            cards.forEach(card => card.style.display = 'block');
+            
+            document.getElementById('filter-results-count').textContent = 'Showing all assessments';
+        }
+
+        // Filter Cards
+        function filterCards(type) {
+            const cards = document.querySelectorAll('.assessment-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+            
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            cards.forEach(card => {
+                if (type === 'all') {
+                    card.style.display = 'block';
+                } else if (type === 'teamwork') {
+                    if (card.dataset.type === 'teamwork') {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                } else if (type.startsWith('year')) {
+                    if (card.dataset.year === type || !card.dataset.year) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                } else {
+                    if (card.dataset.type === type) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                }
+            });
+            
+            if (document.getElementById('advanced-filters-panel').classList.contains('open')) {
+                applyFilters();
+            }
+        }
+
+        // Toggle How To Content
+        function toggleHowTo(assessmentId) {
+            event.stopPropagation();
+            const howToDiv = document.getElementById(assessmentId + '-howto');
+            const button = event.target;
+            
+            if (howToDiv.style.display === 'none') {
+                howToDiv.style.display = 'block';
+                button.innerHTML = 'How To Implement ▲';
+            } else {
+                howToDiv.style.display = 'none';
+                button.innerHTML = 'How To Implement ▼';
+            }
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSliderValue('cohort', 500);
+            updateSliderValue('groupsize', 20);
+            updateSliderValue('time', 30);
+            updateSliderValue('groups', 100);
+            updateSliderValue('assessors', 5);
+            updateModeSlider(2);
+            
+            initializeCards();
+            drawGeneralModelChart();
+        });
+    </script>
+</body>
+</html>
