@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Oral Assessments Playbook - SEBE</title>
+    <title>SEBE Interactive Assessment Playbook</title>
     <style>
         * {
             margin: 0;
@@ -663,8 +663,7 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <h1>Interactive Oral Assessments Playbook</h1>
-            <p>SEBE Assessment Models for AI-Enhanced Education</p>
+            <h1>SEBE Interactive Assessment Playbook</h1>
         </div>
 
         <!-- Navigation Tabs -->
@@ -690,15 +689,6 @@
         <div class="content">
             <!-- Overview Tab -->
             <div id="overview" class="tab-content active">
-                <h2>Generalised Assessment Model = 100%</h2>
-                
-                <div class="model-container" style="margin-bottom: 30px; text-align: center;">
-                    <canvas id="generalModelChart" width="800" height="600" style="max-width: 800px; margin: 0 auto; display: block;"></canvas>
-                    <p style="color: #666; font-size: 0.95em; margin-top: 20px; max-width: 600px; margin-left: auto; margin-right: auto;">
-                        The generalised assessment model balances individual and group components, ensuring students demonstrate both disciplinary knowledge and collaborative skills.
-                    </p>
-                </div>
-
                 <h3 style="margin-top: 40px; margin-bottom: 20px;">Assessment Examples by Category</h3>
                 <p style="color: #666; margin-bottom: 20px;">
                     Select filters below to explore different assessment types, year levels, and percentage models.
@@ -1929,83 +1919,7 @@
         }
 
         // Function to draw general model chart
-        function drawGeneralModelChart() {
-            const canvas = document.getElementById('generalModelChart');
-            if (!canvas) return;
-            
-            const ctx = canvas.getContext('2d');
-            const centerX = 400;
-            const centerY = 300;
-            const radius = 100;
-            
-            const data = [
-                { label: 'Discipline Specific Knowledge', value: 20, color: '#007D98', shortLabel: 'Discipline Knowledge', percentage: '20%' },
-                { label: 'Group Task - Project Brief', value: 10, color: '#58BCAF', shortLabel: 'Project Brief', percentage: '10%' },
-                { label: 'Group Task - Project Completed', value: 40, color: '#0B7161', shortLabel: 'Project Completed', percentage: '40%' },
-                { label: 'Reflection', value: 10, color: '#006D88', shortLabel: 'Reflection', percentage: '10%' },
-                { label: 'Individual Oral Validation', value: 20, color: '#007D98', shortLabel: 'Oral Validation', percentage: '20%' }
-            ];
-            
-            let currentAngle = -Math.PI / 2;
-            const total = 100;
-            const sliceData = [];
-            
-            data.forEach(item => {
-                const sliceAngle = (item.value / total) * 2 * Math.PI;
-                const midAngle = currentAngle + sliceAngle / 2;
-                
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
-                ctx.lineTo(centerX, centerY);
-                ctx.fillStyle = item.color;
-                ctx.fill();
-                ctx.strokeStyle = '#fff';
-                ctx.lineWidth = 4;
-                ctx.stroke();
-                
-                sliceData.push({
-                    ...item,
-                    midAngle: midAngle,
-                    startAngle: currentAngle,
-                    endAngle: currentAngle + sliceAngle
-                });
-                
-                currentAngle += sliceAngle;
-            });
-            
-            sliceData.forEach(item => {
-                const labelRadius = radius + 35;
-                const lineStartX = centerX + Math.cos(item.midAngle) * (radius + 5);
-                const lineStartY = centerY + Math.sin(item.midAngle) * (radius + 5);
-                const lineMidX = centerX + Math.cos(item.midAngle) * labelRadius;
-                const lineMidY = centerY + Math.sin(item.midAngle) * labelRadius;
-                
-                const isRight = Math.cos(item.midAngle) > 0;
-                const lineEndX = lineMidX + (isRight ? 45 : -45);
-                const lineEndY = lineMidY;
-                
-                ctx.beginPath();
-                ctx.moveTo(lineStartX, lineStartY);
-                ctx.lineTo(lineMidX, lineMidY);
-                ctx.lineTo(lineEndX, lineEndY);
-                ctx.strokeStyle = '#363635';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-                
-                const textX = lineEndX + (isRight ? 5 : -5);
-                ctx.font = 'bold 13px Arial';
-                ctx.textAlign = isRight ? 'left' : 'right';
-                ctx.textBaseline = 'bottom';
-                
-                ctx.fillStyle = '#363635';
-                ctx.fillText(item.shortLabel, textX, lineEndY - 2);
-                
-                ctx.font = 'bold 15px Arial';
-                ctx.fillStyle = item.color;
-                ctx.textBaseline = 'top';
-                ctx.fillText(item.percentage, textX, lineEndY + 2);
-            });
-        }
+        
 
         // Generate all cards on page load
         function initializeCards() {
@@ -2016,6 +1930,13 @@
                 { id: 'teamwork-cards-container', name: 'teamwork', filter: 'teamwork' }
             ];
             
+            // Clear all containers first to prevent duplicates
+            containers.forEach(container => {
+                const element = document.getElementById(container.id);
+                if (element) element.innerHTML = '';
+            });
+            
+            // Now add cards
             containers.forEach(container => {
                 const element = document.getElementById(container.id);
                 const assessments = container.filter 
@@ -2248,17 +2169,7 @@
         }
 
         // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            updateSliderValue('cohort', 500);
-            updateSliderValue('groupsize', 20);
-            updateSliderValue('time', 30);
-            updateSliderValue('groups', 100);
-            updateSliderValue('assessors', 5);
-            updateModeSlider(2);
-            
-            initializeCards();
-            drawGeneralModelChart();
-        });
+        
     
         // Toggle Example Challenges
         function toggleChallenges(assessmentId) {
@@ -2347,7 +2258,7 @@
             updateModeSlider(2);
             
             initializeCards();
-            drawGeneralModelChart();
+            
         });
     
     </script>
