@@ -1358,28 +1358,28 @@
                         ` : ''}
                         
                         <div class="assessment-metadata" style="display: flex; flex-wrap: wrap; gap: 15px; padding: 20px; background: #f8f9fa; border-radius: 10px; margin-top: 20px; font-size: 0.95em;">
-                            <div class="metadata-item" style="flex: 1; min-width: 150px;">
+                            <div class="metadata-item" style="flex: 1; min-width: 150px; order: 1;">
                                 <span style="margin-right: 5px;" title="Cohort size">👥</span>
                                 <strong>${m.cohort || '❓'}</strong> ${m.cohort ? 'students' : ''}
                             </div>
-                            <div class="metadata-item" style="flex: 1; min-width: 150px;">
+                            <div class="metadata-item" style="flex: 1; min-width: 150px; order: 2;">
                                 <span style="margin-right: 5px;" title="Number of groups">📊</span>
                                 <strong>${m.numberOfGroups || '❓'}</strong> ${m.numberOfGroups ? 'groups' : ''}
                             </div>
-                            <div class="metadata-item" style="flex: 1; min-width: 150px;">
+                            <div class="metadata-item" style="flex: 1; min-width: 150px; order: 3;">
                                 <span style="margin-right: 5px;" title="Group size range">👪</span>
                                 <strong>${groupSizeText}</strong> ${groupSizeText !== '👤 Individual' && m.groupSizeMax > 0 ? 'members' : ''}
                             </div>
-                            <div class="metadata-item" style="flex: 1; min-width: 180px;">
+                            <div class="metadata-item" style="flex: 1; min-width: 180px; order: 4;">
                                 <span style="margin-right: 5px;" title="Assessment mode">💻</span>
                                 <strong>${modeText}</strong>
                             </div>
-                            <div class="metadata-item" style="flex: 1; min-width: 150px;">
+                            <div class="metadata-item" style="flex: 1; min-width: 150px; order: 5;">
                                 <span style="margin-right: 5px;" title="Total time required" class="time-tooltip">⏱️</span>
                                 <strong>${m.timeMinutes || '❓'}</strong> ${m.timeMinutes ? 'min' : ''}
                                 ${m.timeBreakdown ? `<div class="tooltip-content" style="display: none;">${m.timeBreakdown}</div>` : ''}
                             </div>
-                            <div class="metadata-item" style="flex: 1; min-width: 150px;">
+                            <div class="metadata-item" style="flex: 1; min-width: 150px; order: 6;">
                                 <span style="margin-right: 5px;" title="Number of assessors">👨‍🏫</span>
                                 <strong>${m.numberOfAssessors || '❓'}</strong> ${m.numberOfAssessors ? 'assessors' : ''}
                             </div>
