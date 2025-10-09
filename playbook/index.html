@@ -902,528 +902,655 @@
     <script>
         // JSON Data Structure with Support Materials
         const assessmentData = {
-            "assessments": [
+    "assessments": [
+        {
+            "id": "conference",
+            "title": "Conference Presentation",
+            "unitCode": "SLE323",
+            "type": "mixed",
+            "year": "year3",
+            "totalWeight": 60,
+            "metadata": {
+                "cohort": 342,
+                "numberOfGroups": 61,
+                "groupSizeMin": 6,
+                "groupSizeMax": 6,
+                "mode": "person",
+                "timeMinutes": 20,
+                "timeBreakdown": "10 mins presentation; 5 mins questions; 5 mins oral defense",
+                "numberOfAssessors": 2
+            },
+            "unitGradeDistribution": [
                 {
-                    "id": "conference",
-                    "title": "Conference Presentation",
-                    "unitCode": "SLE323",
-                    "type": "mixed",
-                    "year": "year3",
-                    "totalWeight": 60,
-                    "metadata": {
-                        "cohort": 342,
-                        "numberOfGroups": 61,
-                        "groupSizeMin": 6,
-                        "groupSizeMax": 6,
-                        "mode": "person",
-                        "timeMinutes": 20,
-                        "timeBreakdown": "10 mins presentation; 5 mins questions; 5 mins oral defense",
-                        "numberOfAssessors": 2
-                    },
-                    "unitGradeDistribution": [
-                        { "component": "Conference", "percentage": 60, "color": "#FF9300" },
-                        { "component": "Case Studies", "percentage": 40, "color": "#E1E1E1" }
-                    ],
-                    "taskBreakdown": [
-                        { "component": "Project Plan (S&P/Form)", "percentage": 10, "type": "group" },
-                        { "component": "Abstract", "percentage": 5, "type": "group" },
-                        { "component": "Research Presentation (S&P/Summ)", "percentage": 35, "type": "group" },
-                        { "component": "Oral Defence (Q&A)", "percentage": 10, "type": "individual" }
-                    ],
-                    "supportMaterials": [
-                        "Project Plan Rubric - formative assessment with approval process",
-                        "Title must include 'Heart Rate'",
-                        "Background information requirement",
-                        "Aims and hypotheses must be testable and appropriate (not task lists)",
-                        "Methodology must be detailed with appropriate controls",
-                        "Timeline must include all major tasks with sufficient detail",
-                        "References required",
-                        "Feedback incorporated before project approval",
-                        "Projects must be approved or resubmitted within 3 days"
-                    ],
-                    "howToImplement": {
-                        "overview": "Third year students form teams, design and run their own research project and then present their results to their peers at an end of trimester conference. They are assessed by an assessment panel made up of academics from across the course (discipline experts), senior T&L from the School and Third Space.",
-                        "assessmentProcess": [
-                            "Teams are assessed as a team – professionalism, cohesion, scientific communication and scientific procedures and analysis",
-                            "Audience are invited to ask questions of the presenters",
-                            "Assessment panel asks questions of each individual and provide an individual mark based on their oral response, against a rubric",
-                            "Questions based on the scientific method, results and analysis (requires discipline experts)",
-                            "Questions related to teamwork experience and social responsibility (e.g., how UN SDGs aligned/informed their project)"
-                        ],
-                        "note": "Initially students shared concerns about a task that counts to 60% of their mark, but feedback showed that once they understood the breakup of the marking and the support across the trimester they were complimentary of this unit."
-                    },
-                    "skillsAssessed": [
-                        "Research project design and execution",
-                        "Scientific communication",
-                        "Team collaboration and coordination",
-                        "Professional presentation skills",
-                        "Critical thinking and analysis",
-                        "Oral defence and Q&A abilities",
-                        "Social responsibility awareness"
-                    ]
+                    "component": "Conference",
+                    "percentage": 60,
+                    "color": "#FF9300"
                 },
                 {
-                    "id": "mootcourt",
-                    "title": "Moot Court",
-                    "unitCode": "SLE313",
+                    "component": "Case Studies",
+                    "percentage": 40,
+                    "color": "#E1E1E1"
+                }
+            ],
+            "taskBreakdown": [
+                {
+                    "component": "Project Plan (S&P/Form)",
+                    "percentage": 10,
+                    "type": "group"
+                },
+                {
+                    "component": "Abstract",
+                    "percentage": 5,
+                    "type": "group"
+                },
+                {
+                    "component": "Research Presentation (S&P/Summ)",
+                    "percentage": 35,
+                    "type": "group"
+                },
+                {
+                    "component": "Oral Defence (Q&A)",
+                    "percentage": 10,
+                    "type": "individual"
+                }
+            ],
+            "supportMaterials": [
+                "Project Plan Rubric - formative assessment with approval process",
+                "Title must include 'Heart Rate'",
+                "Background information requirement",
+                "Aims and hypotheses must be testable and appropriate (not task lists)",
+                "Methodology must be detailed with appropriate controls",
+                "Timeline must include all major tasks with sufficient detail",
+                "References required",
+                "Feedback incorporated before project approval",
+                "Projects must be approved or resubmitted within 3 days"
+            ],
+            "howToImplement": {
+                "overview": "Third year students form teams, design and run their own research project and then present their results to their peers at an end of trimester conference. They are assessed by an assessment panel made up of academics from across the course (discipline experts), senior T&L from the School and Third Space.",
+                "assessmentProcess": [
+                    "Teams are assessed as a team \u2013 professionalism, cohesion, scientific communication and scientific procedures and analysis",
+                    "Audience are invited to ask questions of the presenters",
+                    "Assessment panel asks questions of each individual and provide an individual mark based on their oral response, against a rubric",
+                    "Questions based on the scientific method, results and analysis (requires discipline experts)",
+                    "Questions related to teamwork experience and social responsibility (e.g., how UN SDGs aligned/informed their project)"
+                ],
+                "note": "Initially students shared concerns about a task that counts to 60% of their mark, but feedback showed that once they understood the breakup of the marking and the support across the trimester they were complimentary of this unit."
+            },
+            "skillsAssessed": [
+                "Research project design and execution",
+                "Scientific communication",
+                "Team collaboration and coordination",
+                "Professional presentation skills",
+                "Critical thinking and analysis",
+                "Oral defence and Q&A abilities",
+                "Social responsibility awareness"
+            ]
+        },
+        {
+            "id": "mootcourt",
+            "title": "Moot Court",
+            "unitCode": "SLE313",
+            "type": "individual",
+            "year": "year2",
+            "totalWeight": 25,
+            "metadata": {
+                "cohort": 79,
+                "numberOfGroups": 5,
+                "groupSizeMin": 15,
+                "groupSizeMax": 17,
+                "mode": "online",
+                "timeMinutes": 10,
+                "timeBreakdown": "2 X 5 students: 15% peer, 85% tutor",
+                "numberOfAssessors": 2
+            },
+            "unitGradeDistribution": [
+                {
+                    "component": "Moot Court",
+                    "percentage": 25,
+                    "color": "#007D98"
+                },
+                {
+                    "component": "Online Tests (2x20%)",
+                    "percentage": 40,
+                    "color": "#58BCAF"
+                },
+                {
+                    "component": "Crime Scene Analysis",
+                    "percentage": 25,
+                    "color": "#0B7161"
+                },
+                {
+                    "component": "Case Assessment",
+                    "percentage": 10,
+                    "color": "#C74298"
+                }
+            ],
+            "taskBreakdown": [
+                {
+                    "component": "Individual Oral Assessment",
+                    "percentage": 100,
                     "type": "individual",
-                    "year": "year2",
-                    "totalWeight": 25,
-                    "metadata": {
-                        "cohort": 79,
-                        "numberOfGroups": 5,
-                        "groupSizeMin": 15,
-                        "groupSizeMax": 17,
-                        "mode": "online",
-                        "timeMinutes": 10,
-                        "timeBreakdown": "2 X 5 students: 15% peer, 85% tutor",
-                        "numberOfAssessors": 2
-                    },
-                    "unitGradeDistribution": [
-                        { "component": "Moot Court", "percentage": 25, "color": "#007D98" },
-                        { "component": "Online Tests (2x20%)", "percentage": 40, "color": "#58BCAF" },
-                        { "component": "Crime Scene Analysis", "percentage": 30, "color": "#0B7161" },
-                        { "component": "Case Assessment", "percentage": 15, "color": "#C74298" }
-                    ],
-                    "taskBreakdown": [
-                        { 
-                            "component": "Individual Oral Assessment", 
-                            "percentage": 100, 
-                            "type": "individual", 
-                            "description": "The Moot Court assessment is entirely based on the student's performance as a forensic expert witness, including their literature review, expert testimony, and professional presentation in the courtroom environment." 
-                        }
-                    ],
-                    "supportMaterials": [
-                        "Unit Guide 2025 - comprehensive assessment framework",
-                        "Individual oral presentation as forensic expert witness",
-                        "15-minute two-way question session with staff acting as counsel",
-                        "Literature review required to explain and defend analysis",
-                        "Professional courtroom environment and procedures",
-                        "Assessment by Unit Chair and peer evaluation",
-                        "Scaffolding through weekly scientific journal analysis discussions",
-                        "Scheduled across Weeks 3-11 with sign-up sheet",
-                        "Moot Court Sign-up Sheet for scheduling 4-5 students per session",
-                        "Student volunteers can act as judges",
-                        "Aligned with other assessment deadlines (tests, practicals)"
-                    ],
-                    "howToImplement": {
-                        "overview": "Students take on the role of a professional forensic expert witness in a two-way question session between the student (acting as a forensic expert) and a staff member (acting as counsel). The unit brings together future frontiers in forensic science with a view to developing a student's career transition as they approach the final stages of their degree.",
-                        "topicsCovered": [
-                            "Advanced crime scene examination",
-                            "Illicit drugs and clandestine expert evidence",
-                            "Role of the media",
-                            "Fires and explosives",
-                            "Ballistics and identification sciences",
-                            "Quality assurance and professional ethics"
-                        ],
-                        "assessmentProcess": [
-                            "Demonstration of technical, analytical, interpretation and communication skills within each of the three practicals (group assessment with individualised marks via peer review)",
-                            "Students explain and defend their analysis of a given scenario through a literature review",
-                            "Students deliver evidence in a professional courtroom environment",
-                            "Assessment by Unit Chair and peers on professional presentation and quality of testimony"
-                        ]
-                    },
-                    "skillsAssessed": [
-                        "Expert witness testimony",
-                        "Professional courtroom presentation",
-                        "Technical and analytical skills",
-                        "Literature review and research",
-                        "Interpretation and communication",
-                        "Professional ethics and quality assurance",
-                        "Critical analysis and defence"
-                    ]
+                    "description": "The Moot Court assessment is entirely based on the student's performance as a forensic expert witness, including their literature review, expert testimony, and professional presentation in the courtroom environment."
+                }
+            ],
+            "supportMaterials": [
+                "Unit Guide 2025 - comprehensive assessment framework",
+                "Individual oral presentation as forensic expert witness",
+                "15-minute two-way question session with staff acting as counsel",
+                "Literature review required to explain and defend analysis",
+                "Professional courtroom environment and procedures",
+                "Assessment by Unit Chair and peer evaluation",
+                "Scaffolding through weekly scientific journal analysis discussions",
+                "Scheduled across Weeks 3-11 with sign-up sheet",
+                "Moot Court Sign-up Sheet for scheduling 4-5 students per session",
+                "Student volunteers can act as judges",
+                "Aligned with other assessment deadlines (tests, practicals)"
+            ],
+            "howToImplement": {
+                "overview": "Students take on the role of a professional forensic expert witness in a two-way question session between the student (acting as a forensic expert) and a staff member (acting as counsel). The unit brings together future frontiers in forensic science with a view to developing a student's career transition as they approach the final stages of their degree.",
+                "topicsCovered": [
+                    "Advanced crime scene examination",
+                    "Illicit drugs and clandestine expert evidence",
+                    "Role of the media",
+                    "Fires and explosives",
+                    "Ballistics and identification sciences",
+                    "Quality assurance and professional ethics"
+                ],
+                "assessmentProcess": [
+                    "Demonstration of technical, analytical, interpretation and communication skills within each of the three practicals (group assessment with individualised marks via peer review)",
+                    "Students explain and defend their analysis of a given scenario through a literature review",
+                    "Students deliver evidence in a professional courtroom environment",
+                    "Assessment by Unit Chair and peers on professional presentation and quality of testimony"
+                ]
+            },
+            "skillsAssessed": [
+                "Expert witness testimony",
+                "Professional courtroom presentation",
+                "Technical and analytical skills",
+                "Literature review and research",
+                "Interpretation and communication",
+                "Professional ethics and quality assurance",
+                "Critical analysis and defence"
+            ]
+        },
+        {
+            "id": "pitch",
+            "title": "Project Pitch",
+            "unitCode": "SLE352",
+            "type": "group",
+            "year": "year2",
+            "totalWeight": 40,
+            "metadata": {
+                "cohort": 98,
+                "numberOfGroups": 29,
+                "groupSizeMin": 3,
+                "groupSizeMax": 6,
+                "mode": "online",
+                "timeMinutes": null,
+                "timeBreakdown": "Data to be collected",
+                "numberOfAssessors": null
+            },
+            "unitGradeDistribution": [
+                {
+                    "component": "Project Brief",
+                    "percentage": 20,
+                    "color": "#58BCAF"
                 },
                 {
-                    "id": "pitch",
-                    "title": "Project Pitch",
-                    "unitCode": "SLE352",
-                    "type": "group",
-                    "year": "year2",
-                    "totalWeight": 40,
-                    "metadata": {
-                        "cohort": 98,
-                        "numberOfGroups": 29,
-                        "groupSizeMin": 3,
-                        "groupSizeMax": 6,
-                        "mode": "online",
-                        "timeMinutes": null,
-                        "timeBreakdown": "Data to be collected",
-                        "numberOfAssessors": null
-                    },
-                    "unitGradeDistribution": [
-                        { "component": "Project Brief", "percentage": 20, "color": "#58BCAF" },
-                        { "component": "Project Presentation", "percentage": 20, "color": "#0B7161" },
-                        { "component": "Client Evaluation", "percentage": 15, "color": "#007D98" },
-                        { "component": "Professional Portfolio", "percentage": 45, "color": "#E1E1E1" }
-                    ],
-                    "taskBreakdown": [
-                        { "component": "Project Brief - Oral (Video) S&P/Form", "percentage": 20, "type": "group" },
-                        { "component": "Project Presentation (S&P/Summ) + Q&A", "percentage": 20, "type": "group" }
-                    ],
-                    "supportMaterials": [
-                        "Team Project Brief Guidelines - comprehensive template with examples for project planning",
-                        "Marking Scheme (20%) covering five criteria",
-                        "Goals for the project (8 marks) - SMART format required, ~80 hours work per team member",
-                        "Personal statements (4 marks) - skills brought to project and skills to be developed",
-                        "Team obligations (4 marks) - meeting schedules and communication expectations",
-                        "Challenging situations strategies (4 marks) - identifying and addressing potential issues",
-                        "Video presentation professionalism (2 marks) - clarity, pacing, grammar, visuals",
-                        "PANOPTO Video Advice - 3-5 minute video summary of team project brief",
-                        "All team members must appear on camera (5 mark penalty if not)",
-                        "Submit video link (not file) to avoid size issues",
-                        "Template and declaration form provided for team and client signatures"
-                    ],
-                    "howToImplement": {
-                        "overview": "A Professional Practice core unit within the Bachelor of Science. In this unit, students will apply scientific knowledge, processes and techniques in a team-based project and communicate the value of science to a range of audiences.",
-                        "keyElements": [
-                            "Team-based scientific project",
-                            "Video brief for project planning",
-                            "Final presentation to diverse audience (clients, academics, fellow students)",
-                            "Audience Q&A session",
-                            "Peer review components (formative and summative)",
-                            "Students articulate project importance and outcomes at appropriate level for diverse audience"
-                        ]
-                    },
-                    "skillsAssessed": [
-                        "Team collaboration and project management",
-                        "Scientific communication to diverse audiences",
-                        "Video presentation skills",
-                        "Professional pitch delivery",
-                        "Q&A and audience engagement",
-                        "Peer review and feedback",
-                        "Applied scientific knowledge"
-                    ]
+                    "component": "Project Presentation",
+                    "percentage": 20,
+                    "color": "#0B7161"
                 },
                 {
-                    "id": "poster",
-                    "title": "Poster Conference",
-                    "unitCode": "SLE361",
-                    "type": "individual",
-                    "year": "year3",
-                    "totalWeight": 20,
-                    "metadata": {
-                        "cohort": 74,
-                        "numberOfGroups": 28,
-                        "groupSizeMin": 0,
-                        "groupSizeMax": 0,
-                        "mode": "person",
-                        "timeMinutes": null,
-                        "timeBreakdown": "Data to be collected",
-                        "numberOfAssessors": null
-                    },
-                    "unitGradeDistribution": [
-                        { "component": "Written Tests (2x20%)", "percentage": 40, "color": "#007D98" },
-                        { "component": "Poster Conference", "percentage": 20, "color": "#58BCAF" },
-                        { 
-                            "component": "Practicals", 
-                            "percentage": 40, 
-                            "color": "#E1E1E1", 
-                            "breakdown": [
-                                { "component": "Pre-lab questions", "percentage": 5 },
-                                { "component": "Lab reports", "percentage": 35 }
-                            ]
-                        }
-                    ],
-                    "taskBreakdown": [
-                        { 
-                            "component": "Individual Poster Presentation", 
-                            "percentage": 100, 
-                            "type": "individual", 
-                            "description": "Students submit poster online and bring a printed version to the poster presentation session. Students present and answer questions from staff and students who attend the poster conference." 
-                        }
-                    ],
-                    "supportMaterials": [
-                        "No support materials currently available in Drive folder"
-                    ],
-                    "skillsAssessed": [
-                        "Visual communication",
-                        "Scientific communication",
-                        "Synthesis of complex information",
-                        "Public speaking",
-                        "Q&A skills"
-                    ],
-                    "howToImplement": {
-                        "overview": "Students design and create a scientific poster presenting their research or practical work. They submit the poster online and bring a printed version to a poster conference session where they present their work to staff and fellow students.",
-                        "keyElements": [
-                            "Poster design and visual communication",
-                            "Scientific content synthesis",
-                            "Online submission for assessment",
-                            "Printed poster for conference presentation",
-                            "Interactive Q&A with assessors and peers",
-                            "Conference-style assessment environment"
-                        ],
-                        "assessmentProcess": [
-                            "Students create poster based on their research/practical work",
-                            "Submit poster online by deadline",
-                            "Print poster for conference session",
-                            "Present poster at designated conference time",
-                            "Answer questions from staff assessors",
-                            "Engage with peer questions and feedback",
-                            "Assessment based on poster quality and presentation skills"
-                        ]
-                    }
+                    "component": "Client Evaluation",
+                    "percentage": 15,
+                    "color": "#007D98"
                 },
                 {
-                    "id": "debate",
-                    "title": "Debate",
-                    "unitCode": "SLE357",
-                    "type": "group",
-                    "year": "year3",
-                    "totalWeight": 20,
-                    "metadata": {
-                        "cohort": 308,
-                        "numberOfGroups": 68,
-                        "groupSizeMin": 3,
-                        "groupSizeMax": 3,
-                        "mode": "upload",
-                        "timeMinutes": 4,
-                        "timeBreakdown": "4 turn-taking; S&P assessment in FF + reflection",
-                        "numberOfAssessors": null
-                    },
-                    "unitGradeDistribution": [
-                        { "component": "Class Tests (2x15%)", "percentage": 30, "color": "#007D98" },
-                        { "component": "Debate", "percentage": 20, "color": "#58BCAF" },
-                        { "component": "Post-prac Analyses (4x5%)", "percentage": 20, "color": "#C74298" },
-                        { "component": "Lab Skills Challenge", "percentage": 30, "color": "#E1E1E1" }
-                    ],
-                    "taskBreakdown": [
-                        { "component": "Presentation Quality", "percentage": 15, "type": "group" },
-                        { "component": "Teamwork Reflection (500 words)", "percentage": 5, "type": "individual" }
-                    ],
-                    "supportMaterials": [
-                        "No support materials currently available in Drive folder"
-                    ],
-                    "howToImplement": {
-                        "format": "Groups choose from provided topics. One student argues for, one against, third is moderator.",
-                        "requirements": "Evidence-based arguments using scientific articles on controversial cell biology topics and societal impact.",
-                        "assessment": "15% presentation quality (group), 5% teamwork reflection (individual).",
-                        "detailedOverview": "Groups choose from a provided list of controversial topics in cell biology. One student argues for, another argues against, and the third acts as moderator providing background and conclusion. Students discuss controversial topics and their impact on society while demonstrating communication and teamwork skills."
-                    },
-                    "skillsAssessed": [
-                        "Argumentation skills",
-                        "Research abilities",
-                        "Quick thinking",
-                        "Team strategy"
-                    ]
+                    "component": "Professional Portfolio",
+                    "percentage": 45,
+                    "color": "#E1E1E1"
+                }
+            ],
+            "taskBreakdown": [
+                {
+                    "component": "Project Brief - Oral (Video) S&P/Form",
+                    "percentage": 20,
+                    "type": "group"
                 },
                 {
-                    "id": "teamchallenge",
-                    "title": "Team Challenge - Authentic Teamwork Assessment",
-                    "unitCode": "Various",
-                    "type": "teamwork",
-                    "year": "year1-3",
-                    "totalWeight": 50,
-                    "metadata": {
-                        "cohort": null,
-                        "numberOfGroups": null,
-                        "groupSizeMin": 3,
-                        "groupSizeMax": 5,
-                        "mode": "person",
-                        "timeMinutes": 27,
-                        "timeBreakdown": "25-30 minutes per team for supervised live challenge",
-                        "numberOfAssessors": 2
-                    },
-                    "unitGradeDistribution": [
-                        { "component": "Project Proposal", "percentage": 15, "color": "#58BCAF" },
-                        { "component": "Final Report", "percentage": 10, "color": "#0B7161" },
-                        { "component": "Team Challenge (Live)", "percentage": 25, "color": "#C74298" },
-                        { "component": "Other Assessments", "percentage": 50, "color": "#E1E1E1" }
-                    ],
-                    "taskBreakdown": [
-                        { 
-                            "component": "Project Proposal (Week 4)", 
-                            "percentage": 15, 
-                            "type": "group", 
-                            "description": "Comprehensive scenario-based project proposal. Good feedback provided to ensure success. Group Skills Factor monitored via FeedbackFruits. Returned Week 6." 
+                    "component": "Project Presentation (S&P/Summ) + Q&A",
+                    "percentage": 20,
+                    "type": "group"
+                }
+            ],
+            "supportMaterials": [
+                "Team Project Brief Guidelines - comprehensive template with examples for project planning",
+                "Marking Scheme (20%) covering five criteria",
+                "Goals for the project (8 marks) - SMART format required, ~80 hours work per team member",
+                "Personal statements (4 marks) - skills brought to project and skills to be developed",
+                "Team obligations (4 marks) - meeting schedules and communication expectations",
+                "Challenging situations strategies (4 marks) - identifying and addressing potential issues",
+                "Video presentation professionalism (2 marks) - clarity, pacing, grammar, visuals",
+                "PANOPTO Video Advice - 3-5 minute video summary of team project brief",
+                "All team members must appear on camera (5 mark penalty if not)",
+                "Submit video link (not file) to avoid size issues",
+                "Template and declaration form provided for team and client signatures"
+            ],
+            "howToImplement": {
+                "overview": "A Professional Practice core unit within the Bachelor of Science. In this unit, students will apply scientific knowledge, processes and techniques in a team-based project and communicate the value of science to a range of audiences.",
+                "keyElements": [
+                    "Team-based scientific project",
+                    "Video brief for project planning",
+                    "Final presentation to diverse audience (clients, academics, fellow students)",
+                    "Audience Q&A session",
+                    "Peer review components (formative and summative)",
+                    "Students articulate project importance and outcomes at appropriate level for diverse audience"
+                ]
+            },
+            "skillsAssessed": [
+                "Team collaboration and project management",
+                "Scientific communication to diverse audiences",
+                "Video presentation skills",
+                "Professional pitch delivery",
+                "Q&A and audience engagement",
+                "Peer review and feedback",
+                "Applied scientific knowledge"
+            ]
+        },
+        {
+            "id": "poster",
+            "title": "Poster Conference",
+            "unitCode": "SLE361",
+            "type": "individual",
+            "year": "year3",
+            "totalWeight": 20,
+            "metadata": {
+                "cohort": 74,
+                "numberOfGroups": 28,
+                "groupSizeMin": 0,
+                "groupSizeMax": 0,
+                "mode": "person",
+                "timeMinutes": null,
+                "timeBreakdown": "Data to be collected",
+                "numberOfAssessors": null
+            },
+            "unitGradeDistribution": [
+                {
+                    "component": "Written Tests (2x20%)",
+                    "percentage": 40,
+                    "color": "#007D98"
+                },
+                {
+                    "component": "Poster Conference",
+                    "percentage": 20,
+                    "color": "#58BCAF"
+                },
+                {
+                    "component": "Practicals",
+                    "percentage": 40,
+                    "color": "#E1E1E1",
+                    "breakdown": [
+                        {
+                            "component": "Pre-lab questions",
+                            "percentage": 5
                         },
-                        { 
-                            "component": "Final Report (Week 10)", 
-                            "percentage": 10, 
-                            "type": "group", 
-                            "description": "Light touch marking - submitted before study week to allow team preparation for challenge. Returned Week 11." 
-                        },
-                        { 
-                            "component": "Team Challenge (Live Assessment)", 
-                            "percentage": 25, 
-                            "type": "team+individual", 
-                            "description": "Live interactive oral assessment where teams respond to ONE of 8 possible scenario challenges by updating their work while being observed. Individual questions assess each student's contribution and understanding." 
+                        {
+                            "component": "Lab reports",
+                            "percentage": 35
                         }
-                    ],
-                    "framework": [
-                        "Week 1: Introduction to Team Challenge structure and clear instructions on how it works",
-                        "Week 1: Team Formation & Team Agreement (signed by all members with 'firing' stipulations)",
-                        "Week 4: Project Proposal (15%) - with peer review and Group Skills Factor monitoring",
-                        "Week 5: Field trip (attendance required or grounds for removal)",
-                        "Week 6: Project Proposal feedback returned to ensure success",
-                        "Week 7: Practice Workshop (2 hours) - 1hr Team Challenge role play + 1hr data analysis practice",
-                        "Week 10: Final Report (10%) - light touch marking with peer review",
-                        "Week 11: Final Report returned - students use study week to prepare for Team Challenge",
-                        "Study Week: Team preparation for 8 possible scenario challenges",
-                        "Team Challenge (25%) - Live assessment with scenario adaptation and individual questions"
-                    ],
-                    "supportMaterials": [
-                        "Team Agreement template with 'firing' stipulations (to be signed by all members)",
-                        "FeedbackFruits Self and Peer Review setup guide",
-                        "8 scenario challenge examples (customizable per discipline - e.g., architecture location change, design scope change)",
-                        "Week 7 practice workshop materials: 1hr Team Challenge role play + 1hr data analysis",
-                        "Assessment rubrics: Rubric 1 - GLO1 Discipline Knowledge; Rubric 2 - GLOs 2,4,5,7 Transferable Skills",
-                        "Group Skills Factor monitoring guidelines (threshold: 0.6 for removal)",
-                        "Flowchart for team member removal/'firing' process",
-                        "Clear instructions document for Week 1 introduction"
-                    ],
-                    "howToImplement": {
-                        "overview": "The Team Challenge is an innovative approach for implementing collaborative team-based learning with embedded Assurance of Learning (AoL). It provides an evidence base for grading individual teamwork effectiveness, facilitates genuine teamwork, and fosters deep learning among all team members. This assessment addresses common teamwork inequities by requiring teams to adapt their project work in real-time during a live assessment.",
-                        
-                        "theProblem": [
-                            "Teamwork is often distributed inequitably in group projects (anecdotal evidence from students and staff)",
-                            "Difficult to assure the learning outcomes for each group member across all learning outcomes examined by the group task",
-                            "Hard to determine individual contributions in uploaded group work (not easy to tell 'who did what')",
-                            "Students may not engage deeply with all aspects of the project",
-                            "Cannot determine how much students have actually learned from the group task"
-                        ],
-                        
-                        "theSolution": [
-                            "Teams complete a comprehensive, scenario-based group task (e.g., architecture design project, case study report)",
-                            "Project components submitted online as usual (15% proposal Week 4 + 10% final report Week 10)",
-                            "Teams then attend live Team Challenge assessment bringing ALL project materials (digital files, laptops, notes, etc.)",
-                            "In the assessment room, teams receive ONE scenario challenge from 8 possible scenarios provided in advance",
-                            "Teams must adapt/update their work in response to the scenario while working 'out loud'",
-                            "Assessors observe individual contributions in real-time - can see who contributes and in what way",
-                            "Time built in for individual questions to each student about their contribution to the updated work",
-                            "This captures both discipline knowledge and graduate learning outcomes in an observable way"
-                        ],
-                        
-                        "scenarioExamples": [
-                            "Architecture project example: Client changes location to somewhere else in Victoria (Scenario 1)",
-                            "Architecture project example: Client changes brief from single to double-story home (Scenario 2)",
-                            "Teams are told about all 8 unique scenarios in advance",
-                            "They prepare for all 8 scenarios but don't know which ONE they'll receive until the assessment",
-                            "This encourages comprehensive preparation across the full suite of learning outcomes",
-                            "Facilitates deeper understanding as teams must study all possible adaptations"
-                        ],
-                        
-                        "assessmentProcess": [
-                            "Teams enter room with all project materials (digital files, laptops, notes, etc.)",
-                            "Scenario challenge delivered (2 minutes to explain if provided in advance)",
-                            "Team works 'out loud' to produce updated artifact/report/annotated version of their original work",
-                            "Assessors observe who contributes and how they contribute to changes",
-                            "Individual questions asked to each student about the updates and their contribution",
-                            "Assessment duration: 25-30 minutes per team",
-                            "Gets to the heart of whether students engaged with different learning outcomes in observable way"
-                        ],
-                        
-                        "markingStructure": [
-                            "Two rubrics and two markers per team - opportunity to consult and verify with each other at end of challenge",
-                            "Students assessed individually on their Team Challenge performance",
-                            "Rubric 1 - GLO1 (Discipline Knowledge): ONE discipline expert marker",
-                            "Rubric 2 - GLOs 2, 4, 5, 7 (Transferable Skills based on Values-type rubrics): ONE expert transferable skills marker",
-                            "Sustainable workload: ~25-30 minutes per team with 2 assessors",
-                            "Markers can discuss and verify assessments together after each challenge"
-                        ],
-                        
-                        "managingStudentStress": [
-                            "New structure introduced in Week 1 with very clear instructions",
-                            "Students provided with clear explanation of how assessment depends on trimester engagement",
-                            "Week 7: 2-hour practice workshop (1hr Team Challenge role play + 1hr data analysis practice)",
-                            "Students provided with all 8 possible 'scenario' challenges in advance",
-                            "The ONE challenge they receive won't be a complete surprise - they can prepare for all 8",
-                            "Clear link established between trimester engagement and assessment success",
-                            "Study week provided after final report (Week 11) for Team Challenge preparation",
-                            "Good feedback on Week 4 proposal ensures teams are set up for success"
-                        ],
-                        
-                        "weightOfMarks": [
-                            "15% Project Proposal - due Week 4, returned Week 6",
-                            "Good feedback required on proposal to ensure success for the final project",
-                            "10% Final Report - light touch marking, due Week 10, returned Week 11",
-                            "Report due before study week to allow team preparation time for Team Challenge",
-                            "25% Team Challenge - live assessment after study week preparation period",
-                            "Total: 50% of unit grade for team-based assessment components"
-                        ],
-                        
-                        "teamworkAccountability": [
-                            "Team Agreement signed at start of trimester with 'firing' stipulations by all team members",
-                            "FeedbackFruits Self and Peer Review tasks at multiple checkpoints throughout trimester",
-                            "Group Skills Factor (GSF) monitored - threshold of 0.6 (below = grounds for removal)",
-                            "Grounds for being 'fired' from team:",
-                            "  • GSF below 0.6 for Project Proposal work (not engaging in Week 4 work)",
-                            "  • Not completing self and peer review for Project Proposal",
-                            "  • Not attending Week 5 field trip without required team approval",
-                            "  • Not attending Week 7 workshop without required team approval",
-                            "  • Not completing agreed component of final report (GSF below 0.6)",
-                            "  • Not completing self and peer review for final report",
-                            "If fired from group, student is NOT eligible to sit the Team Challenge (loses 25% of unit grade)",
-                            "Flowchart available showing decision points for team member removal process"
-                        ],
-                        
-                        "assessmentBenefits": [
-                            "Evidence base for grading individual teamwork effectiveness - direct observation",
-                            "Facilitates genuine teamwork throughout the trimester",
-                            "Fosters deep learning among all team members (must prepare for all 8 scenarios)",
-                            "Assures learning outcomes across all group members (can observe individual understanding)",
-                            "Authentic skill development - teams must adapt to unexpected challenges in real-time",
-                            "Reduces inequitable distribution of work - all members must contribute visibly",
-                            "Observable evidence of both discipline knowledge (GLO1) and transferable skills (GLOs 2,4,5,7)",
-                            "Scalable with sustainable workloads (25-30 min per team, 2 assessors)",
-                            "Accountability system encourages consistent engagement throughout trimester"
-                        ],
-                        
-                        "tools": [
-                            "FeedbackFruits for peer/self-review and Group Skills Factor monitoring (threshold: 0.6)",
-                            "Team Agreement template with 'firing' stipulations (signed by all members)",
-                            "8 scenario challenges prepared in advance (customizable per discipline)",
-                            "Two assessment rubrics: GLO1 Discipline Knowledge + GLOs 2,4,5,7 Transferable Skills",
-                            "Week 7 practice workshop materials: Team Challenge role play scripts + data analysis exercises",
-                            "Flowchart for team member removal process with clear decision points"
-                        ],
-                        
-                        "kaysConserns": [
-                            "Q: What will rubrics look like? How many people required to mark?",
-                            "A: Two rubrics and two markers per team. Opportunity to consult and verify with each other at end of challenge. Students assessed individually on Team Challenge performance.",
-                            "  • Rubric 1: GLO1 (Discipline Knowledge) - ONE discipline expert marker",
-                            "  • Rubric 2: GLOs 2, 4, 5, 7 (Transferable Skills using Values-type rubrics) - ONE expert transferable skills marker",
-                            "",
-                            "Q: How do we manage student stress with this new form of assessment?",
-                            "A: Multiple strategies to reduce stress and build confidence:",
-                            "  • New structure introduced clearly in Week 1",
-                            "  • Very clear instructions on how it works and importance of trimester engagement",
-                            "  • Week 7: 2-hour practice workshop (1hr Team Challenge role play + 1hr data analysis)",
-                            "  • All 8 possible scenario challenges provided in advance so students can prepare",
-                            "  • Study week provided for final preparation after reports returned",
-                            "",
-                            "Q: What about the weight of marks?",
-                            "A: Settled on balanced distribution:",
-                            "  • 15% Project Proposal (Week 4, returned Week 6) - good feedback to ensure success",
-                            "  • 10% Final Report (Week 10, returned Week 11) - light touch marking",
-                            "  • 25% Team Challenge (live assessment after study week)",
-                            "",
-                            "Q: Can we 'fire' non-performing team members?",
-                            "A: Yes - innovative accountability system with clear grounds for removal:",
-                            "  • Flowchart provided with decision points throughout trimester",
-                            "  • FeedbackFruits Self and Peer Review at multiple checkpoints",
-                            "  • Group Skills Factor monitoring (below 0.6 = grounds for removal)",
-                            "  • Team Agreement signed at start includes 'firing' stipulations",
-                            "  • If fired, student NOT eligible for Team Challenge (25% of grade)"
-                        ]
-                    },
-                    "skillsAssessed": [
-                        "GLO1: Discipline-specific knowledge and problem-solving",
-                        "GLO2: Communication - working 'out loud' and articulating decisions",
-                        "GLO4: Critical thinking - adapting to unexpected scenario challenges",
-                        "GLO5: Problem solving - real-time collaborative solution development",
-                        "GLO7: Self-awareness - individual contribution to team outcomes",
-                        "Authentic team collaboration under pressure",
-                        "Adaptive thinking and flexibility in response to new scenarios",
-                        "Individual accountability within team structures",
-                        "Real-time collaborative construction and adaptation of work products",
-                        "Deep learning across full suite of learning outcomes (preparing for 8 scenarios)"
                     ]
                 }
+            ],
+            "taskBreakdown": [
+                {
+                    "component": "Individual Poster Presentation",
+                    "percentage": 100,
+                    "type": "individual",
+                    "description": "Students submit poster online and bring a printed version to the poster presentation session. Students present and answer questions from staff and students who attend the poster conference."
+                }
+            ],
+            "supportMaterials": [
+                "No support materials currently available in Drive folder"
+            ],
+            "skillsAssessed": [
+                "Visual communication",
+                "Scientific communication",
+                "Synthesis of complex information",
+                "Public speaking",
+                "Q&A skills"
+            ],
+            "howToImplement": {
+                "overview": "Students design and create a scientific poster presenting their research or practical work. They submit the poster online and bring a printed version to a poster conference session where they present their work to staff and fellow students.",
+                "keyElements": [
+                    "Poster design and visual communication",
+                    "Scientific content synthesis",
+                    "Online submission for assessment",
+                    "Printed poster for conference presentation",
+                    "Interactive Q&A with assessors and peers",
+                    "Conference-style assessment environment"
+                ],
+                "assessmentProcess": [
+                    "Students create poster based on their research/practical work",
+                    "Submit poster online by deadline",
+                    "Print poster for conference session",
+                    "Present poster at designated conference time",
+                    "Answer questions from staff assessors",
+                    "Engage with peer questions and feedback",
+                    "Assessment based on poster quality and presentation skills"
+                ]
+            }
+        },
+        {
+            "id": "debate",
+            "title": "Debate",
+            "unitCode": "SLE357",
+            "type": "group",
+            "year": "year3",
+            "totalWeight": 20,
+            "metadata": {
+                "cohort": 308,
+                "numberOfGroups": 68,
+                "groupSizeMin": 3,
+                "groupSizeMax": 3,
+                "mode": "upload",
+                "timeMinutes": 4,
+                "timeBreakdown": "4 turn-taking; S&P assessment in FF + reflection",
+                "numberOfAssessors": null
+            },
+            "unitGradeDistribution": [
+                {
+                    "component": "Class Tests (2x15%)",
+                    "percentage": 30,
+                    "color": "#007D98"
+                },
+                {
+                    "component": "Debate",
+                    "percentage": 20,
+                    "color": "#58BCAF"
+                },
+                {
+                    "component": "Post-prac Analyses (4x5%)",
+                    "percentage": 20,
+                    "color": "#C74298"
+                },
+                {
+                    "component": "Lab Skills Challenge",
+                    "percentage": 30,
+                    "color": "#E1E1E1"
+                }
+            ],
+            "taskBreakdown": [
+                {
+                    "component": "Presentation Quality",
+                    "percentage": 15,
+                    "type": "group"
+                },
+                {
+                    "component": "Teamwork Reflection (500 words)",
+                    "percentage": 5,
+                    "type": "individual"
+                }
+            ],
+            "supportMaterials": [
+                "No support materials currently available in Drive folder"
+            ],
+            "howToImplement": {
+                "format": "Groups choose from provided topics. One student argues for, one against, third is moderator.",
+                "requirements": "Evidence-based arguments using scientific articles on controversial cell biology topics and societal impact.",
+                "assessment": "15% presentation quality (group), 5% teamwork reflection (individual).",
+                "detailedOverview": "Groups choose from a provided list of controversial topics in cell biology. One student argues for, another argues against, and the third acts as moderator providing background and conclusion. Students discuss controversial topics and their impact on society while demonstrating communication and teamwork skills."
+            },
+            "skillsAssessed": [
+                "Argumentation skills",
+                "Research abilities",
+                "Quick thinking",
+                "Team strategy"
             ]
-        };
+        },
+        {
+            "id": "teamchallenge",
+            "title": "Team Challenge - Authentic Teamwork Assessment",
+            "unitCode": "Various",
+            "type": "teamwork",
+            "year": "year1-3",
+            "totalWeight": 50,
+            "metadata": {
+                "cohort": null,
+                "numberOfGroups": null,
+                "groupSizeMin": 3,
+                "groupSizeMax": 5,
+                "mode": "person",
+                "timeMinutes": 27,
+                "timeBreakdown": "25-30 minutes per team for supervised live challenge",
+                "numberOfAssessors": 2
+            },
+            "unitGradeDistribution": [
+                {
+                    "component": "Project Proposal",
+                    "percentage": 15,
+                    "color": "#58BCAF"
+                },
+                {
+                    "component": "Final Report",
+                    "percentage": 10,
+                    "color": "#0B7161"
+                },
+                {
+                    "component": "Team Challenge (Live)",
+                    "percentage": 25,
+                    "color": "#C74298"
+                },
+                {
+                    "component": "Other Assessments",
+                    "percentage": 50,
+                    "color": "#E1E1E1"
+                }
+            ],
+            "taskBreakdown": [
+                {
+                    "component": "Project Proposal (Week 4)",
+                    "percentage": 15,
+                    "type": "group",
+                    "description": "Comprehensive scenario-based project proposal. Good feedback provided to ensure success. Group Skills Factor monitored via FeedbackFruits. Returned Week 6."
+                },
+                {
+                    "component": "Final Report (Week 10)",
+                    "percentage": 10,
+                    "type": "group",
+                    "description": "Light touch marking - submitted before study week to allow team preparation for challenge. Returned Week 11."
+                },
+                {
+                    "component": "Team Challenge (Live Assessment)",
+                    "percentage": 25,
+                    "type": "team+individual",
+                    "description": "Live interactive oral assessment where teams respond to ONE of 8 possible scenario challenges by updating their work while being observed. Individual questions assess each student's contribution and understanding."
+                }
+            ],
+            "framework": [
+                "Week 1: Introduction to Team Challenge structure and clear instructions on how it works",
+                "Week 1: Team Formation & Team Agreement (signed by all members with 'firing' stipulations)",
+                "Week 4: Project Proposal (15%) - with peer review and Group Skills Factor monitoring",
+                "Week 5: Field trip (attendance required or grounds for removal)",
+                "Week 6: Project Proposal feedback returned to ensure success",
+                "Week 7: Practice Workshop (2 hours) - 1hr Team Challenge role play + 1hr data analysis practice",
+                "Week 10: Final Report (10%) - light touch marking with peer review",
+                "Week 11: Final Report returned - students use study week to prepare for Team Challenge",
+                "Study Week: Team preparation for 8 possible scenario challenges",
+                "Team Challenge (25%) - Live assessment with scenario adaptation and individual questions"
+            ],
+            "supportMaterials": [
+                "Team Agreement template with 'firing' stipulations (to be signed by all members)",
+                "FeedbackFruits Self and Peer Review setup guide with Group Skills Factor (GSF) threshold of 0.6",
+                "Week 1 orientation materials: Clear instructions document explaining structure and trimester engagement expectations",
+                "Week 7 practice workshop package",
+                "8 scenario challenge templates (customizable per discipline - see Example Challenges section)",
+                "Assessment rubrics: Rubric 1 - GLO1 Discipline Knowledge (for discipline expert marker)",
+                "Assessment rubrics: Rubric 2 - GLOs 2,4,5,7 Transferable Skills using Values-type rubrics (AAC&U VALUE: https://www.aacu.org/value/rubrics) (for transferable skills marker)",
+                "Flowchart for team member removal/'firing' process with decision points throughout trimester",
+                "Room booking template: 30-min blocks per team with space for 3-5 students + 2 assessors",
+                "Team Challenge logistics checklist: technology requirements, materials teams should bring, concurrent room options"
+            ],
+            "exampleChallenges": {
+                "overview": "Teams are provided with all 8 possible scenario challenges in advance and must prepare for each one. During the live Team Challenge assessment, they receive ONE scenario and must adapt their project work in real-time.",
+                "architectureExamples": [
+                    "Scenario 1: Client changes project location from [Original City] to another location in Victoria - adapt all site-specific elements",
+                    "Scenario 2: Client changes scope from single-story to double-story residential home - modify all structural and design elements",
+                    "Scenario 3: Budget reduced by 30% - reprioritize design elements and justify trade-offs",
+                    "Scenario 4: Timeline compressed from 18 months to 12 months - create new project schedule and identify critical path changes",
+                    "Scenario 5: New sustainability requirement: achieve 7-star energy rating - integrate sustainable design features",
+                    "Scenario 6: Additional stakeholder: Heritage Victoria approval now required - address heritage considerations",
+                    "Scenario 7: Site constraint: Bushfire Attack Level (BAL) rating upgraded - incorporate bushfire protection measures",
+                    "Scenario 8: Client adds requirement for universal accessibility throughout - redesign for full accessibility compliance"
+                ],
+                "scienceResearchExamples": [
+                    "Scenario 1: Sample size requirement changed from n=30 to n=100 - recalculate power analysis and discuss feasibility",
+                    "Scenario 2: Control group methodology questioned by ethics committee - redesign experimental controls",
+                    "Scenario 3: Primary measurement instrument unavailable - identify alternative methodology and justify",
+                    "Scenario 4: Budget for reagents cut by 50% - prioritize experiments and revise methodology",
+                    "Scenario 5: Timeline extended - add additional experimental phase and statistical analyses",
+                    "Scenario 6: Peer reviewer questions validity of proposed analysis - defend or revise statistical approach",
+                    "Scenario 7: New literature published contradicting your hypothesis - integrate findings and adjust approach",
+                    "Scenario 8: Collaborating lab withdraws - revise project scope and redistribute responsibilities"
+                ],
+                "businessMarketingExamples": [
+                    "Scenario 1: Target demographic shifts from Millennials to Gen Z - revise entire marketing strategy",
+                    "Scenario 2: Budget increased by 40% - expand campaign across additional channels with justification",
+                    "Scenario 3: Competitor launches similar campaign - differentiate your approach and messaging",
+                    "Scenario 4: Platform restriction: Social media campaign must now exclude Instagram - redistribute budget and strategy",
+                    "Scenario 5: Timeline compressed from 6-month to 3-month campaign - accelerate rollout and identify priorities",
+                    "Scenario 6: Client adds requirement for influencer partnerships - integrate influencer strategy with budget allocation",
+                    "Scenario 7: New data shows your target audience prefers video over static content - pivot content strategy",
+                    "Scenario 8: Regulatory change: new advertising standards apply to your industry - ensure compliance and adjust messaging"
+                ],
+                "engineeringDesignExamples": [
+                    "Scenario 1: Material specification changed - primary material no longer available, select alternative and justify",
+                    "Scenario 2: Load requirement increased by 25% - recalculate structural elements and safety factors",
+                    "Scenario 3: Manufacturing constraint: tolerances must be relaxed - identify impact and redesign as needed",
+                    "Scenario 4: Sustainability requirement added: design must use 50% recycled materials - source materials and justify selections",
+                    "Scenario 5: Cost constraint: reduce manufacturing cost by 20% - identify areas for cost reduction without compromising function",
+                    "Scenario 6: New safety standard applies - incorporate additional safety features and demonstrate compliance",
+                    "Scenario 7: Client requests modular design for easier maintenance - redesign for modularity and document trade-offs",
+                    "Scenario 8: Environmental condition changed: design must now withstand marine environment - address corrosion and environmental factors"
+                ],
+                "howToCreate": [
+                    "Identify the 8 core learning outcomes or project dimensions students must master",
+                    "Design each scenario to test a different learning outcome or combination of outcomes",
+                    "Ensure scenarios require substantive adaptation, not just minor tweaks",
+                    "Make scenarios realistic - drawn from actual professional challenges in the discipline",
+                    "Calibrate difficulty: challenging but achievable within the 25-30 minute timeframe",
+                    "Provide enough specificity that students can prepare meaningfully",
+                    "Ensure scenarios are distinct enough that preparing for one helps with others (encourages deep learning)",
+                    "Test scenarios with colleagues: can they envision observable student responses?"
+                ]
+            },
+            "howToImplement": {
+                "overview": "The Team Challenge is an innovative approach for implementing collaborative team-based learning with embedded Assurance of Learning (AoL). It provides an evidence base for grading individual teamwork effectiveness, facilitates genuine teamwork, and fosters deep learning among all team members. This assessment addresses common teamwork inequities by requiring teams to adapt their project work in real-time during a live assessment.",
+                "theProblem": [
+                    "Teamwork is often distributed inequitably in group projects (anecdotal evidence from students and staff)",
+                    "Difficult to assure the learning outcomes for each group member across all learning outcomes examined by the group task",
+                    "Hard to determine individual contributions in uploaded group work (not easy to tell 'who did what')",
+                    "Students may not engage deeply with all aspects of the project",
+                    "Cannot determine how much students have actually learned from the group task"
+                ],
+                "theSolution": [
+                    "Teams complete a comprehensive, scenario-based group task (e.g., architecture design project, case study report)",
+                    "Project components submitted online as usual (15% proposal Week 4 + 10% final report Week 10)",
+                    "Teams then attend live Team Challenge assessment bringing ALL project materials (digital files, laptops, notes, etc.)",
+                    "In the assessment room, teams receive ONE scenario challenge from 8 possible scenarios provided in advance",
+                    "Teams must adapt/update their work in response to the scenario while working 'out loud'",
+                    "Assessors observe individual contributions in real-time - can see who contributes and in what way",
+                    "Time built in for individual questions to each student about their contribution to the updated work",
+                    "This captures both discipline knowledge and graduate learning outcomes in an observable way"
+                ],
+                "assessmentProcess": [
+                    "Teams enter room with all project materials (digital files, laptops, notes, etc.)",
+                    "Scenario challenge delivered - 2 minutes for team to read and process",
+                    "Team works 'out loud' to produce updated artifact/report/annotated version of their original work",
+                    "Assessors observe who contributes and how they contribute to changes",
+                    "Individual questions asked to each student about the updates and their contribution",
+                    "Assessment duration: 25-30 minutes per team total",
+                    "Two markers (discipline expert + transferable skills expert) assess using separate rubrics",
+                    "Markers consult and verify assessments together after each challenge"
+                ],
+                "managingStudentStress": [
+                    "New structure introduced in Week 1 with very clear instructions",
+                    "Students provided with clear explanation of how assessment depends on trimester engagement",
+                    "Week 7: 2-hour practice workshop (1hr Team Challenge role play + 1hr data analysis practice)",
+                    "Students provided with all 8 possible scenario challenges in advance",
+                    "The ONE challenge they receive won't be a complete surprise - they can prepare for all 8",
+                    "Clear link established between trimester engagement and assessment success",
+                    "Study week provided after final report (Week 11) for Team Challenge preparation",
+                    "Good feedback on Week 4 proposal ensures teams are set up for success"
+                ],
+                "weightOfMarks": [
+                    "15% Project Proposal - due Week 4, returned Week 6 with good feedback to ensure success",
+                    "10% Final Report - light touch marking, due Week 10, returned Week 11",
+                    "25% Team Challenge - live assessment after study week preparation period",
+                    "Total: 50% of unit grade for team-based assessment components"
+                ],
+                "teamworkAccountability": [
+                    "Team Agreement signed at start of trimester with 'firing' stipulations by all team members",
+                    "FeedbackFruits Self and Peer Review tasks at multiple checkpoints throughout trimester",
+                    "Group Skills Factor (GSF) monitored - threshold of 0.6 (below = grounds for removal)",
+                    "Grounds for being 'fired' from team: GSF below 0.6 for Project Proposal work; not completing self and peer review; not attending Week 5 field trip without team approval; not attending Week 7 workshop without team approval; not completing agreed component of final report (GSF below 0.6); not completing self and peer review for final report",
+                    "If fired from group, student is NOT eligible to sit the Team Challenge (loses 25% of unit grade)",
+                    "Alternative assessment provided: individual oral exam or written alternative with penalty structure",
+                    "Flowchart available showing decision points for team member removal process"
+                ],
+                "kaysConserns": [
+                    "Q: What will rubrics look like? How many people required to mark?",
+                    "A: Two rubrics and two markers per team. Opportunity to consult and verify with each other at end of challenge. Students assessed individually on Team Challenge performance.",
+                    "  \u2022 Rubric 1: GLO1 (Discipline Knowledge) - ONE discipline expert marker",
+                    "  \u2022 Rubric 2: GLOs 2, 4, 5, 7 (Transferable Skills using Values-type rubrics) - ONE expert transferable skills marker",
+                    "",
+                    "Q: How do we manage student stress with this new form of assessment?",
+                    "A: Multiple strategies to reduce stress and build confidence:",
+                    "  \u2022 New structure introduced clearly in Week 1",
+                    "  \u2022 Very clear instructions on how it works and importance of trimester engagement",
+                    "  \u2022 Week 7: 2-hour practice workshop (1hr Team Challenge role play + 1hr data analysis)",
+                    "  \u2022 All 8 possible scenario challenges provided in advance so students can prepare",
+                    "  \u2022 Study week provided for final preparation after reports returned",
+                    "",
+                    "Q: What about the weight of marks?",
+                    "A: Settled on balanced distribution:",
+                    "  \u2022 15% Project Proposal (Week 4, returned Week 6) - good feedback to ensure success",
+                    "  \u2022 10% Final Report (Week 10, returned Week 11) - light touch marking",
+                    "  \u2022 25% Team Challenge (live assessment after study week)",
+                    "",
+                    "Q: Can we 'fire' non-performing team members?",
+                    "A: Yes - innovative accountability system with clear grounds for removal:",
+                    "  \u2022 Flowchart provided with decision points throughout trimester",
+                    "  \u2022 FeedbackFruits Self and Peer Review at multiple checkpoints",
+                    "  \u2022 Group Skills Factor monitoring (below 0.6 = grounds for removal)",
+                    "  \u2022 Team Agreement signed at start includes 'firing' stipulations",
+                    "  \u2022 If fired, student NOT eligible for Team Challenge (25% of grade)"
+                ]
+            },
+            "skillsAssessed": [
+                "GLO1: Discipline-specific knowledge and problem-solving",
+                "GLO2: Communication - working 'out loud' and articulating decisions in real-time",
+                "GLO4: Critical thinking - adapting to unexpected scenario challenges",
+                "GLO5: Problem solving - real-time collaborative solution development",
+                "GLO7: Self-awareness - individual contribution to team outcomes and ability to reflect on role",
+                "Authentic team collaboration under pressure and time constraints",
+                "Adaptive thinking and flexibility in response to new scenarios",
+                "Individual accountability within team structures - demonstrating personal mastery",
+                "Real-time collaborative construction and adaptation of work products",
+                "Deep learning across full suite of learning outcomes - preparing for 8 scenarios requires comprehensive understanding",
+                "Resilience and composure in high-stakes assessment situations",
+                "Integration of feedback - applying insights from Week 6 and Week 11 feedback during live challenge",
+                "Time management and prioritization under constrained conditions",
+                "Peer collaboration - leveraging diverse team strengths effectively",
+                "Articulation of technical concepts to assessors during individual questioning",
+                "Evidence-based decision making - justifying adaptations with disciplinary reasoning"
+            ]
+        }
+    ]
+};
 
         // Function to generate assessment card HTML
-        function generateAssessmentCard(assessment) {
+        function generateAssessmentCard(assessment, tabName = "overview") {
             const m = assessment.metadata;
             const modeText = m.mode === 'person' ? 'Live in person' : 
                            m.mode === 'online' ? 'Live online' : 
@@ -1460,7 +1587,7 @@
                         <div class="card-section">
                             <h4>Unit Grade Distribution</h4>
                             <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 20px;">
-                                <canvas id="${assessment.id}UnitChart" width="120" height="120" style="max-width: 120px;"></canvas>
+                                <canvas id="${assessment.id}UnitChart-${tabName}" width="120" height="120" style="max-width: 120px;"></canvas>
                                 <div style="flex: 1;">
                                     <p style="color: #2C3E50; font-weight: bold; margin-bottom: 5px;">Total Unit Assessment</p>
                                     ${assessment.unitGradeDistribution.map(comp => 
@@ -1511,6 +1638,17 @@
                             ${generateHowToImplement(assessment.howToImplement, assessment.framework)}
                         </div>
                         ` : ''}
+
+                        ${assessment.exampleChallenges ? `
+                        <button class="how-to-btn" onclick="toggleChallenges('${assessment.id}')" style="background: #FF9300; margin-top: 10px;">
+                            🎲 Example Challenges ▼
+                        </button>
+                        <div id="${assessment.id}-challenges" class="how-to-content" style="display: none;">
+                            ${generateExampleChallenges(assessment.exampleChallenges)}
+                        </div>
+                        ` : ''}
+
+                        
                         
                         ${assessment.skillsAssessed ? `
                         <button class="skills-btn" onclick="toggleSkills('${assessment.id}')">
@@ -1525,7 +1663,7 @@
                         
                         ${assessment.supportMaterials ? `
                         <button class="support-btn" onclick="toggleSupport('${assessment.id}')">
-                            📚 Support Materials Available ▼
+                            📚 Support Materials ▼
                         </button>
                         <div id="${assessment.id}-support" class="support-content" style="display: none;">
                             ${generateSupportMaterials(assessment.supportMaterials)}
@@ -1612,8 +1750,30 @@
             }
             
             if (framework && framework.length > 0) {
-                html += `<strong>Implementation Framework:</strong><br>`;
-                html += framework.map(step => `• ${step}`).join('<br>');
+                html += `<strong>Implementation by Week:</strong><br>`;
+                html += '<ol style="margin-left: 20px; margin-top: 10px;">';
+                
+                const weekItems = framework.filter(item => item.startsWith('Week 1') || item.startsWith('Week 4') || item.startsWith('Week 5') || item.startsWith('Week 6') || item.startsWith('Week 7') || item.startsWith('Week 10') || item.startsWith('Week 11'));
+                const finalItems = framework.filter(item => item.startsWith('Study Week') || item.startsWith('Team Challenge'));
+                
+                weekItems.forEach(item => {
+                    const cleanedItem = item.replace(/^Week \d+:\s*/, '');
+                    html += `<li style="margin-bottom: 8px; color: #555;">${cleanedItem}</li>`;
+                });
+                html += '</ol>';
+                
+                if (finalItems.length > 0) {
+                    html += '<ul style="margin-left: 20px; margin-top: 10px; list-style-type: disc;">';
+                    finalItems.forEach(item => {
+                        if (item.startsWith('Team Challenge')) {
+                            html += `<li style="margin-bottom: 8px; color: #555;">Exam Week: ${item}</li>`;
+                        } else {
+                            html += `<li style="margin-bottom: 8px; color: #555;">${item}</li>`;
+                        }
+                    });
+                    html += '</ul>';
+                }
+                
                 html += '<br><br>';
             }
             
@@ -1698,7 +1858,7 @@
             }
             
             if (howTo.kaysConserns && howTo.kaysConserns.length > 0) {
-                html += `<strong>Kay's Concerns Addressed:</strong><br>`;
+                html += `<strong>FAQ</strong><br>`;
                 html += howTo.kaysConserns.map(item => `${item}`).join('<br>');
                 html += '<br><br>';
             }
@@ -1729,6 +1889,7 @@
 
         // Function to draw small pie charts
         function drawSmallPieChart(canvasId, data, totalValue = 100) {
+            console.log('Drawing pie chart:', canvasId, 'with data:', data);
             const canvas = document.getElementById(canvasId);
             if (!canvas) return;
             
@@ -1848,28 +2009,37 @@
 
         // Generate all cards on page load
         function initializeCards() {
-            const overviewContainer = document.getElementById('assessment-cards-container');
-            const individualContainer = document.getElementById('individual-cards-container');
-            const groupContainer = document.getElementById('group-cards-container');
-            const teamworkContainer = document.getElementById('teamwork-cards-container');
+            const containers = [
+                { id: 'assessment-cards-container', name: 'overview', filter: null },
+                { id: 'individual-cards-container', name: 'individual', filter: 'individual' },
+                { id: 'group-cards-container', name: 'group', filter: 'group' },
+                { id: 'teamwork-cards-container', name: 'teamwork', filter: 'teamwork' }
+            ];
             
-            assessmentData.assessments.forEach(assessment => {
-                const cardHtml = generateAssessmentCard(assessment);
-                overviewContainer.innerHTML += cardHtml;
+            containers.forEach(container => {
+                const element = document.getElementById(container.id);
+                const assessments = container.filter 
+                    ? assessmentData.assessments.filter(a => a.type === container.filter)
+                    : assessmentData.assessments;
                 
-                if (assessment.type === 'individual') {
-                    individualContainer.innerHTML += cardHtml;
-                } else if (assessment.type === 'group') {
-                    groupContainer.innerHTML += cardHtml;
-                } else if (assessment.type === 'teamwork') {
-                    teamworkContainer.innerHTML += cardHtml;
-                }
+                assessments.forEach(assessment => {
+                    const cardHtml = generateAssessmentCard(assessment, container.name);
+                    element.innerHTML += cardHtml;
+                });
             });
             
             // Draw all pie charts after cards are generated
+            console.log('Initializing pie charts...');
             setTimeout(() => {
-                assessmentData.assessments.forEach(assessment => {
-                    drawSmallPieChart(`${assessment.id}UnitChart`, assessment.unitGradeDistribution);
+                containers.forEach(container => {
+                    const assessments = container.filter 
+                        ? assessmentData.assessments.filter(a => a.type === container.filter)
+                        : assessmentData.assessments;
+                    
+                    assessments.forEach(assessment => {
+                        const canvasId = `${assessment.id}UnitChart-${container.name}`;
+                        drawSmallPieChart(canvasId, assessment.unitGradeDistribution);
+                    });
                 });
             }, 100);
         }
@@ -2040,10 +2210,10 @@
             
             if (supportDiv.style.display === 'none') {
                 supportDiv.style.display = 'block';
-                button.innerHTML = '📚 Support Materials Available ▲';
+                button.innerHTML = '📚 Support Materials ▲';
             } else {
                 supportDiv.style.display = 'none';
-                button.innerHTML = '📚 Support Materials Available ▼';
+                button.innerHTML = '📚 Support Materials ▼';
             }
         }
 
@@ -2089,6 +2259,97 @@
             initializeCards();
             drawGeneralModelChart();
         });
+    
+        // Toggle Example Challenges
+        function toggleChallenges(assessmentId) {
+            event.stopPropagation();
+            const challengesDiv = document.getElementById(assessmentId + '-challenges');
+            const button = event.target;
+            
+            if (challengesDiv.style.display === 'none') {
+                challengesDiv.style.display = 'block';
+                button.innerHTML = '🎲 Example Challenges ▲';
+            } else {
+                challengesDiv.style.display = 'none';
+                button.innerHTML = '🎲 Example Challenges ▼';
+            }
+        }
+
+        // Generate Example Challenges HTML
+        function generateExampleChallenges(challenges) {
+            if (!challenges) return '';
+            
+            let html = '<div style="margin-top: 15px;">';
+            
+            if (challenges.overview) {
+                html += `<p style="color: #363635; font-weight: bold; margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-left: 4px solid #FF9300; border-radius: 5px;">${challenges.overview}</p>`;
+            }
+            
+            if (challenges.architectureExamples) {
+                html += `<h4 style="color: #363635; margin-top: 20px; margin-bottom: 10px;">Architecture/Design Projects:</h4>`;
+                html += '<ul class="skills-list">';
+                challenges.architectureExamples.forEach(example => {
+                    html += `<li style="color: #555;">${example}</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            if (challenges.scienceResearchExamples) {
+                html += `<h4 style="color: #363635; margin-top: 20px; margin-bottom: 10px;">Science Research Projects:</h4>`;
+                html += '<ul class="skills-list">';
+                challenges.scienceResearchExamples.forEach(example => {
+                    html += `<li style="color: #555;">${example}</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            if (challenges.businessMarketingExamples) {
+                html += `<h4 style="color: #363635; margin-top: 20px; margin-bottom: 10px;">Business/Marketing Projects:</h4>`;
+                html += '<ul class="skills-list">';
+                challenges.businessMarketingExamples.forEach(example => {
+                    html += `<li style="color: #555;">${example}</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            if (challenges.engineeringDesignExamples) {
+                html += `<h4 style="color: #363635; margin-top: 20px; margin-bottom: 10px;">Engineering Design Projects:</h4>`;
+                html += '<ul class="skills-list">';
+                challenges.engineeringDesignExamples.forEach(example => {
+                    html += `<li style="color: #555;">${example}</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            if (challenges.howToCreate) {
+                html += `<h4 style="color: #363635; margin-top: 20px; margin-bottom: 10px;">💡 How to Create Your Own Scenarios:</h4>`;
+                html += '<ul class="skills-list">';
+                challenges.howToCreate.forEach(tip => {
+                    html += `<li style="color: #555;">${tip}</li>`;
+                });
+                html += '</ul>';
+            }
+            
+            html += '</div>';
+            return html;
+        }
+
+        
+
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSliderValue('cohort', 500);
+            updateSliderValue('groupsize', 20);
+            updateSliderValue('time', 30);
+            updateSliderValue('groups', 100);
+            updateSliderValue('assessors', 5);
+            updateModeSlider(2);
+            
+            initializeCards();
+            drawGeneralModelChart();
+        });
+    
     </script>
 </body>
 </html>
