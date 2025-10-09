@@ -420,7 +420,7 @@
         }
 
         /* How To Button */
-        .how-to-btn {
+        .how-to-btn, .support-btn, .skills-btn {
             width: 100%;
             padding: 10px;
             margin-top: 15px;
@@ -434,12 +434,28 @@
             transition: all 0.3s;
         }
 
-        .how-to-btn:hover {
+        .how-to-btn:hover, .support-btn:hover, .skills-btn:hover {
             background: #2980b9;
             transform: translateY(-2px);
         }
 
-        .how-to-content {
+        .support-btn {
+            background: #27AE60;
+        }
+
+        .support-btn:hover {
+            background: #229954;
+        }
+
+        .skills-btn {
+            background: #9b59b6;
+        }
+
+        .skills-btn:hover {
+            background: #8e44ad;
+        }
+
+        .how-to-content, .support-content, .skills-content {
             animation: slideDown 0.3s ease;
         }
 
@@ -994,12 +1010,13 @@
     </div>
 
     <script>
-        // JSON Data Structure
+        // JSON Data Structure with Support Materials
         const assessmentData = {
             "assessments": [
                 {
                     "id": "conference",
                     "title": "Conference Presentation",
+                    "unitCode": "SLE323",
                     "type": "mixed",
                     "year": "year3",
                     "totalWeight": 60,
@@ -1023,6 +1040,17 @@
                         { "component": "Research Presentation (S&P/Summ)", "percentage": 35, "type": "group" },
                         { "component": "Oral Defence (Q&A)", "percentage": 10, "type": "individual" }
                     ],
+                    "supportMaterials": [
+                        "Project Plan Rubric - formative assessment with approval process",
+                        "Title must include 'Heart Rate'",
+                        "Background information requirement",
+                        "Aims and hypotheses must be testable and appropriate (not task lists)",
+                        "Methodology must be detailed with appropriate controls",
+                        "Timeline must include all major tasks with sufficient detail",
+                        "References required",
+                        "Feedback incorporated before project approval",
+                        "Projects must be approved or resubmitted within 3 days"
+                    ],
                     "howToImplement": {
                         "overview": "Third year students form teams, design and run their own research project and then present their results to their peers at an end of trimester conference. They are assessed by an assessment panel made up of academics from across the course (discipline experts), senior T&L from the School and Third Space.",
                         "assessmentProcess": [
@@ -1033,11 +1061,21 @@
                             "Questions related to teamwork experience and social responsibility (e.g., how UN SDGs aligned/informed their project)"
                         ],
                         "note": "Initially students shared concerns about a task that counts to 60% of their mark, but feedback showed that once they understood the breakup of the marking and the support across the trimester they were complimentary of this unit."
-                    }
+                    },
+                    "skillsAssessed": [
+                        "Research project design and execution",
+                        "Scientific communication",
+                        "Team collaboration and coordination",
+                        "Professional presentation skills",
+                        "Critical thinking and analysis",
+                        "Oral defence and Q&A abilities",
+                        "Social responsibility awareness"
+                    ]
                 },
                 {
                     "id": "mootcourt",
                     "title": "Moot Court",
+                    "unitCode": "SLE313",
                     "type": "individual",
                     "year": "year2",
                     "totalWeight": 25,
@@ -1065,6 +1103,19 @@
                             "description": "The Moot Court assessment is entirely based on the student's performance as a forensic expert witness, including their literature review, expert testimony, and professional presentation in the courtroom environment." 
                         }
                     ],
+                    "supportMaterials": [
+                        "Unit Guide 2025 - comprehensive assessment framework",
+                        "Individual oral presentation as forensic expert witness",
+                        "15-minute two-way question session with staff acting as counsel",
+                        "Literature review required to explain and defend analysis",
+                        "Professional courtroom environment and procedures",
+                        "Assessment by Unit Chair and peer evaluation",
+                        "Scaffolding through weekly scientific journal analysis discussions",
+                        "Scheduled across Weeks 3-11 with sign-up sheet",
+                        "Moot Court Sign-up Sheet for scheduling 4-5 students per session",
+                        "Student volunteers can act as judges",
+                        "Aligned with other assessment deadlines (tests, practicals)"
+                    ],
                     "howToImplement": {
                         "overview": "Students take on the role of a professional forensic expert witness in a two-way question session between the student (acting as a forensic expert) and a staff member (acting as counsel). The unit brings together future frontiers in forensic science with a view to developing a student's career transition as they approach the final stages of their degree.",
                         "topicsCovered": [
@@ -1081,11 +1132,21 @@
                             "Students deliver evidence in a professional courtroom environment",
                             "Assessment by Unit Chair and peers on professional presentation and quality of testimony"
                         ]
-                    }
+                    },
+                    "skillsAssessed": [
+                        "Expert witness testimony",
+                        "Professional courtroom presentation",
+                        "Technical and analytical skills",
+                        "Literature review and research",
+                        "Interpretation and communication",
+                        "Professional ethics and quality assurance",
+                        "Critical analysis and defence"
+                    ]
                 },
                 {
                     "id": "pitch",
                     "title": "Project Pitch",
+                    "unitCode": "SLE352",
                     "type": "group",
                     "year": "year2",
                     "totalWeight": 40,
@@ -1109,6 +1170,19 @@
                         { "component": "Project Brief - Oral (Video) S&P/Form", "percentage": 20, "type": "group" },
                         { "component": "Project Presentation (S&P/Summ) + Q&A", "percentage": 20, "type": "group" }
                     ],
+                    "supportMaterials": [
+                        "Team Project Brief Guidelines - comprehensive template with examples for project planning",
+                        "Marking Scheme (20%) covering five criteria",
+                        "Goals for the project (8 marks) - SMART format required, ~80 hours work per team member",
+                        "Personal statements (4 marks) - skills brought to project and skills to be developed",
+                        "Team obligations (4 marks) - meeting schedules and communication expectations",
+                        "Challenging situations strategies (4 marks) - identifying and addressing potential issues",
+                        "Video presentation professionalism (2 marks) - clarity, pacing, grammar, visuals",
+                        "PANOPTO Video Advice - 3-5 minute video summary of team project brief",
+                        "All team members must appear on camera (5 mark penalty if not)",
+                        "Submit video link (not file) to avoid size issues",
+                        "Template and declaration form provided for team and client signatures"
+                    ],
                     "howToImplement": {
                         "overview": "A Professional Practice core unit within the Bachelor of Science. In this unit, students will apply scientific knowledge, processes and techniques in a team-based project and communicate the value of science to a range of audiences.",
                         "keyElements": [
@@ -1119,11 +1193,21 @@
                             "Peer review components (formative and summative)",
                             "Students articulate project importance and outcomes at appropriate level for diverse audience"
                         ]
-                    }
+                    },
+                    "skillsAssessed": [
+                        "Team collaboration and project management",
+                        "Scientific communication to diverse audiences",
+                        "Video presentation skills",
+                        "Professional pitch delivery",
+                        "Q&A and audience engagement",
+                        "Peer review and feedback",
+                        "Applied scientific knowledge"
+                    ]
                 },
                 {
                     "id": "poster",
                     "title": "Poster Conference",
+                    "unitCode": "SLE361",
                     "type": "individual",
                     "year": "year3",
                     "totalWeight": 20,
@@ -1158,17 +1242,41 @@
                             "description": "Students submit poster online and bring a printed version to the poster presentation session. Students present and answer questions from staff and students who attend the poster conference." 
                         }
                     ],
+                    "supportMaterials": [
+                        "No support materials currently available in Drive folder"
+                    ],
                     "skillsAssessed": [
                         "Visual communication",
                         "Scientific communication",
                         "Synthesis of complex information",
                         "Public speaking",
                         "Q&A skills"
-                    ]
+                    ],
+                    "howToImplement": {
+                        "overview": "Students design and create a scientific poster presenting their research or practical work. They submit the poster online and bring a printed version to a poster conference session where they present their work to staff and fellow students.",
+                        "keyElements": [
+                            "Poster design and visual communication",
+                            "Scientific content synthesis",
+                            "Online submission for assessment",
+                            "Printed poster for conference presentation",
+                            "Interactive Q&A with assessors and peers",
+                            "Conference-style assessment environment"
+                        ],
+                        "assessmentProcess": [
+                            "Students create poster based on their research/practical work",
+                            "Submit poster online by deadline",
+                            "Print poster for conference session",
+                            "Present poster at designated conference time",
+                            "Answer questions from staff assessors",
+                            "Engage with peer questions and feedback",
+                            "Assessment based on poster quality and presentation skills"
+                        ]
+                    }
                 },
                 {
                     "id": "debate",
                     "title": "Debate",
+                    "unitCode": "SLE357",
                     "type": "group",
                     "year": "year3",
                     "totalWeight": 20,
@@ -1192,6 +1300,9 @@
                         { "component": "Presentation Quality", "percentage": 15, "type": "group" },
                         { "component": "Teamwork Reflection (500 words)", "percentage": 5, "type": "individual" }
                     ],
+                    "supportMaterials": [
+                        "No support materials currently available in Drive folder"
+                    ],
                     "howToImplement": {
                         "format": "Groups choose from provided topics. One student argues for, one against, third is moderator.",
                         "requirements": "Evidence-based arguments using scientific articles on controversial cell biology topics and societal impact.",
@@ -1208,6 +1319,7 @@
                 {
                     "id": "teampivot",
                     "title": "Team Pivot - Authentic Teamwork Assessment",
+                    "unitCode": "Various",
                     "type": "teamwork",
                     "year": "year2-3",
                     "totalWeight": 50,
@@ -1241,6 +1353,9 @@
                         "Supervised AoL Task (20% - adaptive challenge)",
                         "Efficient marking logistics"
                     ],
+                    "supportMaterials": [
+                        "No support materials currently available in Drive folder"
+                    ],
                     "howToImplement": {
                         "overview": "An innovative approach for implementing collaborative team-based learning with embedded Assurance of Learning (AoL). After learners co-construct a group project artefact, they bring the artefact and their notes to the interview. The assessor introduces a novel idea, constraint, or variation, and then observes the team collaborating to construct a new, updated artefact in real-time.",
                         "keyFeatures": [
@@ -1273,7 +1388,16 @@
                             "Team Building templates and Charter templates",
                             "Observation rubrics for live assessment"
                         ]
-                    }
+                    },
+                    "skillsAssessed": [
+                        "Authentic team collaboration",
+                        "Adaptive problem-solving",
+                        "Distributed expertise development",
+                        "Real-time collaborative construction",
+                        "Individual accountability within teams",
+                        "Professional teamwork skills",
+                        "Jigsaw learning and peer teaching"
+                    ]
                 }
             ]
         };
@@ -1309,7 +1433,7 @@
                      data-mode="${m.mode || ''}">
                     <div class="card-header ${assessment.type}">
                         <div class="card-title">${assessment.title}</div>
-                        <div class="card-type">${typeText} • ${yearText} • ${assessment.totalWeight}%</div>
+                        <div class="card-type">${typeText} • ${yearText} • ${assessment.totalWeight}% • ${assessment.unitCode}</div>
                     </div>
                     <div class="card-body">
                         <div class="card-section">
@@ -1340,11 +1464,22 @@
                         ` : ''}
                         
                         ${assessment.skillsAssessed ? `
-                        <div class="card-section">
-                            <h4>Assesses/Develops</h4>
-                            <ul class="skills-list">
+                        <button class="skills-btn" onclick="toggleSkills('${assessment.id}')">
+                            🎯 Skills Assessed/Developed ▼
+                        </button>
+                        <div id="${assessment.id}-skills" class="skills-content" style="display: none;">
+                            <ul class="skills-list" style="margin-top: 15px;">
                                 ${assessment.skillsAssessed.map(skill => `<li>${skill}</li>`).join('')}
                             </ul>
+                        </div>
+                        ` : ''}
+                        
+                        ${assessment.supportMaterials ? `
+                        <button class="support-btn" onclick="toggleSupport('${assessment.id}')">
+                            📚 Support Materials Available ▼
+                        </button>
+                        <div id="${assessment.id}-support" class="support-content" style="display: none;">
+                            ${generateSupportMaterials(assessment.supportMaterials)}
                         </div>
                         ` : ''}
                         
@@ -1420,6 +1555,18 @@
                     </table>
                 `;
             }
+        }
+
+        function generateSupportMaterials(materials) {
+            if (!materials || materials.length === 0) return '';
+            
+            let html = '<ul class="skills-list" style="margin-top: 15px;">';
+            materials.forEach(material => {
+                html += `<li>${material}</li>`;
+            });
+            html += '</ul>';
+            
+            return html;
         }
 
         function generateHowToImplement(howTo) {
@@ -1792,6 +1939,36 @@
             
             if (document.getElementById('advanced-filters-panel').classList.contains('open')) {
                 applyFilters();
+            }
+        }
+
+        // Toggle Support Materials
+        function toggleSupport(assessmentId) {
+            event.stopPropagation();
+            const supportDiv = document.getElementById(assessmentId + '-support');
+            const button = event.target;
+            
+            if (supportDiv.style.display === 'none') {
+                supportDiv.style.display = 'block';
+                button.innerHTML = '📚 Support Materials Available ▲';
+            } else {
+                supportDiv.style.display = 'none';
+                button.innerHTML = '📚 Support Materials Available ▼';
+            }
+        }
+
+        // Toggle Skills Assessed
+        function toggleSkills(assessmentId) {
+            event.stopPropagation();
+            const skillsDiv = document.getElementById(assessmentId + '-skills');
+            const button = event.target;
+            
+            if (skillsDiv.style.display === 'none') {
+                skillsDiv.style.display = 'block';
+                button.innerHTML = '🎯 Skills Assessed/Developed ▲';
+            } else {
+                skillsDiv.style.display = 'none';
+                button.innerHTML = '🎯 Skills Assessed/Developed ▼';
             }
         }
 
