@@ -1557,6 +1557,13 @@
             const yearText = assessment.year === 'year2-3' ? 'Year 2-3' :
                            assessment.year === 'year1-3' ? 'Year 1-3' :
                            assessment.year.replace('year', 'Year ');
+            
+            const unitGradeItems = assessment.unitGradeDistribution ? 
+                assessment.unitGradeDistribution.map(comp => `${comp.component}: ${comp.percentage}%`) : [];
+            const unitGradeList = renderList(unitGradeItems, {
+                style: 'margin: 5px 0 0 18px;',
+                itemStyle: 'margin-bottom: 4px; color: #666; font-size: 0.9em;'
+            });
 
             let html = `
                 <div class="assessment-card" 
@@ -1580,9 +1587,7 @@
                                 <canvas id="${assessment.id}UnitChart-${tabName}" width="120" height="120" style="max-width: 120px;"></canvas>
                                 <div style="flex: 1;">
                                     <p style="color: #2C3E50; font-weight: bold; margin-bottom: 5px;">Total Unit Assessment</p>
-                                    ${assessment.unitGradeDistribution.map(comp => 
-                                        `<p style="color: #666; font-size: 0.9em;">• ${comp.component}: ${comp.percentage}%</p>`
-                                    ).join('')}
+                                    ${unitGradeList}
                                 </div>
                             </div>
                         </div>
@@ -1718,163 +1723,201 @@
             }
         }
 
+        function renderList(items, options = {}) {
+            if (!items || items.length === 0) return '';
+            
+            const {
+                tag = 'ul',
+                className = '',
+                style = '',
+                itemStyle = ''
+            } = options;
+            
+            const listTag = tag === 'ol' ? 'ol' : 'ul';
+            const classAttr = className ? ` class="${className}"` : '';
+            const styleAttr = style ? ` style="${style}"` : '';
+            const itemStyleAttr = itemStyle ? ` style="${itemStyle}"` : '';
+            
+            let html = `<${listTag}${classAttr}${styleAttr}>`;
+            items.forEach(item => {
+                html += `<li${itemStyleAttr}>${item}</li>`;
+            });
+            html += `</${listTag}>`;
+            
+            return html;
+        }
+
         function generateSupportMaterials(materials) {
             if (!materials || materials.length === 0) return '';
             
-            let html = '<ul class="skills-list" style="margin-top: 15px;">';
-            materials.forEach(material => {
-                html += `<li>${material}</li>`;
+            return renderList(materials, {
+                className: 'skills-list',
+                style: 'margin-top: 15px;',
+                itemStyle: ''
             });
-            html += '</ul>';
+        }
+
+        function renderKaysConcerns(items) {
+            if (!items || items.length === 0) return '';
             
+            let html = `<div style="margin-top: 15px;">`;
+            html += `<p style="margin-bottom: 8px; color: #363635;"><strong>FAQ</strong></p>`;
+            
+            let listOpen = false;
+            
+            items.forEach(item => {
+                const trimmed = item.trim();
+                
+                if (trimmed === '') {
+                    if (listOpen) {
+                        html += '</ul>';
+                        listOpen = false;
+                    }
+                    return;
+                }
+                
+                if (trimmed.startsWith('Q:')) {
+                    if (listOpen) {
+                        html += '</ul>';
+                        listOpen = false;
+                    }
+                    const questionText = trimmed.slice(2).trim();
+                    html += `<p style="margin-top: 12px; margin-bottom: 4px; color: #363635;"><strong>Q:</strong> ${questionText}</p>`;
+                    return;
+                }
+                
+                if (trimmed.startsWith('A:')) {
+                    if (listOpen) {
+                        html += '</ul>';
+                        listOpen = false;
+                    }
+                    const answerText = trimmed.slice(2).trim();
+                    html += `<p style="margin-left: 10px; margin-bottom: 6px; color: #555;"><strong>A:</strong> ${answerText}</p>`;
+                    return;
+                }
+                
+                if (trimmed.startsWith('•')) {
+                    if (!listOpen) {
+                        html += `<ul style="margin: 4px 0 12px 25px;">`;
+                        listOpen = true;
+                    }
+                    const bulletText = trimmed.slice(1).trim();
+                    html += `<li style="margin-bottom: 6px; color: #555;">${bulletText}</li>`;
+                    return;
+                }
+                
+                if (listOpen) {
+                    html += '</ul>';
+                    listOpen = false;
+                }
+                
+                html += `<p style="margin-left: 10px; margin-bottom: 6px; color: #555;">${trimmed}</p>`;
+            });
+            
+            if (listOpen) {
+                html += '</ul>';
+            }
+            
+            html += `</div>`;
             return html;
         }
 
         function generateHowToImplement(howTo, framework) {
             if (!howTo) return '';
             
-            let html = `<p style="font-size: 0.9em; color: #555; line-height: 1.6; margin-top: 15px;">`;
+            const sections = [];
+            const defaultListStyle = {
+                style: 'margin: 8px 0 16px 25px;',
+                itemStyle: 'margin-bottom: 6px; color: #555;'
+            };
+            
+            const addListSection = (title, items, options = {}) => {
+                if (!items || items.length === 0) return;
+                const titleText = title.endsWith(':') ? title : `${title}:`;
+                sections.push([
+                    `<div style="margin-top: 15px;">`,
+                    `<p style="margin-bottom: 8px; color: #363635;"><strong>${titleText}</strong></p>`,
+                    renderList(items, {
+                        tag: options.tag || 'ul',
+                        style: options.style || defaultListStyle.style,
+                        itemStyle: options.itemStyle || defaultListStyle.itemStyle
+                    }),
+                    `</div>`
+                ].join(''));
+            };
+            
+            const addLabeledParagraph = (label, content) => {
+                if (!content) return;
+                sections.push(`<p style="margin-top: 15px; color: #555;"><strong>${label}:</strong> ${content}</p>`);
+            };
             
             if (howTo.overview) {
-                html += `<strong>Overview:</strong><br>${howTo.overview}<br><br>`;
+                sections.push(`<p style="margin-bottom: 16px;">${howTo.overview}</p>`);
             }
             
             if (framework && framework.length > 0) {
-                html += `<strong>Implementation by Week:</strong><br>`;
-                html += '<ol style="margin-left: 20px; margin-top: 10px;">';
+                const weekItems = framework.filter(item => /^Week \d+:/i.test(item))
+                    .map(item => item.replace(/^Week \d+:\s*/, ''));
+                const finalItems = framework.filter(item => item.startsWith('Study Week') || item.startsWith('Team Challenge'))
+                    .map(item => item.startsWith('Team Challenge') ? `Exam Week: ${item}` : item);
                 
-                const weekItems = framework.filter(item => item.startsWith('Week 1') || item.startsWith('Week 4') || item.startsWith('Week 5') || item.startsWith('Week 6') || item.startsWith('Week 7') || item.startsWith('Week 10') || item.startsWith('Week 11'));
-                const finalItems = framework.filter(item => item.startsWith('Study Week') || item.startsWith('Team Challenge'));
+                const frameworkSections = [
+                    `<div style="margin-top: 15px;">`,
+                    `<p style="margin-bottom: 8px; color: #363635;"><strong>Implementation by Week:</strong></p>`
+                ];
                 
-                weekItems.forEach(item => {
-                    const cleanedItem = item.replace(/^Week \d+:\s*/, '');
-                    html += `<li style="margin-bottom: 8px; color: #555;">${cleanedItem}</li>`;
-                });
-                html += '</ol>';
-                
-                if (finalItems.length > 0) {
-                    html += '<ul style="margin-left: 20px; margin-top: 10px; list-style-type: disc;">';
-                    finalItems.forEach(item => {
-                        if (item.startsWith('Team Challenge')) {
-                            html += `<li style="margin-bottom: 8px; color: #555;">Exam Week: ${item}</li>`;
-                        } else {
-                            html += `<li style="margin-bottom: 8px; color: #555;">${item}</li>`;
-                        }
-                    });
-                    html += '</ul>';
+                if (weekItems.length > 0) {
+                    frameworkSections.push(renderList(weekItems, {
+                        tag: 'ol',
+                        style: defaultListStyle.style,
+                        itemStyle: defaultListStyle.itemStyle
+                    }));
                 }
                 
-                html += '<br><br>';
+                if (finalItems.length > 0) {
+                    frameworkSections.push(renderList(finalItems, {
+                        style: 'margin: 0 0 16px 25px;',
+                        itemStyle: defaultListStyle.itemStyle
+                    }));
+                }
+                
+                frameworkSections.push(`</div>`);
+                sections.push(frameworkSections.join(''));
             }
             
-            if (howTo.theProblem && howTo.theProblem.length > 0) {
-                html += `<strong>The Problem:</strong><br>`;
-                html += howTo.theProblem.map(item => `• ${item}`).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.theSolution && howTo.theSolution.length > 0) {
-                html += `<strong>The Solution:</strong><br>`;
-                html += howTo.theSolution.map(item => `• ${item}`).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.scenarioExamples && howTo.scenarioExamples.length > 0) {
-                html += `<strong>Scenario Examples:</strong><br>`;
-                html += howTo.scenarioExamples.map(item => `• ${item}`).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.markingStructure && howTo.markingStructure.length > 0) {
-                html += `<strong>Marking Structure:</strong><br>`;
-                html += howTo.markingStructure.map(item => `• ${item}`).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.managingStudentStress && howTo.managingStudentStress.length > 0) {
-                html += `<strong>Managing Student Stress:</strong><br>`;
-                html += howTo.managingStudentStress.map(item => `• ${item}`).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.weightOfMarks && howTo.weightOfMarks.length > 0) {
-                html += `<strong>Weight of Marks:</strong><br>`;
-                html += howTo.weightOfMarks.map(item => `• ${item}`).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.teamworkAccountability && howTo.teamworkAccountability.length > 0) {
-                html += `<strong>Teamwork Accountability & "Firing" Process:</strong><br>`;
-                html += howTo.teamworkAccountability.map(item => `• ${item}`).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.topicsCovered && howTo.topicsCovered.length > 0) {
-                html += `<strong>Topics Covered:</strong><br>`;
-                html += howTo.topicsCovered.map(topic => `• ${topic}`).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.keyElements && howTo.keyElements.length > 0) {
-                html += `<strong>Key Elements:</strong><br>`;
-                html += howTo.keyElements.map(elem => `• ${elem}`).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.keyFeatures && howTo.keyFeatures.length > 0) {
-                html += `<strong>Key Features:</strong><br>`;
-                html += howTo.keyFeatures.map(feature => 
-                    `• <strong>${feature.name}:</strong> ${feature.description}`
-                ).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.assessmentProcess && howTo.assessmentProcess.length > 0) {
-                html += `<strong>Assessment Process:</strong><br>`;
-                html += howTo.assessmentProcess.map(proc => `• ${proc}`).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.assessmentBenefits && howTo.assessmentBenefits.length > 0) {
-                html += `<strong>Assessment Benefits:</strong><br>`;
-                html += howTo.assessmentBenefits.map(benefit => `• ${benefit}`).join('<br>');
-                html += '<br><br>';
-            }
-            
-            if (howTo.tools && howTo.tools.length > 0) {
-                html += `<strong>Tools:</strong><br>`;
-                html += howTo.tools.map(tool => `• ${tool}`).join('<br>');
-                html += '<br><br>';
-            }
+            addListSection('The Problem', howTo.theProblem, defaultListStyle);
+            addListSection('The Solution', howTo.theSolution, defaultListStyle);
+            addListSection('Scenario Examples', howTo.scenarioExamples, defaultListStyle);
+            addListSection('Marking Structure', howTo.markingStructure, defaultListStyle);
+            addListSection('Managing Student Stress', howTo.managingStudentStress, defaultListStyle);
+            addListSection('Weight of Marks', howTo.weightOfMarks, defaultListStyle);
+            addListSection('Teamwork Accountability & "Firing" Process', howTo.teamworkAccountability, defaultListStyle);
+            addListSection('Topics Covered', howTo.topicsCovered, defaultListStyle);
+            addListSection('Key Elements', howTo.keyElements, defaultListStyle);
+            addListSection('Key Features', howTo.keyFeatures && howTo.keyFeatures.map(feature => `<strong>${feature.name}:</strong> ${feature.description}`), defaultListStyle);
+            addListSection('Assessment Process', howTo.assessmentProcess, defaultListStyle);
+            addListSection('Assessment Benefits', howTo.assessmentBenefits, defaultListStyle);
+            addListSection('Tools', howTo.tools, defaultListStyle);
             
             if (howTo.kaysConserns && howTo.kaysConserns.length > 0) {
-                html += `<strong>FAQ</strong><br>`;
-                html += howTo.kaysConserns.map(item => `${item}`).join('<br>');
-                html += '<br><br>';
+                sections.push(renderKaysConcerns(howTo.kaysConserns));
             }
             
-            if (howTo.format) {
-                html += `<strong>Format:</strong> ${howTo.format}<br><br>`;
-            }
-            
-            if (howTo.requirements) {
-                html += `<strong>Requirements:</strong> ${howTo.requirements}<br><br>`;
-            }
-            
-            if (howTo.assessment) {
-                html += `<strong>Assessment:</strong> ${howTo.assessment}<br><br>`;
-            }
+            addLabeledParagraph('Format', howTo.format);
+            addLabeledParagraph('Requirements', howTo.requirements);
+            addLabeledParagraph('Assessment', howTo.assessment);
             
             if (howTo.detailedOverview) {
-                html += `${howTo.detailedOverview}<br><br>`;
+                sections.push(`<p style="margin-top: 15px; color: #555;">${howTo.detailedOverview}</p>`);
             }
             
             if (howTo.note) {
-                html += `<em>Note: ${howTo.note}</em>`;
+                sections.push(`<p style="margin-top: 15px; color: #555;"><em>Note: ${howTo.note}</em></p>`);
             }
             
-            html += `</p>`;
-            return html;
+            if (sections.length === 0) return '';
+            
+            return `<div style="font-size: 0.9em; color: #555; line-height: 1.6; margin-top: 15px;">${sections.join('')}</div>`;
         }
 
         // Function to draw small pie charts
