@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff FAQ - Interactive Oral Assessments Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #007D98 0%, #58BCAF 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #f7f8fc;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            color: #363635;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 2000px;
+            }
+        }
+
+
+        /* FAQ Styles */
+        .faq-category {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .category-title {
+            color: #363635;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #007D98;
+        }
+
+        .faq-item {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ecf0f1;
+            padding-bottom: 15px;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .faq-question {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+            font-size: 1.05em;
+        }
+
+        .faq-question:hover {
+            background: #e8f4f8;
+            transform: translateX(5px);
+        }
+
+        .faq-q-icon {
+            font-weight: bold;
+            color: #007D98;
+            font-size: 1.2em;
+            min-width: 25px;
+        }
+
+        .faq-q-text {
+            flex: 1;
+            color: #363635;
+            font-weight: 600;
+        }
+
+        .faq-toggle {
+            color: #007D98;
+            font-size: 0.9em;
+            transition: transform 0.3s;
+        }
+
+        .faq-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 20px;
+            background: white;
+            border-left: 4px solid #58BCAF;
+            margin-top: 10px;
+            border-radius: 0 8px 8px 0;
+            animation: slideDown 0.3s ease;
+        }
+
+        .faq-answer p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .faq-answer p:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-resources {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .faq-resources strong {
+            color: #363635;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .faq-resources ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .faq-resources li {
+            padding: 5px 0;
+        }
+
+        .faq-resources a {
+            color: #007D98;
+            text-decoration: none;
+            word-break: break-all;
+            font-size: 0.9em;
+        }
+
+        .faq-resources a:hover {
+            text-decoration: underline;
+            color: #006D88;
+        }
+
+        .faq-search {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1em;
+            border: 2px solid #007D98;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            outline: none;
+        }
+
+        .faq-search:focus {
+            border-color: #58BCAF;
+            box-shadow: 0 0 0 3px rgba(0, 125, 152, 0.1);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Staff FAQ - Interactive Oral Assessments</h1>
+        <p class="subtitle">27 questions organized into 6 categories | Preview of FAQ section</p>
+        
+        <input type="text" 
+               class="faq-search" 
+               id="faq-search" 
+               placeholder="🔍 Search FAQs... (try 'time', 'scenario', or 'rubric')" 
+               onkeyup="searchFAQ()">
+        
+        <div class="faq-category">
+  <h3 class="category-title">Getting Started</h3>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('getting-started-q1')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do I convince my teaching team that IOAs are worth the effort?</span>
+      <span class="faq-toggle" id="getting-started-q1-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="getting-started-q1" style="display: none;">
+      <p>Start with the evidence: universities report higher student satisfaction, better learning outcomes, enhanced academic integrity, and more engaging assessment for staff. Consider beginning with a small pilot cohort to demonstrate feasibility before full implementation.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('getting-started-q2')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">What's the best way to get institutional support for IOAs?</span>
+      <span class="faq-toggle" id="getting-started-q2-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="getting-started-q2" style="display: none;">
+      <p>Present IOAs as a solution to current challenges: academic integrity concerns with AI, development of employability skills, and inclusive assessment practices. Frame it as authentic assessment that better prepares students for professional contexts. Design and Development</p>
+    </div>
+  </div>
+</div>
+<div class="faq-category">
+  <h3 class="category-title">Time & Workload</h3>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('time--workload-q1')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How much time does IOA implementation require?</span>
+      <span class="faq-toggle" id="time--workload-q1-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="time--workload-q1" style="display: none;">
+      <p>Initial setup requires 5-6 weeks for scenario development, rubric creation, and staff training. However, ongoing delivery time matches or improves upon traditional marking loads. Universities report that while the upfront investment is significant, the long-term efficiency and teaching insights make it worthwhile.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('time--workload-q2')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">Do IOAs actually save time compared to marking written assignments?</span>
+      <span class="faq-toggle" id="time--workload-q2-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="time--workload-q2" style="display: none;">
+      <p>Yes, once implemented. A 15-minute IOA provides equivalent assessment depth to a 3,000-word essay but eliminates extensive written feedback requirements. Marking happens in real-time during the conversation, and feedback is delivered immediately rather than requiring separate written responses.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('time--workload-q3')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do I ensure security across different time slots?</span>
+      <span class="faq-toggle" id="time--workload-q3-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="time--workload-q3" style="display: none;">
+      <p>Use scenario-based assessment rather than specific questions, ensuring each conversation is unique while maintaining consistent evaluation criteria. The interactive nature makes it virtually impossible for students to share specific answers because each conversation develops differently. Training and Consistency</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('time--workload-q4')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do I ensure consistent marking across multiple assessors?</span>
+      <span class="faq-toggle" id="time--workload-q4-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="time--workload-q4" style="display: none;">
+      <p>Implement pre-assessment calibration meetings, shared rubric interpretation protocols, and real-time consultation processes during assessment periods. Record IOAs for moderation purposes and conduct regular cross-assessor reviews. The recording provides objective evidence for consistency monitoring.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('time--workload-q5')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do IOAs impact my workload?</span>
+      <span class="faq-toggle" id="time--workload-q5-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="time--workload-q5" style="display: none;">
+      <p>While intensive during assessment periods, IOAs eliminate extensive written feedback requirements and provide immediate completion of marking tasks. Many staff find the real-time nature of IOAs more satisfying than traditional marking, and the immediate feedback to students improves teaching relationships. Implementation Checklist 5 weeks before: Scenario development, rubric creation, staff training, technical setup 4 weeks before: Student briefing materials, practice opportunities, booking system setup 3 weeks before: Student preparation begins, exemplar recordings available 2 weeks before: Final staff calibration, technical testing, student Q&A sessions 1 week before: Final preparations, emergency protocols confirmed Remember: Start small with pilot implementations, engage with institutional Communities of Practice for support, and focus on learning outcomes alignment rather than perfecting every detail initially. Most staff find IOAs more engaging and insightful than traditional assessment methods once they experience the process. ,,,,
+,,,,,</p>
+    </div>
+  </div>
+</div>
+<div class="faq-category">
+  <h3 class="category-title">Scenario Design</h3>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('scenario-design-q1')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do I create effective scenarios for my discipline?</span>
+      <span class="faq-toggle" id="scenario-design-q1-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="scenario-design-q1" style="display: none;">
+      <p>Design authentic workplace situations where students act as professionals (consultants, advisors, specialists) responding to realistic challenges. For STEM: environmental impact assessments, engineering design justifications, genetics counseling sessions, or technical consulting scenarios. The scenario should require content knowledge application, not just recall.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('scenario-design-q2')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">What skills do I need to develop as an IOA assessor?</span>
+      <span class="faq-toggle" id="scenario-design-q2-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="scenario-design-q2" style="display: none;">
+      <p>Focus on conversation facilitation, active listening, and curiosity-driven questioning rather than interrogation techniques. Develop skills in real-time rubric application and supportive assessment practices that help students demonstrate their best understanding.</p>
+    </div>
+  </div>
+</div>
+<div class="faq-category">
+  <h3 class="category-title">Assessment & Rubrics</h3>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('assessment--rubrics-q1')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">What makes a good IOA rubric?</span>
+      <span class="faq-toggle" id="assessment--rubrics-q1-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="assessment--rubrics-q1" style="display: none;">
+      <p>Effective rubrics function as conversation guides that align with course learning outcomes. They should prompt assessors toward higher-order questions when students demonstrate understanding, and focus on content knowledge and application rather than communication skills (unless specifically required). Include clear progression from basic understanding to sophisticated analysis.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('assessment--rubrics-q2')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How many IOAs can one assessor conduct per day?</span>
+      <span class="faq-toggle" id="assessment--rubrics-q2-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="assessment--rubrics-q2" style="display: none;">
+      <p>Maximum 20 IOAs per day with mandatory breaks after every 3-4 sessions. Mental fatigue becomes significant beyond this limit. Many universities find 12-15 per day more sustainable for maintaining assessment quality and staff wellbeing.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('assessment--rubrics-q3')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">What training do assessors need?</span>
+      <span class="faq-toggle" id="assessment--rubrics-q3-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="assessment--rubrics-q3" style="display: none;">
+      <p>All teaching team members should experience IOAs from both student and assessor perspectives, practice with actual rubrics, and participate in calibration sessions. Training should cover conversation facilitation skills, rubric interpretation, and moderation protocols. Plan for 6-8 hours initial training plus ongoing calibration meetings.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('assessment--rubrics-q4')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">What if an assessor is uncomfortable with the conversational format?</span>
+      <span class="faq-toggle" id="assessment--rubrics-q4-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="assessment--rubrics-q4" style="display: none;">
+      <p>Provide additional practice opportunities and pair less confident assessors with experienced colleagues initially. Most staff find IOAs more engaging than traditional marking once they develop conversation facilitation skills. Focus on curiosity-driven questioning rather than interrogation techniques.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('assessment--rubrics-q5')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do I handle assessor bias or inconsistency?</span>
+      <span class="faq-toggle" id="assessment--rubrics-q5-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="assessment--rubrics-q5" style="display: none;">
+      <p>Use detailed rubrics focused on learning outcomes, implement blind moderation of recorded assessments, and establish clear protocols for difficult conversations. The recording provides accountability and evidence for addressing any consistency issues. Technical Infrastructure</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('assessment--rubrics-q6')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do I handle technical failures during assessments?</span>
+      <span class="faq-toggle" id="assessment--rubrics-q6-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="assessment--rubrics-q6" style="display: none;">
+      <p>Establish clear backup protocols including alternative dial-in options, rescheduling procedures for genuine technical issues, and emergency contact procedures. Most universities allow reasonable accommodation for technical failures beyond student control.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('assessment--rubrics-q7')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do I prepare students who are anxious about oral assessment?</span>
+      <span class="faq-toggle" id="assessment--rubrics-q7-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="assessment--rubrics-q7" style="display: none;">
+      <p>Provide extensive practice opportunities, recorded exemplars, and clear rubric explanations. Emphasize that IOAs assess content knowledge, not communication skills. Research shows student anxiety decreases significantly once they experience the conversational format. Consider low-stakes practice sessions early in the course.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('assessment--rubrics-q8')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">Can IOAs replace all traditional assessments?</span>
+      <span class="faq-toggle" id="assessment--rubrics-q8-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="assessment--rubrics-q8" style="display: none;">
+      <p>IOAs work best as part of a diverse assessment portfolio. They're particularly effective for demonstrating applied knowledge and professional competencies. Consider which learning outcomes are best assessed through conversation versus other methods. Professional Development</p>
+    </div>
+  </div>
+</div>
+<div class="faq-category">
+  <h3 class="category-title">Student Support</h3>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('student-support-q1')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How detailed should my preparation materials be?</span>
+      <span class="faq-toggle" id="student-support-q1-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="student-support-q1" style="display: none;">
+      <p>Provide comprehensive briefing materials including scenario descriptions, sample rubrics, recorded exemplars, and practice opportunities. Students need minimum 3-4 weeks advance notice with clear expectations. The research shows students perform significantly better when given detailed preparation resources.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('student-support-q2')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">Should I allow students to bring materials into the IOA?</span>
+      <span class="faq-toggle" id="student-support-q2-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="student-support-q2" style="display: none;">
+      <p>Consider what's authentic for the professional scenario. Many successful IOAs allow supporting materials (notes, data, presentations) that mirror real workplace practice. This shifts focus from memorization to knowledge application and synthesis. Logistics and Scheduling</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('student-support-q3')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">What about students with disabilities or language barriers?</span>
+      <span class="faq-toggle" id="student-support-q3-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="student-support-q3" style="display: none;">
+      <p>IOAs can be more inclusive than written assessments because they allow real-time clarification and multiple ways to demonstrate understanding. Work with disability services for appropriate accommodations. Research shows IOAs often benefit international students because they can clarify misunderstandings immediately.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('student-support-q4')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do I handle students who struggle with the conversational format?</span>
+      <span class="faq-toggle" id="student-support-q4-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="student-support-q4" style="display: none;">
+      <p>Use supportive questioning techniques, provide thinking time when needed, and remember that content knowledge is being assessed, not presentation skills. Some students need encouragement to engage in dialogue rather than delivering prepared monologues.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('student-support-q5')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">What if a student provides incorrect information during the IOA?</span>
+      <span class="faq-toggle" id="student-support-q5-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="student-support-q5" style="display: none;">
+      <p>Use follow-up questions to explore their reasoning and provide opportunities for self-correction. The conversational format allows students to clarify or revise their thinking, which actually provides better assessment of understanding than written responses where mistakes cannot be corrected. Scaling and Sustainability</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('student-support-q6')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do IOAs work with large cohorts (200+ students)?</span>
+      <span class="faq-toggle" id="student-support-q6-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="student-support-q6" style="display: none;">
+      <p>Universities successfully implement IOAs with 800+ students using distributed scheduling, multiple assessors, and standardized rubrics. Griffith University manages 750+ students per unit with sustained positive outcomes. The key is systematic organization and adequate staff resources.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('student-support-q7')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do IOAs contribute to my teaching practice?</span>
+      <span class="faq-toggle" id="student-support-q7-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="student-support-q7" style="display: none;">
+      <p>Staff consistently report that IOAs provide clearer insights into student learning and thinking processes. Many describe IOAs as more engaging and informative than traditional marking, leading to improved teaching practices and better understanding of student needs.</p>
+    </div>
+  </div>
+</div>
+<div class="faq-category">
+  <h3 class="category-title">Technology & Delivery</h3>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('technology--delivery-q1')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">What technology setup do I need?</span>
+      <span class="faq-toggle" id="technology--delivery-q1-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="technology--delivery-q1" style="display: none;">
+      <p>Dual-screen setup works best: one for student interaction, another for real-time rubric marking. Use institutional video conferencing (Zoom/Teams) with automated cloud recording. Ensure secure recording storage and clear access protocols for moderation purposes.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('technology--delivery-q2')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">Do I need special recording equipment?</span>
+      <span class="faq-toggle" id="technology--delivery-q2-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="technology--delivery-q2" style="display: none;">
+      <p>Standard institutional video conferencing platforms provide adequate recording quality for assessment purposes. Focus on clear audio rather than high-definition video. Test all technical setups before assessment periods begin.</p>
+    </div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-question" onclick="toggleFAQ('technology--delivery-q3')">
+      <span class="faq-q-icon">Q:</span>
+      <span class="faq-q-text">How do I ensure GDPR compliance with recordings?</span>
+      <span class="faq-toggle" id="technology--delivery-q3-icon">▼</span>
+    </button>
+    <div class="faq-answer" id="technology--delivery-q3" style="display: none;">
+      <p>Use institutional platforms with appropriate data protection protocols, limit access to authorized academic staff only, establish clear retention periods for recordings, and ensure students understand recording purposes and storage procedures. Quality Assurance</p>
+    </div>
+  </div>
+</div>
+    </div>
+
+    <script>
+
+        // Toggle FAQ answer
+        function toggleFAQ(faqId) {
+            const answer = document.getElementById(faqId);
+            const icon = document.getElementById(faqId + '-icon');
+            
+            if (answer.style.display === 'none') {
+                answer.style.display = 'block';
+                icon.classList.add('open');
+            } else {
+                answer.style.display = 'none';
+                icon.classList.remove('open');
+            }
+        }
+
+        // Search FAQ
+        function searchFAQ() {
+            const input = document.getElementById('faq-search').value.toLowerCase();
+            const categories = document.querySelectorAll('.faq-category');
+            
+            categories.forEach(category => {
+                const items = category.querySelectorAll('.faq-item');
+                let categoryHasResults = false;
+                
+                items.forEach(item => {
+                    const question = item.querySelector('.faq-q-text').textContent.toLowerCase();
+                    const answer = item.querySelector('.faq-answer p').textContent.toLowerCase();
+                    
+                    if (question.includes(input) || answer.includes(input)) {
+                        item.style.display = 'block';
+                        categoryHasResults = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                category.style.display = categoryHasResults || input === '' ? 'block' : 'none';
+            });
+        }
+
+    </script>
+</body>
+</html>
