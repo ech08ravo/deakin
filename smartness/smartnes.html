@@ -75,6 +75,211 @@
       padding: 2rem;
     }
 
+    /* Gartner Hype Cycle */
+    .hype-cycle-section {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      border: 1px solid var(--slate-100);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: var(--slate-900);
+      margin-bottom: 0.25rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.875rem;
+      color: var(--slate-500);
+      margin-bottom: 1.5rem;
+    }
+
+    .hype-cycle-container {
+      position: relative;
+      background: var(--slate-50);
+      border-radius: 12px;
+      border: 1px solid var(--slate-100);
+      padding: 1rem;
+    }
+
+    .hype-cycle-svg {
+      width: 100%;
+      height: auto;
+      max-height: 500px;
+    }
+
+    .phase-label {
+      font-size: 2.5px;
+      fill: var(--slate-400);
+    }
+
+    .tech-point {
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tech-point:hover circle {
+      r: 2;
+    }
+
+    .tech-label {
+      font-size: 2.2px;
+      fill: var(--slate-500);
+      transition: all 0.2s;
+    }
+
+    .tech-label:hover, .tech-label.active {
+      fill: var(--slate-800);
+      font-weight: 500;
+    }
+
+    .tech-detail {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      right: 1rem;
+      background: white;
+      border: 1px solid var(--slate-200);
+      border-radius: 8px;
+      padding: 1rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .tech-detail-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .tech-detail-content {
+      flex: 1;
+    }
+
+    .tech-detail-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .tech-detail-header h3 {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--slate-900);
+      margin: 0;
+    }
+
+    .tech-detail-phase {
+      font-size: 0.75rem;
+      color: var(--slate-400);
+    }
+
+    .tech-detail-desc {
+      font-size: 0.875rem;
+      color: var(--slate-600);
+      margin: 0.5rem 0;
+      font-weight: 300;
+    }
+
+    .tech-detail-timeline {
+      font-size: 0.75rem;
+      color: var(--slate-400);
+    }
+
+    .tech-detail-timeline span {
+      color: var(--teal-600);
+      font-weight: 500;
+    }
+
+    .tech-detail-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--slate-300);
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .tech-detail-close:hover {
+      color: var(--slate-500);
+    }
+
+    .hype-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+      font-size: 0.75rem;
+    }
+
+    .legend-title {
+      color: var(--slate-400);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+      color: var(--slate-500);
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .gartner-predictions {
+      background: var(--teal-50);
+      border: 1px solid #99f6e4;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .gartner-predictions h3 {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #0f766e;
+      margin: 0 0 1rem 0;
+    }
+
+    .predictions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .prediction {
+      text-align: left;
+    }
+
+    .prediction-number {
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: var(--teal-600);
+    }
+
+    .prediction p {
+      font-size: 0.75rem;
+      color: #0f766e;
+      margin: 0.25rem 0 0 0;
+    }
+
     /* Stats Bar */
     .stats-bar {
       display: grid;
@@ -610,6 +815,111 @@
     </div>
   </main>
 
+    <!-- Gartner Hype Cycle Visualization -->
+    <section class="hype-cycle-section" style="max-width: 1400px; margin: 0 auto 2rem auto; margin-left: auto; margin-right: auto; padding-left: 2rem; padding-right: 2rem;">
+      <div style="background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid #f1f5f9; padding: 1.5rem;">
+        <h2 class="section-title">Gartner Hype Cycle 2025</h2>
+        <p class="section-subtitle">Neural interfaces, directed energy, and optics convergence technologies</p>
+        
+        <div class="hype-cycle-container">
+          <svg id="hype-cycle-svg" viewBox="0 0 100 105" class="hype-cycle-svg">
+            <!-- Grid pattern -->
+            <defs>
+              <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#e2e8f0" stroke-width="0.2"/>
+              </pattern>
+            </defs>
+            <rect width="100" height="100" fill="url(#grid)" />
+            
+            <!-- Hype cycle curve -->
+            <path
+              d="M 5,75 Q 15,70 25,50 Q 32,25 38,8 Q 42,5 46,20 Q 52,55 58,60 Q 65,62 72,55 Q 80,48 85,35 Q 90,30 95,30"
+              fill="none"
+              stroke="#0d9488"
+              stroke-width="0.8"
+              stroke-linecap="round"
+              opacity="0.6"
+            />
+            
+            <!-- Filled area under curve -->
+            <path
+              d="M 5,75 Q 15,70 25,50 Q 32,25 38,8 Q 42,5 46,20 Q 52,55 58,60 Q 65,62 72,55 Q 80,48 85,35 Q 90,30 95,30 L 95,100 L 5,100 Z"
+              fill="#0d9488"
+              opacity="0.05"
+            />
+
+            <!-- Phase labels -->
+            <text x="12" y="98" class="phase-label" text-anchor="middle">Innovation</text>
+            <text x="12" y="101" class="phase-label" text-anchor="middle">Trigger</text>
+            
+            <text x="38" y="98" class="phase-label" text-anchor="middle">Peak of Inflated</text>
+            <text x="38" y="101" class="phase-label" text-anchor="middle">Expectations</text>
+            
+            <text x="54" y="98" class="phase-label" text-anchor="middle">Trough of</text>
+            <text x="54" y="101" class="phase-label" text-anchor="middle">Disillusionment</text>
+            
+            <text x="72" y="98" class="phase-label" text-anchor="middle">Slope of</text>
+            <text x="72" y="101" class="phase-label" text-anchor="middle">Enlightenment</text>
+            
+            <text x="90" y="98" class="phase-label" text-anchor="middle">Plateau of</text>
+            <text x="90" y="101" class="phase-label" text-anchor="middle">Productivity</text>
+
+            <!-- Y-axis label -->
+            <text x="2" y="50" class="phase-label" text-anchor="middle" transform="rotate(-90 2 50)">Expectations</text>
+
+            <!-- Technology points will be added by JS -->
+            <g id="tech-points"></g>
+          </svg>
+
+          <!-- Selected technology detail -->
+          <div id="tech-detail" class="tech-detail" style="display: none;">
+            <div class="tech-detail-dot" id="tech-detail-dot"></div>
+            <div class="tech-detail-content">
+              <div class="tech-detail-header">
+                <h3 id="tech-detail-name"></h3>
+                <span id="tech-detail-phase" class="tech-detail-phase"></span>
+              </div>
+              <p id="tech-detail-desc" class="tech-detail-desc"></p>
+              <div class="tech-detail-timeline">
+                Time to mainstream: <span id="tech-detail-time"></span>
+              </div>
+            </div>
+            <button class="tech-detail-close" onclick="closeTechDetail()">×</button>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="hype-legend">
+          <span class="legend-title">Categories</span>
+          <div class="legend-item"><span class="legend-dot" style="background: #0d9488;"></span> Neural Interfaces</div>
+          <div class="legend-item"><span class="legend-dot" style="background: #14b8a6;"></span> Optics–Neural</div>
+          <div class="legend-item"><span class="legend-dot" style="background: #64748b;"></span> Directed Energy</div>
+          <div class="legend-item"><span class="legend-dot" style="background: #94a3b8;"></span> Spatial Computing</div>
+          <div class="legend-item"><span class="legend-dot" style="background: #cbd5e1;"></span> AI</div>
+          <div class="legend-item"><span class="legend-dot" style="background: #5eead4;"></span> Advanced Optics</div>
+        </div>
+
+        <!-- Gartner predictions -->
+        <div class="gartner-predictions">
+          <h3>Key Gartner Predictions</h3>
+          <div class="predictions-grid">
+            <div class="prediction">
+              <div class="prediction-number">30%</div>
+              <p>of knowledge workers will depend on bidirectional brain-machine interfaces by 2030</p>
+            </div>
+            <div class="prediction">
+              <div class="prediction-number">25%</div>
+              <p>of people will spend 1+ hour daily in metaverse experiences by 2026</p>
+            </div>
+            <div class="prediction">
+              <div class="prediction-number">$1.7T</div>
+              <p>projected spatial computing market by 2033 (from $110B in 2023)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
   <footer>
     <p>Hardware is the sensor. Software is the cognition. Choose accordingly.</p>
     <p style="margin-top: 0.5rem;">
@@ -621,6 +931,124 @@
   </footer>
 
   <script>
+    // Hype Cycle Technologies
+    const hypeTechnologies = [
+      { id: 1, name: "Brain-to-Brain Interfaces", x: 8, y: 72, phase: "Innovation Trigger", time: ">10 years", desc: "BrainNet achieved 81% accuracy in 3-person collaboration. Remains research-only.", category: "neural" },
+      { id: 2, name: "Optogenetic Vision", x: 12, y: 65, phase: "Innovation Trigger", time: "5–10 years", desc: "GenSight restored partial vision in blind patient 2021. Phase 3 trials expected 2025.", category: "convergence" },
+      { id: 3, name: "Smart Contact Lenses", x: 15, y: 58, phase: "Innovation Trigger", time: "5–10 years", desc: "Mojo Vision cancelled 2023. XPANCEO targets 2026 prototype.", category: "convergence" },
+      { id: 4, name: "Invasive BCIs", x: 22, y: 82, phase: "Rising", time: "5–10 years", desc: "Neuralink: 12 patients, 15,000+ hours. Precision: FDA 510(k) cleared April 2025.", category: "neural" },
+      { id: 5, name: "Neuromorphic Computing", x: 25, y: 88, phase: "Peak of Inflated Expectations", time: "5–10 years", desc: "Brain-inspired chips for edge AI. Intel Loihi, IBM TrueNorth advancing.", category: "neural" },
+      { id: 6, name: "Directed Energy Weapons", x: 28, y: 92, phase: "Peak of Inflated Expectations", time: "2–5 years", desc: "Iron Beam operational 2025. DragonFire UK 2027. ~30 US programs active.", category: "weapons" },
+      { id: 7, name: "Non-invasive BCIs", x: 32, y: 95, phase: "Peak of Inflated Expectations", time: "5–10 years", desc: "Consumer EEG headsets proliferating. Educational neurofeedback in trials.", category: "neural" },
+      { id: 8, name: "Neural Wearables", x: 36, y: 93, phase: "Peak of Inflated Expectations", time: "2–5 years", desc: "Meta EMG wristband ships 2025. Zero-latency, no calibration required.", category: "neural" },
+      { id: 9, name: "Generative AI", x: 45, y: 70, phase: "Trough of Disillusionment", time: "2–5 years", desc: "Gartner 2024: Entering trough. <30% CEO satisfaction with AI ROI.", category: "ai" },
+      { id: 10, name: "Metaverse", x: 48, y: 58, phase: "Trough of Disillusionment", time: "5–10 years", desc: "25% daily usage predicted by 2026. $1.7T spatial computing by 2033.", category: "spatial" },
+      { id: 11, name: "Autonomous Vehicles", x: 52, y: 48, phase: "Trough of Disillusionment", time: ">10 years", desc: "Regulatory and societal barriers. Gartner: longest path to mainstream.", category: "spatial" },
+      { id: 12, name: "AR Smart Glasses", x: 62, y: 42, phase: "Slope of Enlightenment", time: "2–5 years", desc: "Enterprise adoption maturing. Meta Orion consumer target 2027.", category: "convergence" },
+      { id: 13, name: "Retinal Implants", x: 66, y: 50, phase: "Slope of Enlightenment", time: "2–5 years", desc: "Science Corp acquired Pixium 2024. PRIMA trial results 'stunning'.", category: "convergence" },
+      { id: 14, name: "Industrial Digital Twins", x: 70, y: 58, phase: "Slope of Enlightenment", time: "2–5 years", desc: "Manufacturing and infrastructure adoption accelerating.", category: "spatial" },
+      { id: 15, name: "Enterprise AR/VR", x: 82, y: 68, phase: "Plateau of Productivity", time: "Mainstream", desc: "Removed from Hype Cycle ~2020. Productive in training, design, collaboration.", category: "spatial" },
+      { id: 16, name: "Precision Optics", x: 88, y: 70, phase: "Plateau of Productivity", time: "Mainstream", desc: "Metasurface lenses, computational imaging in consumer devices.", category: "optics" }
+    ];
+
+    const categoryColors = {
+      neural: { fill: "#0d9488", stroke: "#0f766e" },
+      convergence: { fill: "#14b8a6", stroke: "#0d9488" },
+      weapons: { fill: "#64748b", stroke: "#475569" },
+      spatial: { fill: "#94a3b8", stroke: "#64748b" },
+      ai: { fill: "#cbd5e1", stroke: "#94a3b8" },
+      optics: { fill: "#5eead4", stroke: "#2dd4bf" }
+    };
+
+    let selectedHypeTech = null;
+
+    function renderHypeCycle() {
+      const container = document.getElementById('tech-points');
+      container.innerHTML = '';
+
+      hypeTechnologies.forEach(tech => {
+        const colors = categoryColors[tech.category];
+        const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        g.classList.add('tech-point');
+        g.dataset.id = tech.id;
+
+        // Connection line
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', tech.x);
+        line.setAttribute('y1', 100 - tech.y);
+        line.setAttribute('x2', tech.x);
+        line.setAttribute('y2', 100 - tech.y - 8);
+        line.setAttribute('stroke', colors.stroke);
+        line.setAttribute('stroke-width', '0.3');
+        line.setAttribute('opacity', '0.4');
+        g.appendChild(line);
+
+        // Point
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', tech.x);
+        circle.setAttribute('cy', 100 - tech.y);
+        circle.setAttribute('r', '1.5');
+        circle.setAttribute('fill', colors.fill);
+        circle.setAttribute('stroke', colors.stroke);
+        circle.setAttribute('stroke-width', '0.3');
+        g.appendChild(circle);
+
+        // Label
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', tech.x);
+        text.setAttribute('y', 100 - tech.y - 10);
+        text.setAttribute('text-anchor', 'middle');
+        text.classList.add('tech-label');
+        text.textContent = tech.name;
+        g.appendChild(text);
+
+        // Events
+        g.addEventListener('mouseenter', () => {
+          line.setAttribute('opacity', '1');
+          circle.setAttribute('r', '2');
+          text.classList.add('active');
+        });
+
+        g.addEventListener('mouseleave', () => {
+          if (selectedHypeTech !== tech.id) {
+            line.setAttribute('opacity', '0.4');
+            circle.setAttribute('r', '1.5');
+            text.classList.remove('active');
+          }
+        });
+
+        g.addEventListener('click', () => {
+          showTechDetail(tech);
+        });
+
+        container.appendChild(g);
+      });
+    }
+
+    function showTechDetail(tech) {
+      selectedHypeTech = tech.id;
+      const colors = categoryColors[tech.category];
+      
+      document.getElementById('tech-detail-dot').style.backgroundColor = colors.fill;
+      document.getElementById('tech-detail-name').textContent = tech.name;
+      document.getElementById('tech-detail-phase').textContent = tech.phase;
+      document.getElementById('tech-detail-desc').textContent = tech.desc;
+      document.getElementById('tech-detail-time').textContent = tech.time;
+      document.getElementById('tech-detail').style.display = 'flex';
+    }
+
+    function closeTechDetail() {
+      selectedHypeTech = null;
+      document.getElementById('tech-detail').style.display = 'none';
+      
+      // Reset all points
+      document.querySelectorAll('.tech-point').forEach(g => {
+        g.querySelector('line').setAttribute('opacity', '0.4');
+        g.querySelector('circle').setAttribute('r', '1.5');
+        g.querySelector('text').classList.remove('active');
+      });
+    }
+
     // Data
     const data = [
       {
@@ -1470,6 +1898,7 @@
     });
 
     // Initialize
+    renderHypeCycle();
     updateStats();
     filterData();
   </script>
