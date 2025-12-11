@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Glasses & Assessment Futures | Workshop Synthesis</title>
+  <style>
+    :root {
+      --teal-600: #0d9488;
+      --teal-500: #14b8a6;
+      --teal-100: #ccfbf1;
+      --teal-50: #f0fdfa;
+      --slate-900: #0f172a;
+      --slate-700: #334155;
+      --slate-500: #64748b;
+      --slate-300: #cbd5e1;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --green-100: #dcfce7;
+      --green-700: #166534;
+      --yellow-100: #fef9c3;
+      --yellow-700: #854d0e;
+      --orange-100: #fed7aa;
+      --orange-700: #9a3412;
+      --red-100: #fecaca;
+      --red-700: #991b1b;
+      --gray-100: #e5e7eb;
+      --gray-600: #6b7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--slate-50);
+      color: var(--slate-700);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--teal-600) 0%, var(--teal-500) 100%);
+      color: white;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-weight: 300;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    header p {
+      opacity: 0.9;
+      font-size: 1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .subtitle {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      margin-top: 1rem;
+    }
+
+    /* Main Container */
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      border: 1px solid var(--slate-100);
+    }
+
+    .stat-card .number {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--teal-600);
+    }
+
+    .stat-card .label {
+      font-size: 0.75rem;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Controls */
+    .controls {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      border: 1px solid var(--slate-100);
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--slate-200);
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .search-box:focus {
+      outline: none;
+      border-color: var(--teal-500);
+    }
+
+    .filter-section {
+      margin-bottom: 1rem;
+    }
+
+    .filter-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .filter-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--slate-300);
+      background: white;
+      border-radius: 20px;
+      font-size: 0.8125rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      background: var(--slate-100);
+    }
+
+    .filter-btn.active {
+      background: var(--teal-600);
+      color: white;
+      border-color: var(--teal-600);
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      border: 1px solid var(--slate-100);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+      padding: 1.25rem;
+      border-bottom: 1px solid var(--slate-100);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: var(--slate-900);
+      margin-bottom: 0.25rem;
+    }
+
+    .card-category {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .cat-sensor { background: #dbeafe; color: #1e40af; }
+    .cat-biohack { background: #f3e8ff; color: #7c3aed; }
+    .cat-software { background: #fce7f3; color: #be185d; }
+    .cat-consideration { background: #fef3c7; color: #b45309; }
+    .cat-gartner { background: #d1fae5; color: #065f46; }
+    .cat-assessment { background: #ffe4e6; color: #be123c; }
+    .cat-unmatched { background: var(--gray-100); color: var(--gray-600); }
+
+    .timeline-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .timeline-now { background: var(--green-100); color: var(--green-700); }
+    .timeline-soon { background: var(--yellow-100); color: var(--yellow-700); }
+    .timeline-mid { background: var(--orange-100); color: var(--orange-700); }
+    .timeline-far { background: var(--red-100); color: var(--red-700); }
+    .timeline-other { background: var(--gray-100); color: var(--gray-600); }
+
+    .card-body {
+      padding: 1.25rem;
+    }
+
+    .card-description {
+      color: var(--slate-600);
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-meta {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      font-size: 0.8125rem;
+      margin-bottom: 1rem;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meta-label {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-value {
+      color: var(--slate-700);
+    }
+
+    .meta-value a {
+      color: var(--teal-600);
+      text-decoration: none;
+    }
+
+    .meta-value a:hover {
+      text-decoration: underline;
+    }
+
+    /* Post-its Section */
+    .postits-top {
+      padding: 1rem;
+      background: #fafaf8;
+      border-bottom: 1px solid var(--slate-100);
+    }
+
+    .postits-section {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--slate-100);
+    }
+
+    .postits-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: none;
+      border: none;
+      color: var(--teal-600);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0.5rem 0;
+    }
+
+    .postits-toggle:hover {
+      color: var(--teal-500);
+    }
+
+    .postits-toggle svg {
+      transition: transform 0.2s;
+    }
+
+    .postits-toggle.open svg {
+      transform: rotate(180deg);
+    }
+
+    .postits-container {
+      display: none;
+      margin-top: 1rem;
+    }
+
+    .postits-container.open {
+      display: block;
+    }
+
+    .postits-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .postit {
+      background: #fff9c4;
+      padding: 0.5rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.8125rem;
+      box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+      transform: rotate(-1deg);
+      transition: transform 0.2s;
+      max-width: 250px;
+    }
+
+    .postit:nth-child(even) {
+      transform: rotate(1deg);
+      background: #ffecb3;
+    }
+
+    .postit:nth-child(3n) {
+      background: #f8bbd9;
+      transform: rotate(-0.5deg);
+    }
+
+    .postit:nth-child(5n) {
+      background: #c8e6c9;
+      transform: rotate(1.5deg);
+    }
+
+    .postit:nth-child(7n) {
+      background: #b3e5fc;
+      transform: rotate(-1.5deg);
+    }
+
+    .postit:hover {
+      transform: rotate(0deg) scale(1.05);
+      z-index: 10;
+    }
+
+    /* No Results */
+    .no-results {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--slate-500);
+    }
+
+    .no-results svg {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--slate-500);
+      font-size: 0.875rem;
+    }
+
+    footer a {
+      color: var(--teal-600);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 1.5rem;
+      }
+
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .card-header {
+        flex-direction: column;
+      }
+
+      .card-meta {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* View Toggle */
+    .view-toggle {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .view-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--slate-300);
+      background: white;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+    }
+
+    .view-btn.active {
+      background: var(--teal-600);
+      color: white;
+      border-color: var(--teal-600);
+    }
+
+    .view-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    /* Table View */
+    .table-view {
+      display: none;
+      overflow-x: auto;
+    }
+
+    .table-view.active {
+      display: block;
+    }
+
+    .cards-grid.active {
+      display: grid;
+    }
+
+    .cards-grid:not(.active) {
+      display: none;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .data-table th {
+      background: var(--slate-100);
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: var(--slate-700);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      position: sticky;
+      top: 0;
+    }
+
+    .data-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--slate-100);
+      vertical-align: top;
+    }
+
+    .data-table tr:hover {
+      background: var(--slate-50);
+    }
+
+    .data-table a {
+      color: var(--teal-600);
+      text-decoration: none;
+    }
+
+    .data-table a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI Glasses & Assessment Futures</h1>
+    <p>Synthesis of emerging technologies and workshop ideas for designing assessment in the age of human augmentation</p>
+    <p class="subtitle">AI Practice Exchange Workshop · December 2025</p>
+  </header>
+
+  <main>
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="number" id="stat-total">0</div>
+        <div class="label">Total Items</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="stat-postits">0</div>
+        <div class="label">Post-It Ideas</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="stat-now">0</div>
+        <div class="label">Available Now</div>
+      </div>
+      <div class="stat-card">
+        <div class="number" id="stat-future">0</div>
+        <div class="label">5+ Years Away</div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <input type="text" class="search-box" id="search" placeholder="Search technologies, ideas, post-its...">
+      
+      <div class="filter-section">
+        <span class="filter-label">Category</span>
+        <div class="filter-buttons" id="category-filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="sensor">Sensors</button>
+          <button class="filter-btn" data-filter="biohack">Biohacks</button>
+          <button class="filter-btn" data-filter="software">Software</button>
+          <button class="filter-btn" data-filter="consideration">Considerations</button>
+          <button class="filter-btn" data-filter="gartner">Gartner</button>
+          <button class="filter-btn" data-filter="assessment">Assessment Themes</button>
+          <button class="filter-btn" data-filter="unmatched">Unmatched Ideas</button>
+        </div>
+      </div>
+
+      <div class="filter-section">
+        <span class="filter-label">Timeline</span>
+        <div class="filter-buttons" id="timeline-filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="now">Now</button>
+          <button class="filter-btn" data-filter="soon">1-5 Years</button>
+          <button class="filter-btn" data-filter="mid">5-10 Years</button>
+          <button class="filter-btn" data-filter="far">>10 Years</button>
+        </div>
+      </div>
+
+      <div class="view-toggle">
+        <button class="view-btn active" id="view-cards">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+          Cards
+        </button>
+        <button class="view-btn" id="view-table">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+          Table
+        </button>
+      </div>
+    </div>
+
+    <!-- Cards View -->
+    <div class="cards-grid active" id="cards-container"></div>
+
+    <!-- Table View -->
+    <div class="table-view" id="table-container">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Timeline</th>
+            <th>Research</th>
+            <th>Related Ideas</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+
+    <!-- No Results -->
+    <div class="no-results" id="no-results" style="display: none;">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <p>No items match your filters</p>
+    </div>
+  </main>
+
+  <footer>
+    <p>Hardware is the sensor. Software is the cognition. Choose accordingly.</p>
+    <p style="margin-top: 0.5rem;">
+      <a href="https://github.com/BasedHardware/OpenGlass">OpenGlass</a> · 
+      <a href="https://brilliant.xyz/">Brilliant Labs</a> · 
+      <a href="https://www.gartner.com/en/articles/hype-cycle-for-emerging-technologies">Gartner Hype Cycle</a>
+    </p>
+    <p style="margin-top: 1rem; opacity: 0.7;">Workshop synthesis generated December 2025</p>
+  </footer>
+
+  <script>
+    // Data
+    const data = [
+      {
+        category: "sensor",
+        item: "RGB Camera",
+        description: "Visual scene, faces, text, objects",
+        products: "Ray-Ban Meta, Brilliant Labs Frame",
+        researchLink: "https://arxiv.org/abs/2304.08485",
+        researchLabel: "LLaVA multimodal vision",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Mature technology. Real-time scene understanding via cloud AI operational in consumer devices.",
+        postits: ["AI glasses – remote marker (2nd marker)", "BOTH ACADEMIC AND STUDENT ARE GIVEN 'SMART GLASSES' TO RECORD ORAL ASSESSMENT", "A SECOND ASSESSOR IS SECRETLY HIDDEN IN THE ROOM AND OBSERVING THE ASSESSMENT", "Screen Sharing → long distance students/Zoom"]
+      },
+      {
+        category: "sensor",
+        item: "Depth Camera",
+        description: "3D spatial mapping, distance",
+        products: "HoloLens 2, Magic Leap 2",
+        researchLink: "https://developer.apple.com/augmented-reality/",
+        researchLabel: "Apple ARKit / LiDAR",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Enterprise-ready. Consumer glasses with depth (Meta Orion) expected 2027.",
+        postits: []
+      },
+      {
+        category: "sensor",
+        item: "Eye Tracking",
+        description: "Gaze direction, pupil dilation, blink rate",
+        products: "Apple Vision Pro, Tobii",
+        researchLink: "https://www.nature.com/articles/s41598-024-51766-1",
+        researchLabel: "Nature: Eye tracking & cognition",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "High precision in Vision Pro. Gartner: foveated rendering approach plateau 2-5 years.",
+        postits: ["Use technology to ensure students are thinking & speaking rather than reading outputs from AI", "Make all assessments oral presentations with students' eyes shut! Blindfold"]
+      },
+      {
+        category: "sensor",
+        item: "Microphone Array",
+        description: "Voice, ambient sound, spatial audio",
+        products: "Ray-Ban Meta, Even Realities G1",
+        researchLink: "https://openai.com/research/whisper",
+        researchLabel: "OpenAI Whisper",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Mature. On-device Whisper transcription available. Directional audio improving.",
+        postits: ["Students self-record their learning in an oral dialogue", "Recording where/if necessary", "Interactive in person assessment", "Every single assessment is examined in person", "Exams Everything In person!"]
+      },
+      {
+        category: "sensor",
+        item: "Accelerometer / Gyro",
+        description: "Head position, movement, orientation",
+        products: "All smart glasses",
+        researchLink: "https://www.khronos.org/openxr/",
+        researchLabel: "OpenXR Standard",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Commodity hardware. Sub-millisecond latency standard in all XR devices.",
+        postits: []
+      },
+      {
+        category: "sensor",
+        item: "EEG Electrodes",
+        description: "Brainwave activity",
+        products: "Snap NextMind, Cognixion ONE",
+        researchLink: "https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2024.1362735",
+        researchLabel: "Frontiers: Consumer EEG review",
+        timeline: "mid",
+        timelineLabel: "5-10 YEARS",
+        timelineSummary: "Non-invasive BCIs at Peak of Inflated Expectations. Consumer EEG headsets proliferating but accuracy limited.",
+        postits: ["Put electrodes on their hands to make sure they know the content", "Telepathy police", "IMPLANT INTO PEOPLE THE 'RECORDING DEVICE' FROM BLACK MIRROR"]
+      },
+      {
+        category: "sensor",
+        item: "EMG Pickup",
+        description: "Nerve signals (wristband companion)",
+        products: "Meta Neural Wristband (2025)",
+        researchLink: "https://tech.facebook.com/reality-labs/2021/3/inside-facebook-reality-labs-wrist-based-interaction-for-the-next-computing-platform/",
+        researchLabel: "Meta Reality Labs EMG",
+        timeline: "soon",
+        timelineLabel: "2025",
+        timelineSummary: "Meta wristband ships 2025. Zero-latency, no calibration. Near-term consumer neural tech.",
+        postits: []
+      },
+      {
+        category: "biohack",
+        item: "Glucose Monitoring",
+        description: "Continuous glucose via skin patch",
+        products: "Libre 3 / Dexcom G7",
+        researchLink: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9142972/",
+        researchLabel: "NIH: CGM accuracy review",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "FDA-cleared, mature market. Non-invasive optical CGMs in trials, 2-3 years to market.",
+        postits: []
+      },
+      {
+        category: "biohack",
+        item: "Heart Rate / HRV",
+        description: "Sleep, HRV, strain, recovery",
+        products: "Oura Ring / Whoop 4.0",
+        researchLink: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9498747/",
+        researchLabel: "NIH: Wearable HRV validation",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Consumer-grade validated. Medical-grade wearables approaching FDA clearance.",
+        postits: []
+      },
+      {
+        category: "biohack",
+        item: "EEG Headband",
+        description: "Meditation, focus, attention monitoring",
+        products: "Muse 2 / Emotiv / BrainCo",
+        researchLink: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC8296055/",
+        researchLabel: "NIH: Consumer EEG validation",
+        timeline: "soon",
+        timelineLabel: "2-5 YEARS",
+        timelineSummary: "Gartner: Non-invasive BCIs 5-10 years to mainstream. Educational neurofeedback in trials.",
+        postits: ["Build intrinsic motivation + agency", "D. Thinking", "Critical thinking / Staff Education"]
+      },
+      {
+        category: "biohack",
+        item: "DIY Insulin (OpenAPS)",
+        description: "Open-source artificial pancreas",
+        products: "OpenAPS / Loop",
+        researchLink: "https://www.nejm.org/doi/full/10.1056/NEJMoa2022675",
+        researchLabel: "NEJM: DIY APS outcomes",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Community-driven, FDA-cleared commercial alternatives available (Omnipod 5, Control-IQ).",
+        postits: []
+      },
+      {
+        category: "biohack",
+        item: "Transcranial Stimulation",
+        description: "tDCS for depression, motor learning",
+        products: "Flow / Halo Sport",
+        researchLink: "https://www.nature.com/articles/s41380-022-01644-x",
+        researchLabel: "Nature: tDCS meta-analysis",
+        timeline: "mid",
+        timelineLabel: "5-10 YEARS",
+        timelineSummary: "Flow CE-cleared for depression. Broader cognitive enhancement claims unvalidated. Regulation tightening.",
+        postits: []
+      },
+      {
+        category: "biohack",
+        item: "Invasive BCI",
+        description: "Direct neural interface",
+        products: "Neuralink / Synchron / Precision",
+        researchLink: "https://www.nejm.org/doi/full/10.1056/NEJMoa2310826",
+        researchLabel: "NEJM: Stentrode BCI trial",
+        timeline: "mid",
+        timelineLabel: "5-10 YEARS",
+        timelineSummary: "Precision FDA 510(k) cleared April 2025. Neuralink: 12 patients, 15,000+ hours. Consumer implants target 2028-29.",
+        postits: ["IMPLANT INTO PEOPLE THE 'RECORDING DEVICE' FROM BLACK MIRROR", "Put electrodes on their hands to make sure they know the content", "Telepathy police"]
+      },
+      {
+        category: "biohack",
+        item: "Smart Contact Lens",
+        description: "AR display in contact lens",
+        products: "Mojo Vision (defunct) / XPANCEO",
+        researchLink: "https://www.science.org/doi/10.1126/sciadv.adf3310",
+        researchLabel: "Science: Smart lens review",
+        timeline: "mid",
+        timelineLabel: "5-10 YEARS",
+        timelineSummary: "Mojo Vision cancelled 2023. XPANCEO targets 2026 prototype. Significant technical barriers remain.",
+        postits: []
+      },
+      {
+        category: "biohack",
+        item: "Optogenetics",
+        description: "Light-controlled gene therapy for vision",
+        products: "GenSight / Nanoscope",
+        researchLink: "https://www.nature.com/articles/s41591-021-01351-4",
+        researchLabel: "Nature Medicine: First human optogenetic vision",
+        timeline: "mid",
+        timelineLabel: "2027-28",
+        timelineSummary: "GenSight restored partial vision 2021. Nanoscope Phase 3 expected late 2025. FDA approval likely 2027-28.",
+        postits: []
+      },
+      {
+        category: "software",
+        item: "Meta AI",
+        description: "Voice assistant, image recognition, translation, live video",
+        products: "Ray-Ban Meta",
+        researchLink: "https://ai.meta.com/research/publications/llama-2-open-foundation-and-fine-tuned-chat-models/",
+        researchLabel: "Meta: Llama 2 paper",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Shipping. Live video analysis added Dec 2024. Multi-modal understanding improving rapidly.",
+        postits: ["Unlimited use of any A.I.", "AI role play (include prompts & dialogue and an interaction)", "AI chat bot battle", "Let students use AI and assess process/alternative metrics"]
+      },
+      {
+        category: "software",
+        item: "Envision AI",
+        description: "Scene description, text reading for blind users",
+        products: "Envision Glasses",
+        researchLink: "https://www.sciencedirect.com/science/article/pii/S2211368123000384",
+        researchLabel: "AI assistive tech for blind users",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Mature accessibility product. GPT-4o integration improving scene descriptions.",
+        postits: []
+      },
+      {
+        category: "software",
+        item: "Be My Eyes",
+        description: "Volunteer + AI visual assistance",
+        products: "Ray-Ban Meta",
+        researchLink: "https://openai.com/index/be-my-eyes/",
+        researchLabel: "OpenAI + Be My Eyes",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Operational. AI assistant handles 90%+ of queries. Human volunteers for complex tasks.",
+        postits: []
+      },
+      {
+        category: "software",
+        item: "Noa (Brilliant Labs)",
+        description: "Open-source assistant, local LLMs",
+        products: "Brilliant Labs Frame",
+        researchLink: "https://github.com/brilliantlabsAR/frame-codebase",
+        researchLabel: "Brilliant Labs GitHub",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Shipping. On-device Llama 3 possible. Privacy-preserving alternative to cloud AI.",
+        postits: []
+      },
+      {
+        category: "software",
+        item: "OpenGlass",
+        description: "Open-source memory assistant",
+        products: "DIY / Frame",
+        researchLink: "https://github.com/BasedHardware/OpenGlass",
+        researchLabel: "OpenGlass GitHub",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Active development. ~$25 DIY build. Life-logging with local AI processing.",
+        postits: []
+      },
+      {
+        category: "software",
+        item: "BCI-controlled AR",
+        description: "Thought-controlled AR interface",
+        products: "Research only",
+        researchLink: "https://www.nature.com/articles/s41586-023-06377-x",
+        researchLabel: "Nature: Neural decoding",
+        timeline: "far",
+        timelineLabel: ">10 YEARS",
+        timelineSummary: "Meta cancelled brain-typing 2021. Snap NextMind acquired for long-term R&D. Consumer thought-control not before 2030.",
+        postits: ["Telepathy police"]
+      },
+      {
+        category: "software",
+        item: "AI Detection Tools",
+        description: "Detecting AI-generated content",
+        products: "Turnitin, GPTZero, etc.",
+        researchLink: "https://arxiv.org/abs/2303.11156",
+        researchLabel: "AI detection research",
+        timeline: "now",
+        timelineLabel: "NOW-UNCERTAIN",
+        timelineSummary: "Detection arms race ongoing. Accuracy varies. Watermarking emerging but not standardised.",
+        postits: ["All encompassing AI check tool that knows & is able to analyse if any AI has produced written task", "Compare & contrast AI's response to the exam question to published [paper]"]
+      },
+      {
+        category: "consideration",
+        item: "Data Ownership",
+        description: "Privacy, research ethics, student data",
+        products: "Meta/Apple/Google vs Brilliant Labs/OpenGlass",
+        researchLink: "https://edpb.europa.eu/our-work-tools/documents/public-consultations/2023/guidelines-22023-article-5-3-directive-20022e_en",
+        researchLabel: "EDPB: Privacy guidelines",
+        timeline: "soon",
+        timelineLabel: "2-5 YEARS",
+        timelineSummary: "EU AI Act enforcement 2025. GDPR fines increasing. On-device AI enabling privacy-first alternatives.",
+        postits: []
+      },
+      {
+        category: "consideration",
+        item: "On-Device Processing",
+        description: "Cloud vs local AI processing",
+        products: "Latency, dependency, privacy tradeoffs",
+        researchLink: "https://arxiv.org/abs/2311.07052",
+        researchLabel: "On-device LLMs survey",
+        timeline: "soon",
+        timelineLabel: "1-2 YEARS",
+        timelineSummary: "Llama 3 runs on mobile. Apple Intelligence local-first. Edge AI chips improving 40%/year.",
+        postits: []
+      },
+      {
+        category: "consideration",
+        item: "Validation",
+        description: "Marketing claims vs peer review",
+        products: "Consumer vs research-grade",
+        researchLink: "https://hai.stanford.edu/policy/ai-index",
+        researchLabel: "Stanford HAI Index",
+        timeline: "now",
+        timelineLabel: "ONGOING",
+        timelineSummary: "Consumer neurotechnology largely unvalidated. Academic research 2-5 years behind marketing claims.",
+        postits: ["Review Academic Integrity Policy", "Create resources that move focus from academic integrity to learning integrity – why AI is something OK & sometimes not"]
+      },
+      {
+        category: "consideration",
+        item: "Regulatory Status",
+        description: "Consumer electronics vs medical-grade",
+        products: "FDA/CE clearance requirements",
+        researchLink: "https://www.fda.gov/regulatory-information/search-fda-guidance-documents/brain-computer-interface-devices-patients-paralysis-or-amputation",
+        researchLabel: "FDA BCI guidance",
+        timeline: "soon",
+        timelineLabel: "2-5 YEARS",
+        timelineSummary: "FDA 510(k) pathway clarified April 2025. EU MDR tightening. Consumer neurotech facing increased scrutiny.",
+        postits: []
+      },
+      {
+        category: "consideration",
+        item: "Interoperability",
+        description: "Walled gardens vs open standards",
+        products: "OpenXR, WebXR, APIs",
+        researchLink: "https://www.khronos.org/openxr/",
+        researchLabel: "Khronos OpenXR",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "OpenXR adopted by major platforms. WebXR enabling browser-based AR/VR. LMS integration emerging.",
+        postits: []
+      },
+      {
+        category: "gartner",
+        item: "Generative AI",
+        description: "Trough of Disillusionment",
+        products: "",
+        researchLink: "https://www.gartner.com/en/articles/hype-cycle-for-emerging-technologies",
+        researchLabel: "Gartner Hype Cycle",
+        timeline: "soon",
+        timelineLabel: "2-5 YEARS",
+        timelineSummary: "<30% CEO satisfaction with AI ROI despite $1.9M avg enterprise spend",
+        postits: ["Bring every staff member up to speed with A.I capability", "Topic/unit of how to use AI + not use", "Provide workload for training for teaching staff PD in discussing AI with students", "Better/clearer guidance on AI acknowledgement statements"]
+      },
+      {
+        category: "gartner",
+        item: "Spatial Computing",
+        description: "Innovation Trigger",
+        products: "",
+        researchLink: "https://www.gartner.com/en/articles/hype-cycle-for-emerging-technologies",
+        researchLabel: "Gartner Hype Cycle",
+        timeline: "mid",
+        timelineLabel: "5-10 YEARS",
+        timelineSummary: "Market projected $1.7T by 2033 (from $110B in 2023)",
+        postits: []
+      },
+      {
+        category: "gartner",
+        item: "AR Smart Glasses",
+        description: "Slope of Enlightenment (enterprise)",
+        products: "",
+        researchLink: "https://www.gartner.com/en/articles/hype-cycle-for-emerging-technologies",
+        researchLabel: "Gartner Hype Cycle",
+        timeline: "soon",
+        timelineLabel: "2-5 YEARS",
+        timelineSummary: "Meta Orion consumer target 2027. Enterprise adoption maturing.",
+        postits: ["AI glasses – remote marker (2nd marker)", "BOTH ACADEMIC AND STUDENT ARE GIVEN 'SMART GLASSES' TO RECORD ORAL ASSESSMENT"]
+      },
+      {
+        category: "gartner",
+        item: "Brain-Computer Interfaces",
+        description: "Innovation Trigger → early Peak",
+        products: "",
+        researchLink: "https://www.gartner.com/en/articles/hype-cycle-for-emerging-technologies",
+        researchLabel: "Gartner Hype Cycle",
+        timeline: "mid",
+        timelineLabel: "5-10+ YEARS",
+        timelineSummary: "Precision FDA cleared April 2025. 30% knowledge workers using BMI by 2030 (Gartner)",
+        postits: ["IMPLANT INTO PEOPLE THE 'RECORDING DEVICE' FROM BLACK MIRROR", "Put electrodes on their hands to make sure they know the content"]
+      },
+      {
+        category: "gartner",
+        item: "Neuromorphic Computing",
+        description: "Peak of Inflated Expectations",
+        products: "",
+        researchLink: "https://www.gartner.com/en/articles/hype-cycle-for-emerging-technologies",
+        researchLabel: "Gartner Hype Cycle",
+        timeline: "mid",
+        timelineLabel: "5-10 YEARS",
+        timelineSummary: "Intel Loihi 2, IBM NorthPole advancing. Edge AI applications.",
+        postits: []
+      },
+      {
+        category: "gartner",
+        item: "Metaverse",
+        description: "Trough of Disillusionment",
+        products: "",
+        researchLink: "https://www.gartner.com/en/articles/hype-cycle-for-emerging-technologies",
+        researchLabel: "Gartner Hype Cycle",
+        timeline: "mid",
+        timelineLabel: "5-10 YEARS",
+        timelineSummary: "25% daily usage predicted by 2026 (Gartner)",
+        postits: []
+      },
+      {
+        category: "gartner",
+        item: "Autonomous Vehicles",
+        description: "Trough of Disillusionment",
+        products: "",
+        researchLink: "https://www.gartner.com/en/articles/hype-cycle-for-emerging-technologies",
+        researchLabel: "Gartner Hype Cycle",
+        timeline: "far",
+        timelineLabel: ">10 YEARS",
+        timelineSummary: "Gartner: longest path to mainstream. Regulatory barriers.",
+        postits: []
+      },
+      {
+        category: "assessment",
+        item: "In-Person / Oral Assessment",
+        description: "Shift to synchronous examination as response to AI text generation",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "Scalability challenges. Workload implications for staff.",
+        postits: ["Practical Assessment Only!", "Exams Everything In person!", "Every single assessment is examined in person", "Interactive in person assessment", "Two staff are present at the oral Ax", "Make all assessments oral presentations with students' eyes shut! Blindfold", "Conversation with students in person & online", "Students interviewing each other for assessment", "Interviewing students in small groups 3-4", "Secondary Assessors → primary (oral) → Sec. (Notes)"]
+      },
+      {
+        category: "assessment",
+        item: "Student Choice / Flexibility",
+        description: "Allow students to choose assessment modality",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "UDL principles. Equity considerations.",
+        postits: ["Choose your own adventure", "Let students choose how they want to be assessed", "Allow choice in assessment modality", "Student choice in assessment types – show what they know & can do in their way", "Bespoke assessment for every person", "Allow students to design their own prac exam to demonstrate skill", "Multimodal tasks"]
+      },
+      {
+        category: "assessment",
+        item: "Process Over Product",
+        description: "Assess learning journey not just output",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "Portfolio, reflection, iterative feedback approaches.",
+        postits: ["Assess the process not just the final product", "Feedback cycles iteratively across degree", "Let students use AI and assess process/alternative metrics", "Assessment as Learning"]
+      },
+      {
+        category: "assessment",
+        item: "Co-Design / Partnership",
+        description: "Students as partners in assessment design",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "Student agency. Authentic assessment.",
+        postits: ["Co-design", "Co-developing Assessments with other/including stakeholders including academics", "Asking / Involving students in the As design", "Students as partners to work with students", "Reframe AoL as an opportunity for students to showcase their learning"]
+      },
+      {
+        category: "assessment",
+        item: "Industry Integration",
+        description: "Connect assessment to workplace AI use",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "Graduate employability. Professional standards.",
+        postits: ["Bring industry reps into the classroom to give AI & industry perspective", "Involve industry in assessment that asks students to use AI (e.g. Peter Vuong's example)", "Industry engagement is needed for marking of assessments", "No uni – only placement. Apprenticeship model.", "On the job learning with check ins & no written assessments", "Outsource using internship"]
+      },
+      {
+        category: "assessment",
+        item: "Staff Development",
+        description: "Upskill educators on AI",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-URGENT",
+        timelineSummary: "Capacity building. Consistent messaging across institution.",
+        postits: ["Bring every staff member up to speed with A.I capability", "Provide workload for training for teaching staff PD in discussing AI with students", "Critical thinking / Staff Education", "More time allocated in WAMs to meet w students"]
+      },
+      {
+        category: "assessment",
+        item: "Abolish / Radically Redesign",
+        description: "Fundamental rethinking of assessment",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "far",
+        timelineLabel: "SPECULATIVE",
+        timelineSummary: "Provocations and wild ideas from workshop.",
+        postits: ["Abolish external standards", "Abolish Grades & introduce 1:1 relationships with an academic steward", "Don't set exams", "Get rid of assessment entirely – students describe how to prove clear knowledge", "EMPLOYEES JUST BELIEVE GRADUATES DID WELL IN THEIR ASSESSMENTS", "Turn up & pass", "Close unis / ghost"]
+      },
+      {
+        category: "assessment",
+        item: "Scaffolding / Support",
+        description: "Prepare students adequately for success",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "Equity focus. Success for all students.",
+        postits: ["Scaffold students adequately so they are prepared to succeed", "S-T mentorship – addressing important LOs – setting up assessment centres for remote/rural students"]
+      },
+      {
+        category: "assessment",
+        item: "Resourcing / Workload",
+        description: "Time, money, people for assessment",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "Sustainability. Staff wellbeing.",
+        postits: ["Money. More people. Time", "Give as many WAM hours as needed for each assessment", "More time allocated in WAMs to meet w students", "Design flexible synchronous booking options", "Allow 1 reschedule w/o penalties"]
+      },
+      {
+        category: "assessment",
+        item: "Equivalency / Fairness",
+        description: "Ensuring comparable standards across modalities",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "Equity across different assessment formats.",
+        postits: ["Template to Assessment equivalency", "Testing the equivalency of the assessment (internal content & engagement) LO", "Aligning them with ILOs", "Fair and equitable assessment = 4 all students – Employers impact", "Weighting tool → Collaborative marking"]
+      },
+      {
+        category: "assessment",
+        item: "Recording / Documentation",
+        description: "Capture assessment for review and QA",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "Quality assurance. Appeals processes.",
+        postits: ["Students self-record their learning in an oral dialogue", "Recording where/if necessary", "A SECOND ASSESSOR IS SECRETLY HIDDEN IN THE ROOM AND OBSERVING THE ASSESSMENT", "BOTH ACADEMIC AND STUDENT ARE GIVEN 'SMART GLASSES' TO RECORD ORAL ASSESSMENT"]
+      },
+      {
+        category: "assessment",
+        item: "Blocking Technology",
+        description: "Prevent AI/device use in exams",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-LIMITED",
+        timelineSummary: "Invigilated exam integrity. Arms race dynamics.",
+        postits: ["Faraday boxes", "Jammers", "Make students wear crime scene outfits"]
+      },
+      {
+        category: "assessment",
+        item: "Arts / Creative Assessment",
+        description: "Authenticity in creative work and artist statements",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "AI art detection. Process documentation.",
+        postits: ["TAKE FAKE IDEA + AI-ARC IMAGING", "Ask the student what they like to read in an artist statement", "Direct the student to research other artists and to read their artist statements"]
+      },
+      {
+        category: "unmatched",
+        item: "Pay VCs less",
+        description: "Provocative suggestion",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "far",
+        timelineLabel: "NEVER",
+        timelineSummary: "Not technology-related. Workshop humour.",
+        postits: ["Pay VCs less"]
+      },
+      {
+        category: "unmatched",
+        item: "Relational Learning",
+        description: "Pedagogical approach emphasising human connection",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "Human connection in learning.",
+        postits: ["Relational learning"]
+      },
+      {
+        category: "unmatched",
+        item: "Student Led Learning",
+        description: "Agency and ownership in learning",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW-ONGOING",
+        timelineSummary: "Student agency.",
+        postits: ["Student led learning"]
+      },
+      {
+        category: "unmatched",
+        item: "Bring Back Traditional Assessment",
+        description: "Conservative response to AI disruption",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Resistance to change.",
+        postits: ["Bring back traditional assessment"]
+      },
+      {
+        category: "unmatched",
+        item: "Ask Your Librarian",
+        description: "Information literacy resource",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Underutilised resource.",
+        postits: ["Ask your librarian"]
+      },
+      {
+        category: "unmatched",
+        item: "PhD Students as Reviewers",
+        description: "Use PhD students as third assessors",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Scalability solution for moderation.",
+        postits: ["PhD students are used as a 3rd reviewer to mitigate risk of gent one assessor"]
+      },
+      {
+        category: "unmatched",
+        item: "Cross-Institutional Assessment",
+        description: "Universities working together on assessment",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "soon",
+        timelineLabel: "2-5 YEARS",
+        timelineSummary: "Shared assessment infrastructure.",
+        postits: ["Universities work together to assess students located in any location"]
+      },
+      {
+        category: "unmatched",
+        item: "Creative Assessment Formats",
+        description: "Arts-based and performance assessment",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Innovative approaches.",
+        postits: ["Assessments with playwrights or improv", "Peer assessments"]
+      },
+      {
+        category: "unmatched",
+        item: "AI Agent in Assessment",
+        description: "AI as assessment companion",
+        products: "",
+        researchLink: "",
+        researchLabel: "",
+        timeline: "soon",
+        timelineLabel: "1-2 YEARS",
+        timelineSummary: "Emerging practice.",
+        postits: ["AI Agent along"]
+      }
+    ];
+
+    // DOM Elements
+    const cardsContainer = document.getElementById('cards-container');
+    const tableBody = document.getElementById('table-body');
+    const searchInput = document.getElementById('search');
+    const categoryFilters = document.getElementById('category-filters');
+    const timelineFilters = document.getElementById('timeline-filters');
+    const noResults = document.getElementById('no-results');
+    const viewCards = document.getElementById('view-cards');
+    const viewTable = document.getElementById('view-table');
+    const tableContainer = document.getElementById('table-container');
+
+    // State
+    let activeCategory = 'all';
+    let activeTimeline = 'all';
+    let searchTerm = '';
+
+    // Category labels
+    const categoryLabels = {
+      sensor: 'Sensor',
+      biohack: 'Biohack',
+      software: 'Software',
+      consideration: 'Consideration',
+      gartner: 'Gartner',
+      assessment: 'Assessment Theme',
+      unmatched: 'Unmatched'
+    };
+
+    // Timeline classes
+    function getTimelineClass(timeline) {
+      if (timeline === 'now') return 'timeline-now';
+      if (timeline === 'soon') return 'timeline-soon';
+      if (timeline === 'mid') return 'timeline-mid';
+      if (timeline === 'far') return 'timeline-far';
+      return 'timeline-other';
+    }
+
+    // Render cards
+    function renderCards(items) {
+      cardsContainer.innerHTML = items.map((item, index) => `
+        <div class="card" data-index="${index}">
+          ${item.postits.length > 0 ? `
+            <div class="postits-top">
+              <div class="postits-grid">
+                ${item.postits.map(p => `<div class="postit">${p}</div>`).join('')}
+              </div>
+            </div>
+          ` : ''}
+          <div class="card-header">
+            <div>
+              <div class="card-title">${item.item}</div>
+              <span class="card-category cat-${item.category}">${categoryLabels[item.category]}</span>
+            </div>
+            <span class="timeline-badge ${getTimelineClass(item.timeline)}">${item.timelineLabel}</span>
+          </div>
+          <div class="card-body">
+            <p class="card-description">${item.description}</p>
+            <div class="card-meta">
+              ${item.products ? `
+                <div class="meta-item">
+                  <span class="meta-label">Products</span>
+                  <span class="meta-value">${item.products}</span>
+                </div>
+              ` : ''}
+              ${item.researchLink ? `
+                <div class="meta-item">
+                  <span class="meta-label">Research</span>
+                  <span class="meta-value"><a href="${item.researchLink}" target="_blank">${item.researchLabel}</a></span>
+                </div>
+              ` : ''}
+              <div class="meta-item">
+                <span class="meta-label">Timeline Summary</span>
+                <span class="meta-value">${item.timelineSummary}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render table
+    function renderTable(items) {
+      tableBody.innerHTML = items.map(item => `
+        <tr>
+          <td><strong>${item.item}</strong></td>
+          <td><span class="card-category cat-${item.category}">${categoryLabels[item.category]}</span></td>
+          <td>${item.description}<br><small style="color: var(--slate-500);">${item.timelineSummary}</small></td>
+          <td><span class="timeline-badge ${getTimelineClass(item.timeline)}">${item.timelineLabel}</span></td>
+          <td>${item.researchLink ? `<a href="${item.researchLink}" target="_blank">${item.researchLabel}</a>` : '-'}</td>
+          <td>${item.postits.length > 0 ? item.postits.slice(0, 3).join('; ') + (item.postits.length > 3 ? ` (+${item.postits.length - 3} more)` : '') : '-'}</td>
+        </tr>
+      `).join('');
+    }
+
+    // Toggle post-its
+    function togglePostits(btn) {
+      btn.classList.toggle('open');
+      btn.nextElementSibling.classList.toggle('open');
+    }
+
+    // Filter data
+    function filterData() {
+      let filtered = data;
+
+      if (activeCategory !== 'all') {
+        filtered = filtered.filter(item => item.category === activeCategory);
+      }
+
+      if (activeTimeline !== 'all') {
+        filtered = filtered.filter(item => item.timeline === activeTimeline);
+      }
+
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
+        filtered = filtered.filter(item => 
+          item.item.toLowerCase().includes(term) ||
+          item.description.toLowerCase().includes(term) ||
+          item.timelineSummary.toLowerCase().includes(term) ||
+          item.postits.some(p => p.toLowerCase().includes(term))
+        );
+      }
+
+      renderCards(filtered);
+      renderTable(filtered);
+      noResults.style.display = filtered.length === 0 ? 'block' : 'none';
+    }
+
+    // Update stats
+    function updateStats() {
+      document.getElementById('stat-total').textContent = data.length;
+      document.getElementById('stat-postits').textContent = data.reduce((sum, item) => sum + item.postits.length, 0);
+      document.getElementById('stat-now').textContent = data.filter(item => item.timeline === 'now').length;
+      document.getElementById('stat-future').textContent = data.filter(item => item.timeline === 'mid' || item.timeline === 'far').length;
+    }
+
+    // Event listeners
+    categoryFilters.addEventListener('click', (e) => {
+      if (e.target.classList.contains('filter-btn')) {
+        categoryFilters.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        activeCategory = e.target.dataset.filter;
+        filterData();
+      }
+    });
+
+    timelineFilters.addEventListener('click', (e) => {
+      if (e.target.classList.contains('filter-btn')) {
+        timelineFilters.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        activeTimeline = e.target.dataset.filter;
+        filterData();
+      }
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      searchTerm = e.target.value;
+      filterData();
+    });
+
+    viewCards.addEventListener('click', () => {
+      viewCards.classList.add('active');
+      viewTable.classList.remove('active');
+      cardsContainer.classList.add('active');
+      tableContainer.classList.remove('active');
+    });
+
+    viewTable.addEventListener('click', () => {
+      viewTable.classList.add('active');
+      viewCards.classList.remove('active');
+      tableContainer.classList.add('active');
+      cardsContainer.classList.remove('active');
+    });
+
+    // Initialize
+    updateStats();
+    filterData();
+  </script>
+</body>
+</html>
