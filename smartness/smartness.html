@@ -1242,6 +1242,15 @@
       }
     ];
 
+    // Sort: entries with postits first (alphabetically), then entries without (alphabetically)
+    data.sort((a, b) => {
+      const aHasPostits = a.postits.length > 0;
+      const bHasPostits = b.postits.length > 0;
+      if (aHasPostits && !bHasPostits) return -1;
+      if (!aHasPostits && bHasPostits) return 1;
+      return a.item.localeCompare(b.item);
+    });
+
     // DOM Elements
     const cardsContainer = document.getElementById('cards-container');
     const tableBody = document.getElementById('table-body');
