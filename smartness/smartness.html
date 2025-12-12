@@ -76,36 +76,6 @@
       padding: 2rem;
     }
 
-    /* Stats Bar */
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .stat-card {
-      background: white;
-      border-radius: 12px;
-      padding: 1.25rem;
-      text-align: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      border: 1px solid var(--slate-100);
-    }
-
-    .stat-card .number {
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--teal-600);
-    }
-
-    .stat-card .label {
-      font-size: 0.75rem;
-      color: var(--slate-500);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
     /* Controls */
     .controls {
       background: white;
@@ -517,26 +487,6 @@
   </header>
 
   <main>
-    <!-- Stats -->
-    <div class="stats-bar">
-      <div class="stat-card">
-        <div class="number" id="stat-total">0</div>
-        <div class="label">Total Items</div>
-      </div>
-      <div class="stat-card">
-        <div class="number" id="stat-postits">0</div>
-        <div class="label">Post-It Ideas</div>
-      </div>
-      <div class="stat-card">
-        <div class="number" id="stat-now">0</div>
-        <div class="label">Available Now</div>
-      </div>
-      <div class="stat-card">
-        <div class="number" id="stat-future">0</div>
-        <div class="label">5+ Years Away</div>
-      </div>
-    </div>
-
     <!-- Controls -->
     <div class="controls">
       <input type="text" class="search-box" id="search" placeholder="Search technologies, ideas, post-its...">
@@ -1342,11 +1292,11 @@
             <p class="card-description">${item.description}</p>
             ${item.postits.length > 0 ? `
               <div class="postits-section" style="margin-top: 0; padding-top: 0; border-top: none; margin-bottom: 1rem;">
-                <button class="postits-toggle" onclick="togglePostits(this)">
+                <button class="postits-toggle open" onclick="togglePostits(this)">
                   <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                   ${item.postits.length} Workshop Idea${item.postits.length > 1 ? 's' : ''}
                 </button>
-                <div class="postits-container">
+                <div class="postits-container open">
                   <div class="postits-grid">
                     ${item.postits.map(p => `<div class="postit">${p}</div>`).join('')}
                   </div>
@@ -1423,14 +1373,6 @@
       noResults.style.display = filtered.length === 0 ? 'block' : 'none';
     }
 
-    // Update stats
-    function updateStats() {
-      document.getElementById('stat-total').textContent = data.length;
-      document.getElementById('stat-postits').textContent = data.reduce((sum, item) => sum + item.postits.length, 0);
-      document.getElementById('stat-now').textContent = data.filter(item => item.timeline === 'now').length;
-      document.getElementById('stat-future').textContent = data.filter(item => item.timeline === 'mid' || item.timeline === 'far').length;
-    }
-
     // Event listeners
     categoryFilters.addEventListener('click', (e) => {
       if (e.target.classList.contains('filter-btn')) {
@@ -1470,7 +1412,6 @@
     });
 
     // Initialize
-    updateStats();
     filterData();
   </script>
 </body>
