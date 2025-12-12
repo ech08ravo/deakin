@@ -1341,6 +1341,19 @@
           </div>
           <div class="card-body">
             <p class="card-description">${item.description}</p>
+            ${item.postits.length > 0 ? `
+              <div class="postits-section" style="margin-top: 0; padding-top: 0; border-top: none; margin-bottom: 1rem;">
+                <button class="postits-toggle" onclick="togglePostits(this)">
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                  ${item.postits.length} Workshop Idea${item.postits.length > 1 ? 's' : ''}
+                </button>
+                <div class="postits-container">
+                  <div class="postits-grid">
+                    ${item.postits.map(p => `<div class="postit">${p}</div>`).join('')}
+                  </div>
+                </div>
+              </div>
+            ` : ''}
             <div class="card-meta">
               ${item.products ? `
                 <div class="meta-item">
@@ -1359,19 +1372,6 @@
                 <span class="meta-value">${item.timelineSummary}</span>
               </div>
             </div>
-            ${item.postits.length > 0 ? `
-              <div class="postits-section">
-                <button class="postits-toggle" onclick="togglePostits(this)">
-                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                  ${item.postits.length} Workshop Idea${item.postits.length > 1 ? 's' : ''}
-                </button>
-                <div class="postits-container">
-                  <div class="postits-grid">
-                    ${item.postits.map(p => `<div class="postit">${p}</div>`).join('')}
-                  </div>
-                </div>
-              </div>
-            ` : ''}
           </div>
         </div>
       `).join('');
