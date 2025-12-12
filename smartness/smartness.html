@@ -492,20 +492,6 @@
       <input type="text" class="search-box" id="search" placeholder="Search technologies, ideas, post-its...">
       
       <div class="filter-section">
-        <span class="filter-label">Category</span>
-        <div class="filter-buttons" id="category-filters">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="sensor">Sensors</button>
-          <button class="filter-btn" data-filter="biohack">Biohacks</button>
-          <button class="filter-btn" data-filter="software">Software</button>
-          <button class="filter-btn" data-filter="consideration">Considerations</button>
-          <button class="filter-btn" data-filter="gartner">Gartner</button>
-          <button class="filter-btn" data-filter="assessment">Assessment Themes</button>
-          <button class="filter-btn" data-filter="unmatched">Unmatched Ideas</button>
-        </div>
-      </div>
-
-      <div class="filter-section">
         <span class="filter-label">Timeline</span>
         <div class="filter-buttons" id="timeline-filters">
           <button class="filter-btn active" data-filter="all">All</button>
@@ -1255,7 +1241,6 @@
     const cardsContainer = document.getElementById('cards-container');
     const tableBody = document.getElementById('table-body');
     const searchInput = document.getElementById('search');
-    const categoryFilters = document.getElementById('category-filters');
     const timelineFilters = document.getElementById('timeline-filters');
     const noResults = document.getElementById('no-results');
     const viewCards = document.getElementById('view-cards');
@@ -1263,7 +1248,6 @@
     const tableContainer = document.getElementById('table-container');
 
     // State
-    let activeCategory = 'all';
     let activeTimeline = 'all';
     let searchTerm = '';
 
@@ -1359,10 +1343,6 @@
     function filterData() {
       let filtered = data;
 
-      if (activeCategory !== 'all') {
-        filtered = filtered.filter(item => item.category === activeCategory);
-      }
-
       if (activeTimeline !== 'all') {
         filtered = filtered.filter(item => item.timeline === activeTimeline);
       }
@@ -1383,15 +1363,6 @@
     }
 
     // Event listeners
-    categoryFilters.addEventListener('click', (e) => {
-      if (e.target.classList.contains('filter-btn')) {
-        categoryFilters.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        e.target.classList.add('active');
-        activeCategory = e.target.dataset.filter;
-        filterData();
-      }
-    });
-
     timelineFilters.addEventListener('click', (e) => {
       if (e.target.classList.contains('filter-btn')) {
         timelineFilters.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
