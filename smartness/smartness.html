@@ -281,35 +281,6 @@
     }
 
     /* Stats Bar */
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-
-    .stat-card {
-      background: white;
-      border-radius: 12px;
-      padding: 1.25rem;
-      text-align: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      border: 1px solid var(--slate-100);
-    }
-
-    .stat-card .number {
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--teal-600);
-    }
-
-    .stat-card .label {
-      font-size: 0.75rem;
-      color: var(--slate-500);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
     /* Controls */
     .controls {
       background: white;
@@ -381,6 +352,32 @@
       gap: 1rem;
     }
 
+    .section-divider {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem 0;
+      margin: 0.5rem 0;
+    }
+
+    .section-divider::before,
+    .section-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--slate-300);
+    }
+
+    .section-divider span {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+
     .card {
       background: white;
       border-radius: 12px;
@@ -397,7 +394,6 @@
 
     .card-header {
       padding: 1.25rem;
-      border-bottom: 1px solid var(--slate-100);
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
@@ -491,15 +487,104 @@
 
     /* Post-its Section */
     .postits-top {
-      padding: 1rem;
+      padding: 1rem 1.25rem;
       background: #fafaf8;
-      border-bottom: 1px solid var(--slate-100);
     }
 
     .postits-section {
       margin-top: 1rem;
       padding-top: 1rem;
       border-top: 1px solid var(--slate-100);
+    }
+
+    /* Card Collapse Styles */
+    .card-details {
+      border-top: 1px solid var(--slate-100);
+    }
+
+    .details-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 0.75rem 1.25rem;
+      background: var(--slate-50);
+      border: none;
+      cursor: pointer;
+      font-size: 0.8125rem;
+      color: var(--teal-600);
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .details-toggle:hover {
+      background: var(--teal-50);
+    }
+
+    .details-toggle .expand-icon {
+      flex-shrink: 0;
+      color: var(--teal-600);
+      transition: transform 0.2s;
+      transform: rotate(-90deg);
+    }
+
+    .card-details:not(.collapsed) .details-toggle .expand-icon {
+      transform: rotate(0);
+    }
+
+    .card-details .card-body {
+      max-height: 1000px;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, opacity 0.2s, padding 0.3s;
+      opacity: 1;
+      padding: 1.25rem;
+    }
+
+    .card-details.collapsed .card-body {
+      max-height: 0;
+      opacity: 0;
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    .postit-count {
+      display: inline-block;
+      margin-left: 0.5rem;
+      padding: 0.125rem 0.5rem;
+      background: #fef9c3;
+      color: #854d0e;
+      border-radius: 10px;
+      font-size: 0.6875rem;
+      font-weight: 500;
+    }
+
+    /* Expand/Collapse All Buttons */
+    .expand-controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-left: auto;
+    }
+
+    .expand-btn {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid var(--slate-300);
+      background: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      color: var(--slate-600);
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+    }
+
+    .expand-btn:hover {
+      background: var(--slate-100);
+      color: var(--slate-800);
+    }
+
+    .expand-btn svg {
+      margin-right: 4px;
     }
 
     .postits-toggle {
@@ -615,10 +700,6 @@
         font-size: 1.5rem;
       }
 
-      .stats-bar {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
       .card-header {
         flex-direction: column;
       }
@@ -631,8 +712,10 @@
     /* View Toggle */
     .view-toggle {
       display: flex;
+      flex-wrap: wrap;
       gap: 0.5rem;
       margin-bottom: 1rem;
+      align-items: center;
     }
 
     .view-btn {
@@ -728,29 +811,18 @@
 
   <main>
     <!-- Stats -->
-    <div class="stats-bar">
-      <div class="stat-card">
-        <div class="number" id="stat-total">0</div>
-        <div class="label">Total Items</div>
-      </div>
-      <div class="stat-card">
-        <div class="number" id="stat-postits">0</div>
-        <div class="label">Post-It Ideas</div>
-      </div>
-      <div class="stat-card">
-        <div class="number" id="stat-now">0</div>
-        <div class="label">Available Now</div>
-      </div>
-      <div class="stat-card">
-        <div class="number" id="stat-future">0</div>
-        <div class="label">5+ Years Away</div>
-      </div>
-    </div>
-
     <!-- Controls -->
     <div class="controls">
       <input type="text" class="search-box" id="search" placeholder="Search technologies, ideas, post-its...">
       
+      <div class="filter-section">
+        <span class="filter-label">Show</span>
+        <div class="filter-buttons" id="postit-filters">
+          <button class="filter-btn active" data-filter="all">All Items</button>
+          <button class="filter-btn" data-filter="has-ideas">With Workshop Ideas Only</button>
+        </div>
+      </div>
+
       <div class="filter-section">
         <span class="filter-label">Category</span>
         <div class="filter-buttons" id="category-filters">
@@ -785,6 +857,16 @@
           <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
           Table
         </button>
+        <div class="expand-controls" id="expand-controls">
+          <button class="expand-btn" onclick="expandAllCards()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 4px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+            Show All Details
+          </button>
+          <button class="expand-btn" onclick="collapseAllCards()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="vertical-align: middle; margin-right: 4px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+            Hide All Details
+          </button>
+        </div>
       </div>
     </div>
 
@@ -797,7 +879,6 @@
         <thead>
           <tr>
             <th>Item</th>
-            <th>Category</th>
             <th>Description</th>
             <th>Timeline</th>
             <th>Research</th>
@@ -1464,8 +1545,8 @@
         item: "In-Person / Oral Assessment",
         description: "Shift to synchronous examination as response to AI text generation",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://deakin365.sharepoint.com/sites/LearningInnovationSEBE/SitePages/Interactive-oral-assessment.aspx",
+        researchLabel: "Deakin: Interactive Oral Assessment",
         timeline: "now",
         timelineLabel: "NOW-ONGOING",
         timelineSummary: "Scalability challenges. Workload implications for staff.",
@@ -1474,22 +1555,22 @@
       {
         category: "assessment",
         item: "Student Choice / Flexibility",
-        description: "Allow students to choose assessment modality",
+        description: "Allow students to choose assessment modality with equitable standards",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://www.tandfonline.com/doi/abs/10.1080/02602938.2017.1294144",
+        researchLabel: "Rideout: Flexible Assessment Approach",
         timeline: "now",
         timelineLabel: "NOW-ONGOING",
-        timelineSummary: "UDL principles. Equity considerations.",
-        postits: ["Choose your own adventure", "Let students choose how they want to be assessed", "Allow choice in assessment modality", "Student choice in assessment types – show what they know & can do in their way", "Bespoke assessment for every person", "Allow students to design their own prac exam to demonstrate skill", "Multimodal tasks"]
+        timelineSummary: "UDL principles. Equity considerations. Smart glasses can enable equity for students needing assistance.",
+        postits: ["Choose your own adventure", "Let students choose how they want to be assessed", "Allow choice in assessment modality", "Student choice in assessment types – show what they know & can do in their way", "Bespoke assessment for every person", "Allow students to design their own prac exam to demonstrate skill", "Multimodal tasks", "Template to Assessment equivalency", "Testing the equivalency of the assessment (internal content & engagement) LO", "Aligning them with ILOs", "Fair and equitable assessment = 4 all students – Employers impact", "Weighting tool → Collaborative marking"]
       },
       {
         category: "assessment",
         item: "Process Over Product",
         description: "Assess learning journey not just output",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://herdsa.org.au/herdsa-connect/show-your-working-assessment-needs-see-process-not-just-product",
+        researchLabel: "HERDSA: Show Your Working",
         timeline: "now",
         timelineLabel: "NOW-ONGOING",
         timelineSummary: "Portfolio, reflection, iterative feedback approaches.",
@@ -1497,23 +1578,11 @@
       },
       {
         category: "assessment",
-        item: "Co-Design / Partnership",
-        description: "Students as partners in assessment design",
-        products: "",
-        researchLink: "",
-        researchLabel: "",
-        timeline: "now",
-        timelineLabel: "NOW-ONGOING",
-        timelineSummary: "Student agency. Authentic assessment.",
-        postits: ["Co-design", "Co-developing Assessments with other/including stakeholders including academics", "Asking / Involving students in the As design", "Students as partners to work with students", "Reframe AoL as an opportunity for students to showcase their learning"]
-      },
-      {
-        category: "assessment",
         item: "Industry Integration",
         description: "Connect assessment to workplace AI use",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://nationalcentreforai.jiscinvolve.org/wp/2023/09/12/designing-assessment-in-an-ai-enabled-world/",
+        researchLabel: "JISC: Designing Assessment in AI-Enabled World",
         timeline: "now",
         timelineLabel: "NOW-ONGOING",
         timelineSummary: "Graduate employability. Professional standards.",
@@ -1524,8 +1593,8 @@
         item: "Staff Development",
         description: "Upskill educators on AI",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://futurecampus.com.au/2025/11/25/two-systems-divergent-paths-uk-vs-aust-reforms/",
+        researchLabel: "Future Campus: UK vs Aust Reforms (Fower)",
         timeline: "now",
         timelineLabel: "NOW-URGENT",
         timelineSummary: "Capacity building. Consistent messaging across institution.",
@@ -1536,8 +1605,8 @@
         item: "Abolish / Radically Redesign",
         description: "Fundamental rethinking of assessment",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://herdsa.org.au/herdsa-connect/enhancing-reflective-practice-ai-facilitated-dialogue",
+        researchLabel: "HERDSA: AI-Facilitated Reflective Practice",
         timeline: "far",
         timelineLabel: "SPECULATIVE",
         timelineSummary: "Provocations and wild ideas from workshop.",
@@ -1548,8 +1617,8 @@
         item: "Scaffolding / Support",
         description: "Prepare students adequately for success",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://www.adcet.edu.au/resource/11397/adcet-webinar-inclusive-assessment-for-students-with-disability",
+        researchLabel: "ADCET: Inclusive Assessment Webinar",
         timeline: "now",
         timelineLabel: "NOW-ONGOING",
         timelineSummary: "Equity focus. Success for all students.",
@@ -1560,8 +1629,8 @@
         item: "Resourcing / Workload",
         description: "Time, money, people for assessment",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://futurecampus.com.au/2025/06/20/9-hours-labour-every-day-youd-get-less-for-manslaughter/",
+        researchLabel: "Future Campus: 9 Hours Labour Every Day",
         timeline: "now",
         timelineLabel: "NOW-ONGOING",
         timelineSummary: "Sustainability. Staff wellbeing.",
@@ -1569,23 +1638,11 @@
       },
       {
         category: "assessment",
-        item: "Equivalency / Fairness",
-        description: "Ensuring comparable standards across modalities",
-        products: "",
-        researchLink: "",
-        researchLabel: "",
-        timeline: "now",
-        timelineLabel: "NOW-ONGOING",
-        timelineSummary: "Equity across different assessment formats.",
-        postits: ["Template to Assessment equivalency", "Testing the equivalency of the assessment (internal content & engagement) LO", "Aligning them with ILOs", "Fair and equitable assessment = 4 all students – Employers impact", "Weighting tool → Collaborative marking"]
-      },
-      {
-        category: "assessment",
         item: "Recording / Documentation",
         description: "Capture assessment for review and QA",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://www.vuzix.com/products/vuzix-blade-2-smart-glasses",
+        researchLabel: "Vuzix Blade 2 Smart Glasses",
         timeline: "now",
         timelineLabel: "NOW-ONGOING",
         timelineSummary: "Quality assurance. Appeals processes.",
@@ -1596,35 +1653,23 @@
         item: "Blocking Technology",
         description: "Prevent AI/device use in exams",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://www.acma.gov.au/electrical-products-and-devices",
+        researchLabel: "ACMA: Electrical Products & Devices",
         timeline: "now",
         timelineLabel: "NOW-LIMITED",
-        timelineSummary: "Invigilated exam integrity. Arms race dynamics.",
+        timelineSummary: "Invigilated exam integrity. Arms race dynamics. Jammers regulated.",
         postits: ["Faraday boxes", "Jammers", "Make students wear crime scene outfits"]
-      },
-      {
-        category: "assessment",
-        item: "Arts / Creative Assessment",
-        description: "Authenticity in creative work and artist statements",
-        products: "",
-        researchLink: "",
-        researchLabel: "",
-        timeline: "now",
-        timelineLabel: "NOW-ONGOING",
-        timelineSummary: "AI art detection. Process documentation.",
-        postits: ["TAKE FAKE IDEA + AI-ARC IMAGING", "Ask the student what they like to read in an artist statement", "Direct the student to research other artists and to read their artist statements"]
       },
       {
         category: "unmatched",
         item: "Pay VCs less",
-        description: "Provocative suggestion",
+        description: "Provocative suggestion on executive remuneration",
         products: "",
-        researchLink: "",
-        researchLabel: "",
-        timeline: "far",
-        timelineLabel: "NEVER",
-        timelineSummary: "Not technology-related. Workshop humour.",
+        researchLink: "https://www.aph.gov.au/Parliamentary_Business/Committees/Senate/Education_and_Employment/UniversityGovernance",
+        researchLabel: "Senate Inquiry: University Governance",
+        timeline: "now",
+        timelineLabel: "ONGOING",
+        timelineSummary: "Senate inquiry into VC pay ongoing. Senator Lambie proposed $430k salary cap bill 2025.",
         postits: ["Pay VCs less"]
       },
       {
@@ -1632,35 +1677,35 @@
         item: "Relational Learning",
         description: "Pedagogical approach emphasising human connection",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://herdsa.org.au/herdsa-connect/six-reasons-we-need-relational-pedagogies-higher-education",
+        researchLabel: "HERDSA: Six Reasons for Relational Pedagogies",
         timeline: "now",
         timelineLabel: "NOW-ONGOING",
-        timelineSummary: "Human connection in learning.",
+        timelineSummary: "Human connection in learning. Increasingly important as AI mediates more interactions.",
         postits: ["Relational learning"]
       },
       {
         category: "unmatched",
         item: "Student Led Learning",
-        description: "Agency and ownership in learning",
+        description: "Agency, ownership, and co-design in learning",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://herdsa.org.au/news/engaging-students-and-staff-inclusive-partnerships-global-learning-during-and-beyond-covid-19",
+        researchLabel: "HERDSA: Students as Partners",
         timeline: "now",
         timelineLabel: "NOW-ONGOING",
-        timelineSummary: "Student agency.",
-        postits: ["Student led learning"]
+        timelineSummary: "Student agency and co-creation. Partnership models gaining traction in assessment design.",
+        postits: ["Student led learning", "Co-design", "Co-developing Assessments with other/including stakeholders including academics", "Asking / Involving students in the As design", "Students as partners to work with students", "Reframe AoL as an opportunity for students to showcase their learning"]
       },
       {
         category: "unmatched",
         item: "Bring Back Traditional Assessment",
         description: "Conservative response to AI disruption",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://www.hepi.ac.uk/2024/10/03/how-the-university-of-melbourne-moved-to-digital-in-place-exams-at-scale/",
+        researchLabel: "HEPI: Melbourne's In-Place Exams at Scale",
         timeline: "now",
         timelineLabel: "NOW",
-        timelineSummary: "Resistance to change.",
+        timelineSummary: "Melbourne ran 50,000+ supervised exams in 2024. Return to invigilated assessment gaining momentum.",
         postits: ["Bring back traditional assessment"]
       },
       {
@@ -1668,11 +1713,11 @@
         item: "Ask Your Librarian",
         description: "Information literacy resource",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://www.deakin.edu.au/library/genai-hub",
+        researchLabel: "Deakin Library GenAI Hub",
         timeline: "now",
         timelineLabel: "NOW",
-        timelineSummary: "Underutilised resource.",
+        timelineSummary: "Libraries leading AI literacy. Deakin GenAI Hub offers guides, modules, and ethical frameworks.",
         postits: ["Ask your librarian"]
       },
       {
@@ -1680,11 +1725,11 @@
         item: "PhD Students as Reviewers",
         description: "Use PhD students as third assessors",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://bcel.deakin.edu.au/unit-chair-manual/ucm-overview-assess-feedback/ucm-assessment-panels/",
+        researchLabel: "Deakin: Assessment Panels",
         timeline: "now",
         timelineLabel: "NOW",
-        timelineSummary: "Scalability solution for moderation.",
+        timelineSummary: "Scalability solution for moderation. Requires policy change to enable PhD student participation.",
         postits: ["PhD students are used as a 3rd reviewer to mitigate risk of gent one assessor"]
       },
       {
@@ -1692,38 +1737,71 @@
         item: "Cross-Institutional Assessment",
         description: "Universities working together on assessment",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://search.informit.org/doi/abs/10.3316/informit.T2025020600022090754952215",
+        researchLabel: "Chase et al: Cross-Institutional Digital Assessment",
         timeline: "soon",
         timelineLabel: "2-5 YEARS",
-        timelineSummary: "Shared assessment infrastructure.",
+        timelineSummary: "Shared assessment infrastructure emerging. Case studies on cross-institutional collaboration show promise.",
         postits: ["Universities work together to assess students located in any location"]
       },
       {
         category: "unmatched",
         item: "Creative Assessment Formats",
-        description: "Arts-based and performance assessment",
+        description: "Arts-based, performance, and authentic creative assessment",
         products: "",
-        researchLink: "",
-        researchLabel: "",
+        researchLink: "https://www.sciencedirect.com/science/article/pii/S1473837625000401",
+        researchLabel: "Hayes et al: Arts-Based Learning & Assessment",
         timeline: "now",
         timelineLabel: "NOW",
-        timelineSummary: "Innovative approaches.",
-        postits: ["Assessments with playwrights or improv", "Peer assessments"]
+        timelineSummary: "Arts-based assessment approaches gaining attention. Harder to replicate with AI. Process documentation important.",
+        postits: ["Assessments with playwrights or improv", "TAKE FAKE IDEA + AI-ARC IMAGING", "Ask the student what they like to read in an artist statement", "Direct the student to research other artists and to read their artist statements"]
+      },
+      {
+        category: "unmatched",
+        item: "Peer Assessment",
+        description: "Students assessing each other's work",
+        products: "",
+        researchLink: "https://herdsa.org.au/search/node/peer%20review",
+        researchLabel: "HERDSA: Peer Review Resources",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Established practice. Builds critical evaluation skills and scales well.",
+        postits: ["Peer assessments"]
       },
       {
         category: "unmatched",
         item: "AI Agent in Assessment",
         description: "AI as assessment companion",
         products: "",
-        researchLink: "",
-        researchLabel: "",
-        timeline: "soon",
-        timelineLabel: "1-2 YEARS",
-        timelineSummary: "Emerging practice.",
+        researchLink: "https://gem.deakin.edu.au/",
+        researchLabel: "Deakin GEM: AI Learning Companion",
+        timeline: "now",
+        timelineLabel: "NOW",
+        timelineSummary: "Deakin GEM provides AI companion for learning. Emerging practice in scaffolded AI use.",
         postits: ["AI Agent along"]
       }
     ];
+
+    // Sort data: items with post-its first (alphabetically), then items without (by category, then alphabetically)
+    data.sort((a, b) => {
+      const aHasPostits = a.postits.length > 0;
+      const bHasPostits = b.postits.length > 0;
+      
+      // Items with post-its come first
+      if (aHasPostits && !bHasPostits) return -1;
+      if (!aHasPostits && bHasPostits) return 1;
+      
+      // If both have post-its (or both don't), sort by category order then alphabetically
+      if (!aHasPostits && !bHasPostits) {
+        const categoryOrder = ['sensor', 'biohack', 'software', 'consideration', 'gartner', 'assessment', 'unmatched'];
+        const aCatIndex = categoryOrder.indexOf(a.category);
+        const bCatIndex = categoryOrder.indexOf(b.category);
+        if (aCatIndex !== bCatIndex) return aCatIndex - bCatIndex;
+      }
+      
+      // Alphabetical within group
+      return a.item.localeCompare(b.item);
+    });
 
     // DOM Elements
     const cardsContainer = document.getElementById('cards-container');
@@ -1731,6 +1809,7 @@
     const searchInput = document.getElementById('search');
     const categoryFilters = document.getElementById('category-filters');
     const timelineFilters = document.getElementById('timeline-filters');
+    const postitFilters = document.getElementById('postit-filters');
     const noResults = document.getElementById('no-results');
     const viewCards = document.getElementById('view-cards');
     const viewTable = document.getElementById('view-table');
@@ -1739,6 +1818,7 @@
     // State
     let activeCategory = 'all';
     let activeTimeline = 'all';
+    let activePostitFilter = 'all';
     let searchTerm = '';
 
     // Category labels
@@ -1763,8 +1843,41 @@
 
     // Render cards
     function renderCards(items) {
-      cardsContainer.innerHTML = items.map((item, index) => `
+      const withPostits = items.filter(item => item.postits.length > 0);
+      const withoutPostits = items.filter(item => item.postits.length === 0);
+      
+      let html = '';
+      
+      // Items with post-its
+      if (withPostits.length > 0) {
+        html += withPostits.map((item, index) => renderCardHTML(item, index)).join('');
+      }
+      
+      // Separator and items without post-its
+      if (withoutPostits.length > 0 && withPostits.length > 0) {
+        html += `
+          <div class="section-divider">
+            <span>Reference Items (Technology & Gartner Context)</span>
+          </div>
+        `;
+      }
+      
+      if (withoutPostits.length > 0) {
+        html += withoutPostits.map((item, index) => renderCardHTML(item, withPostits.length + index)).join('');
+      }
+      
+      cardsContainer.innerHTML = html;
+    }
+
+    function renderCardHTML(item, index) {
+      return `
         <div class="card" data-index="${index}">
+          <div class="card-header">
+            <div>
+              <div class="card-title">${item.item}</div>
+            </div>
+            <span class="timeline-badge ${getTimelineClass(item.timeline)}">${item.timelineLabel}</span>
+          </div>
           ${item.postits.length > 0 ? `
             <div class="postits-top">
               <div class="postits-grid">
@@ -1772,36 +1885,60 @@
               </div>
             </div>
           ` : ''}
-          <div class="card-header">
-            <div>
-              <div class="card-title">${item.item}</div>
-              <span class="card-category cat-${item.category}">${categoryLabels[item.category]}</span>
-            </div>
-            <span class="timeline-badge ${getTimelineClass(item.timeline)}">${item.timelineLabel}</span>
-          </div>
-          <div class="card-body">
-            <p class="card-description">${item.description}</p>
-            <div class="card-meta">
-              ${item.products ? `
+          <div class="card-details collapsed">
+            <button class="details-toggle" onclick="toggleDetails(this)">
+              <svg class="expand-icon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+              Show details
+            </button>
+            <div class="card-body">
+              <p class="card-description">${item.description}</p>
+              <div class="card-meta">
+                ${item.products ? `
+                  <div class="meta-item">
+                    <span class="meta-label">Products</span>
+                    <span class="meta-value">${item.products}</span>
+                  </div>
+                ` : ''}
+                ${item.researchLink ? `
+                  <div class="meta-item">
+                    <span class="meta-label">Research</span>
+                    <span class="meta-value"><a href="${item.researchLink}" target="_blank">${item.researchLabel}</a></span>
+                  </div>
+                ` : ''}
                 <div class="meta-item">
-                  <span class="meta-label">Products</span>
-                  <span class="meta-value">${item.products}</span>
+                  <span class="meta-label">Timeline Summary</span>
+                  <span class="meta-value">${item.timelineSummary}</span>
                 </div>
-              ` : ''}
-              ${item.researchLink ? `
-                <div class="meta-item">
-                  <span class="meta-label">Research</span>
-                  <span class="meta-value"><a href="${item.researchLink}" target="_blank">${item.researchLabel}</a></span>
-                </div>
-              ` : ''}
-              <div class="meta-item">
-                <span class="meta-label">Timeline Summary</span>
-                <span class="meta-value">${item.timelineSummary}</span>
               </div>
             </div>
           </div>
         </div>
-      `).join('');
+      `;
+    }
+
+    function toggleDetails(btn) {
+      const details = btn.closest('.card-details');
+      details.classList.toggle('collapsed');
+      btn.querySelector('.expand-icon').style.transform = details.classList.contains('collapsed') ? 'rotate(-90deg)' : 'rotate(0)';
+      btn.childNodes[2].textContent = details.classList.contains('collapsed') ? 'Show details' : 'Hide details';
+    }
+
+    function expandAllCards() {
+      document.querySelectorAll('.card-details').forEach(details => {
+        details.classList.remove('collapsed');
+        const btn = details.querySelector('.details-toggle');
+        btn.querySelector('.expand-icon').style.transform = 'rotate(0)';
+        btn.childNodes[2].textContent = 'Hide details';
+      });
+    }
+
+    function collapseAllCards() {
+      document.querySelectorAll('.card-details').forEach(details => {
+        details.classList.add('collapsed');
+        const btn = details.querySelector('.details-toggle');
+        btn.querySelector('.expand-icon').style.transform = 'rotate(-90deg)';
+        btn.childNodes[2].textContent = 'Show details';
+      });
     }
 
     // Render table
@@ -1809,7 +1946,6 @@
       tableBody.innerHTML = items.map(item => `
         <tr>
           <td><strong>${item.item}</strong></td>
-          <td><span class="card-category cat-${item.category}">${categoryLabels[item.category]}</span></td>
           <td>${item.description}<br><small style="color: var(--slate-500);">${item.timelineSummary}</small></td>
           <td><span class="timeline-badge ${getTimelineClass(item.timeline)}">${item.timelineLabel}</span></td>
           <td>${item.researchLink ? `<a href="${item.researchLink}" target="_blank">${item.researchLabel}</a>` : '-'}</td>
@@ -1818,15 +1954,15 @@
       `).join('');
     }
 
-    // Toggle post-its
-    function togglePostits(btn) {
-      btn.classList.toggle('open');
-      btn.nextElementSibling.classList.toggle('open');
-    }
+    // (removed old togglePostits function - now using card-level expand)
 
     // Filter data
     function filterData() {
       let filtered = data;
+
+      if (activePostitFilter === 'has-ideas') {
+        filtered = filtered.filter(item => item.postits.length > 0);
+      }
 
       if (activeCategory !== 'all') {
         filtered = filtered.filter(item => item.category === activeCategory);
@@ -1851,14 +1987,6 @@
       noResults.style.display = filtered.length === 0 ? 'block' : 'none';
     }
 
-    // Update stats
-    function updateStats() {
-      document.getElementById('stat-total').textContent = data.length;
-      document.getElementById('stat-postits').textContent = data.reduce((sum, item) => sum + item.postits.length, 0);
-      document.getElementById('stat-now').textContent = data.filter(item => item.timeline === 'now').length;
-      document.getElementById('stat-future').textContent = data.filter(item => item.timeline === 'mid' || item.timeline === 'far').length;
-    }
-
     // Event listeners
     categoryFilters.addEventListener('click', (e) => {
       if (e.target.classList.contains('filter-btn')) {
@@ -1878,6 +2006,15 @@
       }
     });
 
+    postitFilters.addEventListener('click', (e) => {
+      if (e.target.classList.contains('filter-btn')) {
+        postitFilters.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        activePostitFilter = e.target.dataset.filter;
+        filterData();
+      }
+    });
+
     searchInput.addEventListener('input', (e) => {
       searchTerm = e.target.value;
       filterData();
@@ -1888,6 +2025,7 @@
       viewTable.classList.remove('active');
       cardsContainer.classList.add('active');
       tableContainer.classList.remove('active');
+      document.getElementById('expand-controls').style.display = 'flex';
     });
 
     viewTable.addEventListener('click', () => {
@@ -1895,11 +2033,11 @@
       viewCards.classList.remove('active');
       tableContainer.classList.add('active');
       cardsContainer.classList.remove('active');
+      document.getElementById('expand-controls').style.display = 'none';
     });
 
     // Initialize
     renderHypeCycle();
-    updateStats();
     filterData();
   </script>
 </body>
