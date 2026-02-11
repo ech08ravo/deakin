@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IOA Design Guide — Comprehensive Edition</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+  :root {
+    --navy: #1a2744; --teal: #0a7e8c; --tealLight: #e8f4f5;
+    --sand: #f5f0e8; --cream: #faf8f4; --slate: #4a5568;
+    --muted: #718096; --coral: #e05252; --green: #2d8659;
+    --greenLight: #e6f4ed; --amber: #c97a1e; --amberLight: #fef3e2;
+    --border: #e2ddd5; --white: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--slate); line-height: 1.65; }
+
+  .topbar { background: var(--navy); color: var(--white); padding: 14px 32px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+  .topbar h1 { font-family: 'Source Serif 4', serif; font-size: 17px; font-weight: 600; }
+  .topbar-actions { display: flex; gap: 8px; }
+  .topbar-btn { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); color: var(--white); padding: 6px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; font-family: inherit; }
+  .topbar-btn:hover { background: rgba(255,255,255,0.22); }
+  .progress-bar { height: 3px; background: var(--border); }
+  .progress-fill { height: 100%; background: var(--teal); transition: width 0.4s ease; width: 0%; }
+  .breadcrumb { padding: 10px 32px; background: var(--white); border-bottom: 1px solid var(--border); font-size: 13px; color: var(--muted); }
+  .breadcrumb span { cursor: pointer; } .breadcrumb span:hover { color: var(--teal); }
+  .breadcrumb .sep { margin: 0 6px; color: var(--border); }
+  .breadcrumb .current { color: var(--navy); font-weight: 500; }
+
+  .page-container { max-width: 780px; margin: 0 auto; padding: 36px 24px 120px; }
+  .page { display: none; } .page.active { display: block; animation: fadeUp 0.3s ease; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .page h2 { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .page .subtitle { font-size: 14px; color: var(--muted); margin-bottom: 24px; }
+  .page p { margin-bottom: 14px; font-size: 14.5px; }
+  .page h3 { font-family: 'Source Serif 4', serif; font-size: 18px; font-weight: 600; color: var(--navy); margin: 24px 0 10px; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); gap: 12px; margin: 20px 0; }
+  .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+  .stat-card .num { font-family: 'Source Serif 4', serif; font-size: 26px; font-weight: 700; color: var(--teal); }
+  .stat-card .label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .stat-card .cite { font-size: 10px; color: var(--border); margin-top: 4px; font-style: italic; }
+
+  .info-box { border-radius: 10px; padding: 16px 18px; margin: 16px 0; font-size: 13.5px; }
+  .info-box.teal { background: var(--tealLight); border-left: 4px solid var(--teal); }
+  .info-box.green { background: var(--greenLight); border-left: 4px solid var(--green); }
+  .info-box.amber { background: var(--amberLight); border-left: 4px solid var(--amber); }
+  .info-box strong { color: var(--navy); }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .compare-col { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .compare-col h4 { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+  .compare-col.yes h4 { color: var(--green); } .compare-col.no h4 { color: var(--coral); }
+  .compare-col ul { list-style: none; padding: 0; }
+  .compare-col li { font-size: 12.5px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+  .compare-col li:last-child { border: none; }
+
+  table.data { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13px; }
+  table.data th { background: var(--teal); color: var(--white); padding: 9px 12px; text-align: left; font-weight: 600; }
+  table.data td { padding: 8px 12px; border-bottom: 1px solid var(--border); }
+  table.data tr:nth-child(even) td { background: var(--sand); }
+  table.data tr:nth-child(odd) td { background: var(--white); }
+
+  .resource-list { margin: 16px 0; }
+  .resource-item { display: flex; align-items: center; gap: 12px; padding: 11px 16px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; font-size: 13px; }
+  .resource-item:hover { border-color: var(--teal); }
+  .resource-item a { color: var(--teal); text-decoration: none; font-weight: 500; flex: 1; }
+  .resource-item a:hover { text-decoration: underline; }
+  .resource-tag { font-size: 10px; padding: 2px 8px; border-radius: 4px; font-weight: 600; text-transform: uppercase; }
+  .resource-tag.doc { background: #e3f2fd; color: #1565c0; }
+  .resource-tag.web { background: var(--tealLight); color: var(--teal); }
+  .resource-tag.tool { background: var(--amberLight); color: var(--amber); }
+  .resource-tag.pptx { background: #fff3e0; color: #e65100; }
+  .resource-tag.ext { background: #f3e5f5; color: #7b1fa2; }
+
+  .checklist { margin: 16px 0; }
+  .checklist label { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; background: var(--white); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px; cursor: pointer; font-size: 13px; }
+  .checklist label:hover { border-color: var(--teal); }
+  .checklist input[type="checkbox"] { margin-top: 2px; accent-color: var(--teal); width: 15px; height: 15px; flex-shrink: 0; }
+  .input-group { margin: 14px 0; }
+  .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--navy); margin-bottom: 5px; }
+  .input-group input, .input-group textarea, .input-group select { width: 100%; padding: 9px 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 13.5px; background: var(--white); color: var(--slate); }
+  .input-group input:focus, .input-group textarea:focus, .input-group select:focus { outline: none; border-color: var(--teal); }
+  .input-group textarea { resize: vertical; min-height: 70px; }
+
+  .calc-box { background: var(--white); border: 2px solid var(--teal); border-radius: 12px; padding: 22px; margin: 20px 0; }
+  .calc-box h4 { font-family: 'Source Serif 4', serif; color: var(--navy); font-size: 16px; margin-bottom: 14px; }
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+  .calc-grid .input-group { margin: 0; }
+  .calc-result { background: var(--tealLight); border-radius: 8px; padding: 14px; margin-top: 10px; font-size: 13.5px; }
+  .calc-result strong { color: var(--navy); }
+
+  .deeper { margin-top: 20px; border: 1px dashed var(--border); border-radius: 10px; overflow: hidden; }
+  .deeper-toggle { width: 100%; padding: 12px 18px; background: var(--sand); border: none; cursor: pointer; font-family: inherit; font-size: 13px; color: var(--teal); font-weight: 500; text-align: left; display: flex; justify-content: space-between; align-items: center; }
+  .deeper-toggle:hover { background: #ede8dd; }
+  .deeper-content { display: none; padding: 18px; background: var(--white); font-size: 13.5px; }
+  .deeper-content.open { display: block; animation: fadeUp 0.25s ease; }
+  .deeper-content p { margin-bottom: 10px; }
+
+  .nav-choices { margin-top: 28px; display: flex; flex-direction: column; gap: 8px; }
+  .nav-btn { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: var(--white); border: 1px solid var(--border); border-radius: 10px; cursor: pointer; font-family: inherit; font-size: 14px; color: var(--navy); text-align: left; transition: all 0.2s; }
+  .nav-btn:hover { border-color: var(--teal); background: var(--tealLight); }
+  .nav-btn .arrow { color: var(--teal); font-size: 18px; }
+  .nav-btn.primary { background: var(--navy); color: var(--white); border-color: var(--navy); }
+  .nav-btn.primary:hover { background: #243556; }
+  .nav-btn.primary .arrow { color: rgba(255,255,255,0.7); }
+  .nav-btn small { display: block; font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .nav-btn.primary small { color: rgba(255,255,255,0.6); }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--white); border-radius: 14px; padding: 28px; max-width: 620px; width: 90%; max-height: 80vh; overflow-y: auto; }
+  .modal h3 { font-family: 'Source Serif 4', serif; font-size: 20px; color: var(--navy); margin-bottom: 14px; }
+  .modal pre { background: var(--sand); padding: 14px; border-radius: 8px; font-size: 12px; white-space: pre-wrap; word-wrap: break-word; max-height: 50vh; overflow-y: auto; }
+  .modal-actions { margin-top: 14px; display: flex; gap: 10px; }
+  .modal-btn { padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer; font-family: inherit; font-size: 13px; }
+  .modal-btn.primary { background: var(--teal); color: var(--white); }
+  .modal-btn.secondary { background: var(--sand); color: var(--slate); }
+
+  @media (max-width: 600px) {
+    .topbar { padding: 10px 16px; } .topbar h1 { font-size: 14px; }
+    .page-container { padding: 20px 14px 100px; } .page h2 { font-size: 22px; }
+    .compare { grid-template-columns: 1fr; } .calc-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>IOA Design Guide — Comprehensive</h1>
+  <div class="topbar-actions">
+    <a class="topbar-btn" href="index.html">Quick version</a>
+    <button class="topbar-btn" onclick="exportCapture()">Export my notes</button>
+    <button class="topbar-btn" onclick="resetAll()">Start over</button>
+  </div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="breadcrumb" id="breadcrumb"></div>
+
+<div class="page-container">
+
+<!-- ════════════════════════════════════════════ -->
+<!-- WELCOME -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page active" id="pg-welcome">
+  <h2>Interactive Oral Assessments</h2>
+  <p class="subtitle">Comprehensive design guide with resources, calculators, and worked examples.</p>
+
+  <p>An IOA is a structured, time-limited, professional conversation where students demonstrate understanding by discussing, explaining, and responding to questions in real time — like a workplace consultation, case discussion, or professional review.</p>
+
+  <div class="stat-row">
+    <div class="stat-card"><div class="num">~4,000</div><div class="label">words in 10 min</div><div class="cite">Colvin & Gaffey 2024</div></div>
+    <div class="stat-card"><div class="num">60%</div><div class="label">marking time reduction</div><div class="cite">Shaeri et al.</div></div>
+    <div class="stat-card"><div class="num">19%</div><div class="label">attendance improvement</div><div class="cite">Shaeri et al.</div></div>
+    <div class="stat-card"><div class="num">800+</div><div class="label">scaled successfully</div><div class="cite">Griffith University</div></div>
+  </div>
+
+  <div class="info-box teal">
+    <strong>This is the comprehensive version.</strong> It includes downloadable resources, logistics calculators, worked examples, and links to the playbook and FAQ. For a quicker overview, use the <a href="index.html" style="color:var(--teal)">basic version</a>.
+  </div>
+
+  <div class="nav-choices">
+    <button class="nav-btn primary" onclick="goTo('pg-fit')"><div>Is IOA right for my unit?<small>Diagnostic checklist with evidence</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-what')"><div>What exactly is an IOA?<small>Definition, what it is/isn't, key distinction</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-design')"><div>Design my IOA (Step-by-step)<small>Sotiriadou framework, 7 steps</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-rubric')"><div>Rubric design<small>Criteria, CloudDeakin format, worked example</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-logistics')"><div>Logistics calculator<small>Time, rooms, assessors, scheduling</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-students')"><div>Preparing students<small>Resources, scaffolding schedule, accessibility</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-resources')"><div>All resources &amp; downloads<small>Every document, template, and link</small></div><span class="arrow">→</span></button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- WHAT IS AN IOA -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page" id="pg-what">
+  <h2>What is an Interactive Oral Assessment?</h2>
+  <p class="subtitle">Definitions, distinctions, and the evidence base.</p>
+
+  <p>An IOA is a structured, time-limited, professional conversation between a student and an assessor. The student demonstrates their understanding of unit content by discussing, explaining, and responding to questions — much like a workplace consultation, case discussion, or professional review.</p>
+
+  <div class="compare">
+    <div class="compare-col yes"><h4>IOAs are</h4><ul>
+      <li>Professional conversations</li><li>Structured around authentic scenarios</li>
+      <li>Testing depth of understanding</li><li>Assessing ability to think on feet</li>
+      <li>An opportunity to probe and follow up</li>
+    </ul></div>
+    <div class="compare-col no"><h4>IOAs are not</h4><ul>
+      <li>Traditional oral exams or vivas</li><li>Presentations or speeches</li>
+      <li>Communication skills tests</li><li>Memorisation exercises</li>
+      <li>Informal unstructured chats</li>
+    </ul></div>
+  </div>
+
+  <h3>Key distinction: Authenticity</h3>
+  <p>The critical difference between an IOA and a traditional oral exam is <strong>authenticity</strong>. In an IOA, the conversation mirrors a real professional interaction. A nursing student discusses a patient handover. An engineering student defends a design decision to a simulated client. An accounting student explains a tax strategy to a colleague.</p>
+  <p>This authenticity is what makes IOAs both more engaging for students and more valid as assessment — you're testing whether they can <em>use</em> their knowledge, not just recall it.</p>
+
+  <h3>Evidence base</h3>
+  <table class="data">
+    <tr><th>Finding</th><th>Detail</th><th>Source</th></tr>
+    <tr><td>Word equivalence</td><td>10-min IOA generates ~4,000 words of assessable content</td><td>Colvin & Gaffey 2024; Sotiriadou & Logan-Fleming 2025</td></tr>
+    <tr><td>Marking efficiency</td><td>Up to 60% reduction in total marking time</td><td>Shaeri et al.</td></tr>
+    <tr><td>Student engagement</td><td>19% improvement in attendance</td><td>Shaeri et al.</td></tr>
+    <tr><td>Equity</td><td>No significant performance gaps across gender, language background, SES</td><td>Davey et al. 2025</td></tr>
+    <tr><td>Scale</td><td>Successfully run with 800+ students using parallel scheduling</td><td>Griffith University</td></tr>
+    <tr><td>Academic integrity</td><td>Inherently integrity-proof — AI/contract cheating not viable</td><td>Ward 2024; Sotiriadou 2020</td></tr>
+    <tr><td>Duration equivalence</td><td>10-15 min = 3,000-4,000 word essay depth</td><td>Dean 2025; Foley et al. 2024</td></tr>
+  </table>
+
+  <div class="resource-list">
+    <div class="resource-item"><span class="resource-tag doc">docx</span><a href="resources/01_IOA_Overview_1pager.docx">IOA Overview 1-pager (student-facing)</a></div>
+    <div class="resource-item"><span class="resource-tag web">web</span><a href="../playbook/FAQ.html">SEBE IOA FAQ (27 questions)</a></div>
+    <div class="resource-item"><span class="resource-tag web">web</span><a href="../playbook/index.html">SEBE Interactive Assessment Playbook</a></div>
+  </div>
+
+  <div class="nav-choices">
+    <button class="nav-btn primary" onclick="goTo('pg-fit')"><div>Is IOA right for me?</div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-design')"><div>Design my IOA</div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-welcome')"><div>Back to menu</div><span class="arrow"></span></button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- FIT CHECK -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page" id="pg-fit">
+  <h2>Is IOA Right for My Unit?</h2>
+  <p class="subtitle">Your answers are saved to your export.</p>
+
+  <div class="input-group">
+    <label>Unit code and name</label>
+    <input type="text" data-capture="Unit" placeholder="e.g. SRM161 Construction Business Practice">
+  </div>
+  <div class="input-group">
+    <label>Cohort size</label>
+    <select data-capture="Cohort size"><option value="">Select</option><option>Under 30</option><option>30-100</option><option>100-300</option><option>300-800</option><option>800+</option></select>
+  </div>
+  <div class="input-group">
+    <label>Current assessment this would replace (and word count)</label>
+    <input type="text" data-capture="Current assessment" placeholder="e.g. 1,500 word essay (AT2, 30%)">
+  </div>
+
+  <p style="margin-top:20px; font-weight:600; color:var(--navy);">Check any that apply:</p>
+  <div class="checklist">
+    <label><input type="checkbox" data-capture="Fit: Application of knowledge"> My learning outcomes involve applying knowledge in context (not just recall)</label>
+    <label><input type="checkbox" data-capture="Fit: Academic integrity concern"> Academic integrity is a concern with current assessments</label>
+    <label><input type="checkbox" data-capture="Fit: Professional communication LO"> Communication or professional skills are a learning outcome</label>
+    <label><input type="checkbox" data-capture="Fit: Authentic scenarios exist"> I can identify authentic workplace scenarios for assessment</label>
+    <label><input type="checkbox" data-capture="Fit: Reduce marking time"> I'd like to reduce overall marking time</label>
+    <label><input type="checkbox" data-capture="Fit: Engagement concern"> Student engagement or attendance is a concern</label>
+    <label><input type="checkbox" data-capture="Fit: Verify individual understanding"> I need to verify individual understanding (not group)</label>
+  </div>
+  <div id="fitResult"></div>
+
+  <div class="deeper">
+    <button class="deeper-toggle" onclick="toggleDeeper(this)">Evidence for each indicator <span>+</span></button>
+    <div class="deeper-content">
+      <p><strong>Application of knowledge:</strong> IOAs assess higher-order thinking (Bloom's analyse, evaluate, create) because students must explain reasoning in real time.</p>
+      <p><strong>Academic integrity:</strong> IOAs are inherently integrity-proof. The student must demonstrate understanding live — AI tools, contract cheating, and plagiarism are not viable strategies (Ward 2024).</p>
+      <p><strong>Marking time:</strong> Up to 60% reduction because assessment and feedback happen simultaneously (Shaeri et al.).</p>
+      <p><strong>Scale:</strong> Griffith University successfully ran IOAs with 800+ students using parallel scheduling, trained sessional markers, and structured rubrics.</p>
+      <p><strong>Equity:</strong> No significant gaps across demographics (Davey et al. 2025).</p>
+      <p><strong>Duration equivalence:</strong> 5 min = targeted topic. 10 min = ~3-4,000 words. 15 min = complex scenarios. For a 1,500-word essay replacement, 10-12 minutes is appropriate (Dean 2025).</p>
+    </div>
+  </div>
+
+  <div class="nav-choices">
+    <button class="nav-btn primary" onclick="goTo('pg-design')"><div>Design my IOA<small>Step-by-step framework</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-logistics')"><div>Logistics calculator<small>Time, rooms, assessors</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-welcome')"><div>Back to menu</div><span class="arrow"></span></button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- DESIGN (Sotiriadou 7-step) -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page" id="pg-design">
+  <h2>Designing Your IOA</h2>
+  <p class="subtitle">Based on the Sotiriadou framework (2020, 2025) — your inputs are captured for export.</p>
+
+  <div class="info-box teal">
+    <strong>Sotiriadou's six characteristics of effective IOA:</strong> (1) Aligned to program learning outcomes, (2) Scenario-based, (3) Professionally focused, (4) Scaffolded and supported, (5) Accessible and equitable, (6) Academic integrity by design.
+  </div>
+
+  <h3>Step 1: Align to learning outcomes</h3>
+  <div class="input-group">
+    <label>Which ULOs will this IOA assess?</label>
+    <textarea data-capture="ULOs assessed" placeholder="Paste or type the ULOs this IOA targets..."></textarea>
+  </div>
+  <div class="input-group">
+    <label>How do these map to Course Learning Outcomes (CLOs)?</label>
+    <textarea data-capture="CLO mapping" placeholder="e.g. ULO2 → CLO2 Professional Knowledge; ULO5 → CLO5 Communication"></textarea>
+  </div>
+
+  <h3>Step 2: Design the professional scenario</h3>
+  <div class="input-group">
+    <label>Student role</label>
+    <input type="text" data-capture="Student role" placeholder="e.g. Construction Business Consultant">
+  </div>
+  <div class="input-group">
+    <label>Assessor role</label>
+    <input type="text" data-capture="Assessor role" placeholder="e.g. Client seeking business structure advice">
+  </div>
+  <div class="input-group">
+    <label>Describe the scenario</label>
+    <textarea data-capture="Scenario description" placeholder="e.g. One-on-one consultation with a construction client facing a partnership vs company decision..."></textarea>
+  </div>
+  <div class="input-group">
+    <label>Key tension / decision the student must navigate</label>
+    <input type="text" data-capture="Key tension" placeholder="e.g. Competing stakeholder interests, regulatory requirements">
+  </div>
+
+  <div class="resource-list">
+    <div class="resource-item"><span class="resource-tag doc">docx</span><a href="resources/02_Scenario_Brief.docx">Example scenario brief (SRM161)</a></div>
+    <div class="resource-item"><span class="resource-tag pptx">pptx</span><a href="resources/Example_IOA_client_consultation_UC_brief.pptx">Example IOA client consultation brief</a></div>
+    <div class="resource-item"><span class="resource-tag doc">docx</span><a href="resources/Example_IOA_Design_in_detail.docx">Worked example: full IOA design in detail</a></div>
+  </div>
+
+  <h3>Step 3: Set format and duration</h3>
+
+  <table class="data">
+    <tr><th>Format</th><th>Best for</th><th>Cohort</th></tr>
+    <tr><td>Individual viva</td><td>Deep probing of individual knowledge</td><td>Any</td></tr>
+    <tr><td>Consultation simulation</td><td>Health, law, business, construction</td><td>Any</td></tr>
+    <tr><td>Case-based discussion</td><td>Analytical disciplines</td><td>Any</td></tr>
+    <tr><td>Panel (2 assessors)</td><td>Capstone / high-stakes</td><td>Smaller</td></tr>
+    <tr><td>Group IOA</td><td>Large cohorts, collaborative outcomes</td><td>Large</td></tr>
+  </table>
+
+  <div class="input-group">
+    <label>IOA format</label>
+    <select data-capture="IOA format"><option value="">Select</option><option>Individual viva</option><option>Professional consultation simulation</option><option>Case-based discussion</option><option>Panel (2 assessors)</option><option>Group IOA</option><option>Other</option></select>
+  </div>
+
+  <table class="data">
+    <tr><th>Written equivalent</th><th>IOA duration</th><th>Total slot (with buffer)</th></tr>
+    <tr><td>~1,000 words</td><td>5 min</td><td>15 min</td></tr>
+    <tr><td>~1,500 words</td><td>10-12 min</td><td>20-25 min</td></tr>
+    <tr><td>~3,000-4,000 words</td><td>15 min</td><td>27-30 min</td></tr>
+    <tr><td>~4,500+ words / capstone</td><td>20+ min</td><td>35 min</td></tr>
+  </table>
+
+  <div class="input-group">
+    <label>IOA duration (conversation only)</label>
+    <select data-capture="IOA duration" id="calcDuration">
+      <option value="">Select</option><option value="5">5 minutes</option><option value="10">10 minutes</option>
+      <option value="12">12 minutes</option><option value="15">15 minutes</option><option value="20">20 minutes</option>
+    </select>
+  </div>
+  <div class="input-group">
+    <label>Weighting (% of unit)</label>
+    <input type="text" data-capture="Weighting" placeholder="e.g. 30%">
+  </div>
+
+  <div class="info-box amber">
+    <strong>Weighting tip:</strong> Most effective at 20-40% (O'Riordan 2025). The most common weighting is 30%. Pair with a related preparatory task (e.g., case brief submitted before the IOA).
+  </div>
+
+  <h3>Step 4: Classification</h3>
+  <div class="input-group">
+    <label>Assessment classification</label>
+    <select data-capture="Classification">
+      <option value="">Select</option>
+      <option>Assessment Task (standard extensions apply)</option>
+      <option>EOUA - oral/performative (Faculty Committee approval required)</option>
+      <option>Examination (exam period scheduling)</option>
+    </select>
+  </div>
+
+  <div class="deeper">
+    <button class="deeper-toggle" onclick="toggleDeeper(this)">Policy: Classification implications (Deakin Clause 65) <span>+</span></button>
+    <div class="deeper-content">
+      <p><strong>Assessment Task:</strong> Standard extensions (up to 7 days, 14 with Access Plan). Most flexible. Student books their slot.</p>
+      <p><strong>EOUA (End of Unit Assessment):</strong> Oral/performative category. Requires Faculty Assessment Committee approval. No extensions — special consideration applies instead. Per Deakin Assessment Clause 65.</p>
+      <p><strong>Examination:</strong> Scheduled during exam period. Most restrictive. Unusual for IOAs unless replacing a traditional exam.</p>
+      <p style="margin-top:10px"><strong>Recommendation:</strong> If flexibility matters, use Assessment Task. If you need the scheduling structure of an exam period, use EOUA with Faculty Committee approval.</p>
+    </div>
+  </div>
+
+  <h3>Steps 5-7: Scaffolding, accessibility, documentation</h3>
+  <p>Continue to the dedicated pages for these:</p>
+
+  <div class="nav-choices">
+    <button class="nav-btn primary" onclick="goTo('pg-rubric')"><div>Step 5: Rubric design<small>Criteria, descriptors, CloudDeakin format</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-logistics')"><div>Step 6: Logistics calculator<small>Time, rooms, assessors, daily schedule</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-students')"><div>Step 7: Student preparation<small>Scaffolding schedule, resources, accessibility</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-welcome')"><div>Back to menu</div><span class="arrow"></span></button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- RUBRIC -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page" id="pg-rubric">
+  <h2>Building Your Rubric</h2>
+  <p class="subtitle">Assess thinking, not speaking. 3-4 criteria max.</p>
+
+  <div class="info-box teal">
+    <strong>Key principle:</strong> Assess the quality of <em>thinking</em>, not the quality of <em>speaking</em>. Unless communication is explicitly a learning outcome, avoid penalising presentation style, fluency, or accent.
+  </div>
+
+  <h3>Common rubric dimensions</h3>
+  <table class="data">
+    <tr><th>Criterion</th><th>What it assesses</th><th>Use when</th></tr>
+    <tr><td>Content accuracy</td><td>Correctness of knowledge demonstrated</td><td>Always</td></tr>
+    <tr><td>Depth of reasoning</td><td>Ability to explain "why" not just "what"</td><td>Always</td></tr>
+    <tr><td>Application to scenario</td><td>Connecting theory to the specific context</td><td>Scenario-based IOAs</td></tr>
+    <tr><td>Adaptability</td><td>Response when assessor probes, challenges, or pivots</td><td>When using challenge prompts</td></tr>
+    <tr><td>Professional communication</td><td>Appropriate tone, audience awareness</td><td>Only if explicit LO</td></tr>
+  </table>
+
+  <div class="input-group">
+    <label>Your criterion 1 (most important)</label>
+    <input type="text" data-capture="Rubric criterion 1" placeholder="e.g. Technical accuracy of business structure analysis">
+  </div>
+  <div class="input-group">
+    <label>Weighting for criterion 1</label>
+    <input type="text" data-capture="Criterion 1 weight" placeholder="e.g. 40%">
+  </div>
+  <div class="input-group">
+    <label>Criterion 2</label>
+    <input type="text" data-capture="Rubric criterion 2" placeholder="e.g. Application to client scenario">
+  </div>
+  <div class="input-group">
+    <label>Weighting for criterion 2</label>
+    <input type="text" data-capture="Criterion 2 weight" placeholder="e.g. 30%">
+  </div>
+  <div class="input-group">
+    <label>Criterion 3</label>
+    <input type="text" data-capture="Rubric criterion 3" placeholder="e.g. Adaptability — response to pivot questions">
+  </div>
+  <div class="input-group">
+    <label>Weighting for criterion 3</label>
+    <input type="text" data-capture="Criterion 3 weight" placeholder="e.g. 30%">
+  </div>
+
+  <div class="deeper">
+    <button class="deeper-toggle" onclick="toggleDeeper(this)">Rubric design process: 6 questions <span>+</span></button>
+    <div class="deeper-content">
+      <p><strong>1. What does excellent look like?</strong> Describe the HD student's performance.</p>
+      <p><strong>2. What does just passing look like?</strong> Describe the minimum acceptable performance.</p>
+      <p><strong>3. What does failing look like?</strong> Describe clearly unacceptable performance.</p>
+      <p><strong>4. What lies in between?</strong> Fill in Distinction and Credit levels.</p>
+      <p><strong>5. Link to observable behaviours:</strong> Use verbs — "identifies", "explains", "adapts", "integrates" — not vague terms like "demonstrates understanding".</p>
+      <p><strong>6. Build in your feedback:</strong> Write descriptors as feedback-ready statements. Instead of "good analysis", write "accurately identifies the key legal implications and connects them to the client's specific circumstances".</p>
+    </div>
+  </div>
+
+  <h3>Resources</h3>
+  <div class="resource-list">
+    <div class="resource-item"><span class="resource-tag doc">docx</span><a href="resources/03_Assessment_Rubric.docx">Example rubric (SRM161 — HD to Fail)</a></div>
+    <div class="resource-item"><span class="resource-tag doc">docx</span><a href="resources/03_SRM161_Rubric_CloudDeakin.docx">CloudDeakin rubric format (ready to import)</a></div>
+    <div class="resource-item"><span class="resource-tag doc">docx</span><a href="resources/04_What_Were_Listening_For.docx">"What we're listening for" — plain English version for students</a></div>
+  </div>
+
+  <div class="nav-choices">
+    <button class="nav-btn primary" onclick="goTo('pg-logistics')"><div>Logistics calculator<small>Time, rooms, daily schedule</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-students')"><div>Preparing students</div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-welcome')"><div>Back to menu</div><span class="arrow"></span></button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- LOGISTICS CALCULATOR -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page" id="pg-logistics">
+  <h2>Logistics Calculator</h2>
+  <p class="subtitle">Enter your numbers — the calculator does the rest.</p>
+
+  <h3>Time per student</h3>
+  <table class="data">
+    <tr><th>Activity</th><th>Time</th></tr>
+    <tr><td>Student enters, settles, ID check</td><td>2 min</td></tr>
+    <tr><td>IOA conversation</td><td id="calcConvoDisplay">12 min</td></tr>
+    <tr><td>Immediate verbal feedback</td><td>3 min</td></tr>
+    <tr><td>Student exits</td><td>1 min</td></tr>
+    <tr><td>Assessor completes rating</td><td>4 min</td></tr>
+    <tr><td>Buffer / reset</td><td>3 min</td></tr>
+    <tr><td><strong>Total per slot</strong></td><td><strong id="calcSlotDisplay">25 min</strong></td></tr>
+  </table>
+
+  <div class="calc-box">
+    <h4>Your logistics calculation</h4>
+    <div class="calc-grid">
+      <div class="input-group">
+        <label>Cohort size</label>
+        <input type="number" id="calcCohort" value="120" data-capture="Calc: Cohort size" oninput="runCalc()">
+      </div>
+      <div class="input-group">
+        <label>IOA duration (min)</label>
+        <select id="calcDur" data-capture="Calc: IOA duration" onchange="runCalc()">
+          <option value="10">10 min</option><option value="12" selected>12 min</option><option value="15">15 min</option><option value="20">20 min</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label>Number of assessors</label>
+        <input type="number" id="calcAssessors" value="4" data-capture="Calc: Assessors" oninput="runCalc()">
+      </div>
+      <div class="input-group">
+        <label>Max IOAs per assessor per day</label>
+        <select id="calcMaxDay" data-capture="Calc: Max per day" onchange="runCalc()">
+          <option value="14">14 (recommended for 12 min)</option>
+          <option value="16">16 (comfortable for 10 min)</option>
+          <option value="18">18 (maximum — long day)</option>
+          <option value="12">12 (conservative)</option>
+        </select>
+      </div>
+    </div>
+    <div class="calc-result" id="calcResult"></div>
+  </div>
+
+  <h3>Example daily schedule (9:30am start)</h3>
+  <table class="data" id="scheduleTable">
+    <tr><th>Session</th><th>IOAs</th><th>Duration</th><th>Time</th></tr>
+  </table>
+
+  <h3>Delivery and recording</h3>
+  <div class="input-group">
+    <label>Delivery mode</label>
+    <select data-capture="Delivery mode"><option value="">Select</option><option>Face to face</option><option>Online (Teams/Zoom)</option><option>Hybrid (student choice)</option></select>
+  </div>
+  <div class="input-group">
+    <label>Recording plan</label>
+    <select data-capture="Recording plan"><option value="">Select</option><option>Video recorded (all)</option><option>Audio only</option><option>Not recorded (live marking only)</option><option>Recorded for moderation sample only</option></select>
+  </div>
+
+  <div class="deeper">
+    <button class="deeper-toggle" onclick="toggleDeeper(this)">Calibration and moderation guidance <span>+</span></button>
+    <div class="deeper-content">
+      <p><strong>Before marking begins:</strong> Run a calibration session. All assessors mark the same 2-3 recorded IOAs independently, then compare and discuss. Document agreed interpretations for borderline cases. This is essential for consistency.</p>
+      <p><strong>During marking:</strong> Record a moderation sample — at minimum every 5th student, or all borderline cases. 20% sample is standard.</p>
+      <p><strong>After marking:</strong> Review sample across assessors. Check consistency with rubric interpretation. Report to Assessment Panel per faculty process. Debrief with teaching team: what worked, what to adjust.</p>
+    </div>
+  </div>
+
+  <div class="input-group">
+    <label>Logistics notes</label>
+    <textarea data-capture="Logistics notes" placeholder="e.g. Need 3 parallel streams across 2 days, rooms booked in Building X..."></textarea>
+  </div>
+
+  <div class="nav-choices">
+    <button class="nav-btn primary" onclick="goTo('pg-students')"><div>Preparing students<small>Resources, scaffolding, accessibility</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-rubric')"><div>Rubric design</div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-welcome')"><div>Back to menu</div><span class="arrow"></span></button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- PREPARING STUDENTS -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page" id="pg-students">
+  <h2>Preparing Students</h2>
+  <p class="subtitle">Scaffolding schedule, resources checklist, and accessibility provisions.</p>
+
+  <p>Research consistently shows that student anxiety about oral assessment decreases significantly with clear preparation and practice opportunities.</p>
+
+  <h3>Scaffolding release schedule</h3>
+  <table class="data">
+    <tr><th>Resource</th><th>Suggested timing</th><th>Download</th></tr>
+    <tr><td>IOA overview (1-pager)</td><td>Week 1</td><td><a href="resources/01_IOA_Overview_1pager.docx" style="color:var(--teal)">Download</a></td></tr>
+    <tr><td>Scenario brief</td><td>Week 1 (or 48hrs before)</td><td><a href="resources/02_Scenario_Brief.docx" style="color:var(--teal)">Download</a></td></tr>
+    <tr><td>Rubric with criteria</td><td>Week 1 (or 3 weeks before)</td><td><a href="resources/03_Assessment_Rubric.docx" style="color:var(--teal)">Download</a></td></tr>
+    <tr><td>"What we're listening for"</td><td>With rubric</td><td><a href="resources/04_What_Were_Listening_For.docx" style="color:var(--teal)">Download</a></td></tr>
+    <tr><td>Practice script and timing</td><td>Weeks 6-8</td><td><a href="resources/06_Practice_Script_Timing.docx" style="color:var(--teal)">Download</a></td></tr>
+    <tr><td>Challenge / pivot prompts</td><td>Weeks 8-10</td><td><a href="resources/05_Challenge_Prompts.docx" style="color:var(--teal)">Download</a></td></tr>
+    <tr><td>One-page notes template</td><td>Weeks 8-10</td><td><a href="resources/12_One_Page_Notes_Template.docx" style="color:var(--teal)">Download</a></td></tr>
+    <tr><td>Booking and logistics guide</td><td>Week 1 / Week 8</td><td><a href="resources/08_Booking_Logistics_Guide.docx" style="color:var(--teal)">Download</a></td></tr>
+    <tr><td>Tech check (if online)</td><td>1 week before</td><td><a href="resources/09_Tech_Check.docx" style="color:var(--teal)">Download</a></td></tr>
+    <tr><td>Day-of checklist</td><td>1 week before</td><td><a href="resources/10_Day_Of_Checklist.docx" style="color:var(--teal)">Download</a></td></tr>
+    <tr><td>Academic integrity policy</td><td>Week 1</td><td><a href="resources/07_Academic_Integrity_Policy.docx" style="color:var(--teal)">Download</a></td></tr>
+    <tr><td>After-IOA debrief sheet</td><td>Post-IOA</td><td><a href="resources/11_After_IO_Debrief.docx" style="color:var(--teal)">Download</a></td></tr>
+  </table>
+
+  <div class="input-group">
+    <label>Your scaffolding plan</label>
+    <textarea data-capture="Student scaffolding plan" placeholder="e.g. Week 8: practice IOA in tutorials. Week 9: rubric released. Week 10: IOA window."></textarea>
+  </div>
+
+  <h3>Accessibility adjustments</h3>
+  <table class="data">
+    <tr><th>Adjustment</th><th>When to offer</th></tr>
+    <tr><td>Extended time (e.g., 15 min instead of 12)</td><td>Access Plan or on request</td></tr>
+    <tr><td>Questions provided 5 min before IOA</td><td>Access Plan or anxiety-related need</td></tr>
+    <tr><td>Support person present</td><td>Access Plan</td></tr>
+    <tr><td>Written alternative</td><td>Documented speech/communication disability only</td></tr>
+    <tr><td>Online option even when others F2F</td><td>Access Plan, regional students</td></tr>
+  </table>
+
+  <div class="info-box green">
+    <strong>Equity note:</strong> Research by Davey et al. (2025) found no significant performance differences in IOAs across gender, language background, or socioeconomic status. IOAs can be more accessible than written exams for students with dyslexia.
+  </div>
+
+  <div class="nav-choices">
+    <button class="nav-btn primary" onclick="goTo('pg-resources')"><div>All resources and downloads<small>Complete list with external links</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-summary')"><div>View my summary and export</div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-welcome')"><div>Back to menu</div><span class="arrow"></span></button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- ALL RESOURCES -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page" id="pg-resources">
+  <h2>All Resources &amp; Downloads</h2>
+  <p class="subtitle">Everything in one place.</p>
+
+  <h3>Student-facing resources (customisable templates)</h3>
+  <div class="resource-list">
+    <div class="resource-item"><span class="resource-tag doc">01</span><a href="resources/01_IOA_Overview_1pager.docx">IOA Overview 1-pager</a></div>
+    <div class="resource-item"><span class="resource-tag doc">02</span><a href="resources/02_Scenario_Brief.docx">Scenario brief (example)</a></div>
+    <div class="resource-item"><span class="resource-tag doc">03</span><a href="resources/03_Assessment_Rubric.docx">Assessment rubric (example)</a></div>
+    <div class="resource-item"><span class="resource-tag doc">03b</span><a href="resources/03_SRM161_Rubric_CloudDeakin.docx">CloudDeakin rubric format</a></div>
+    <div class="resource-item"><span class="resource-tag doc">04</span><a href="resources/04_What_Were_Listening_For.docx">"What we're listening for" explainer</a></div>
+    <div class="resource-item"><span class="resource-tag doc">05</span><a href="resources/05_Challenge_Prompts.docx">Challenge / pivot prompts</a></div>
+    <div class="resource-item"><span class="resource-tag doc">06</span><a href="resources/06_Practice_Script_Timing.docx">Practice script and timing plan</a></div>
+    <div class="resource-item"><span class="resource-tag doc">07</span><a href="resources/07_Academic_Integrity_Policy.docx">Academic integrity policy</a></div>
+    <div class="resource-item"><span class="resource-tag doc">08</span><a href="resources/08_Booking_Logistics_Guide.docx">Booking and logistics guide</a></div>
+    <div class="resource-item"><span class="resource-tag doc">09</span><a href="resources/09_Tech_Check.docx">Tech check (online IOAs)</a></div>
+    <div class="resource-item"><span class="resource-tag doc">10</span><a href="resources/10_Day_Of_Checklist.docx">Day-of checklist</a></div>
+    <div class="resource-item"><span class="resource-tag doc">11</span><a href="resources/11_After_IO_Debrief.docx">After-IOA debrief sheet</a></div>
+    <div class="resource-item"><span class="resource-tag doc">12</span><a href="resources/12_One_Page_Notes_Template.docx">One-page notes template</a></div>
+  </div>
+
+  <h3>Staff / design resources</h3>
+  <div class="resource-list">
+    <div class="resource-item"><span class="resource-tag pptx">pptx</span><a href="resources/Example_IOA_client_consultation_UC_brief.pptx">Example IOA client consultation brief</a></div>
+    <div class="resource-item"><span class="resource-tag doc">docx</span><a href="resources/Example_IOA_Design_in_detail.docx">Worked example: full IOA design in detail</a></div>
+  </div>
+
+  <h3>SEBE guides (web)</h3>
+  <div class="resource-list">
+    <div class="resource-item"><span class="resource-tag web">web</span><a href="../playbook/index.html">SEBE Interactive Assessment Playbook</a></div>
+    <div class="resource-item"><span class="resource-tag web">web</span><a href="../playbook/FAQ.html">SEBE IOA FAQ (27 questions)</a></div>
+    <div class="resource-item"><span class="resource-tag web">web</span><a href="index.html">IOA Guide — quick version</a></div>
+  </div>
+
+  <h3>External resources</h3>
+  <div class="resource-list">
+    <div class="resource-item"><span class="resource-tag ext">ext</span><a href="https://sway.cloud.microsoft/H6cV2ysiIaKNwMgH" target="_blank">Griffith University IOA Sway</a></div>
+    <div class="resource-item"><span class="resource-tag ext">ext</span><a href="https://www.dcu.ie/teu/interactive-oral-assessment" target="_blank">DCU Interactive Oral Assessment resources</a></div>
+  </div>
+
+  <div class="nav-choices">
+    <button class="nav-btn primary" onclick="goTo('pg-summary')"><div>View my summary and export<small>Everything you've captured</small></div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-welcome')"><div>Back to menu</div><span class="arrow"></span></button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SUMMARY / EXPORT -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page" id="pg-summary">
+  <h2>Your IOA Plan — Summary</h2>
+  <p class="subtitle">Everything you've captured. Export or copy for your documentation.</p>
+  <div id="summaryBox" style="background:var(--white); border:2px solid var(--teal); border-radius:12px; padding:22px; margin:20px 0;"><p style="color:var(--muted); font-style:italic;">Generating...</p></div>
+  <div class="nav-choices">
+    <button class="nav-btn primary" onclick="exportCapture()"><div>Copy to clipboard</div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="downloadCapture()"><div>Download as text file</div><span class="arrow">→</span></button>
+    <button class="nav-btn" onclick="goTo('pg-welcome')"><div>Back to menu</div><span class="arrow"></span></button>
+  </div>
+</div>
+
+</div><!-- end page-container -->
+
+<!-- Export Modal -->
+<div class="modal-overlay" id="exportModal">
+  <div class="modal">
+    <h3>Your IOA Plan</h3>
+    <pre id="exportContent"></pre>
+    <div class="modal-actions">
+      <button class="modal-btn primary" onclick="copyToClipboard()">Copy to clipboard</button>
+      <button class="modal-btn secondary" onclick="downloadCapture()">Download .txt</button>
+      <button class="modal-btn secondary" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const pages = ['pg-welcome','pg-what','pg-fit','pg-design','pg-rubric','pg-logistics','pg-students','pg-resources','pg-summary'];
+const pageTitles = { 'pg-welcome':'Menu','pg-what':'What is IOA?','pg-fit':'Is IOA right?','pg-design':'Design','pg-rubric':'Rubric','pg-logistics':'Logistics','pg-students':'Students','pg-resources':'Resources','pg-summary':'Summary' };
+let history = ['pg-welcome'];
+
+function goTo(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const t = document.getElementById(id);
+  if (t) { t.classList.add('active'); history.push(id); updateNav(); window.scrollTo({top:0,behavior:'smooth'}); }
+  if (id === 'pg-summary') buildSummary();
+  if (id === 'pg-fit') initFit();
+  if (id === 'pg-logistics') runCalc();
+}
+function updateNav() {
+  const seen = new Set(); const unique = history.filter(h => { if (seen.has(h)) return false; seen.add(h); return true; });
+  document.getElementById('breadcrumb').innerHTML = unique.map((h,i) => (i>0?'<span class="sep">›</span>':'') + (i===unique.length-1? `<span class="current">${pageTitles[h]||h}</span>` : `<span onclick="goTo('${h}')">${pageTitles[h]||h}</span>`)).join('');
+  const visited = new Set(history);
+  document.getElementById('progressFill').style.width = Math.round((visited.size/pages.length)*100)+'%';
+}
+function toggleDeeper(btn) { const c = btn.nextElementSibling; c.classList.toggle('open'); btn.querySelector('span').textContent = c.classList.contains('open')?'−':'+'; }
+
+// ── Fit result ──
+function initFit() {
+  document.querySelectorAll('#pg-fit .checklist input').forEach(c => c.removeEventListener('change', showFit));
+  document.querySelectorAll('#pg-fit .checklist input').forEach(c => c.addEventListener('change', showFit));
+  showFit();
+}
+function showFit() {
+  const n = document.querySelectorAll('#pg-fit .checklist input:checked').length;
+  const box = document.getElementById('fitResult');
+  if (!n) { box.innerHTML = ''; return; }
+  const [msg,cls] = n>=5 ? [`<strong>Strong fit (${n}/7).</strong> Multiple indicators align with effective IOA implementation.`,'green'] : n>=3 ? [`<strong>Good potential (${n}/7).</strong> Several indicators suggest IOA could work well.`,'teal'] : [`<strong>Worth exploring (${n}/7).</strong> Fewer indicators — consider whether IOA best serves your outcomes.`,'amber'];
+  box.innerHTML = `<div class="info-box ${cls}">${msg}</div>`;
+}
+
+// ── Calculator ──
+function runCalc() {
+  const cohort = parseInt(document.getElementById('calcCohort').value) || 120;
+  const dur = parseInt(document.getElementById('calcDur').value) || 12;
+  const assessors = parseInt(document.getElementById('calcAssessors').value) || 4;
+  const maxDay = parseInt(document.getElementById('calcMaxDay').value) || 14;
+
+  const buffer = 13; // ID + feedback + exit + rating + reset
+  const slot = dur + buffer;
+  const totalMins = cohort * slot;
+  const totalHrs = (totalMins / 60).toFixed(1);
+  const daysPerAssessor = Math.ceil(cohort / (assessors * maxDay));
+  const totalAssessorDays = Math.ceil(cohort / maxDay);
+  const rooms = assessors;
+
+  document.getElementById('calcConvoDisplay').textContent = dur + ' min';
+  document.getElementById('calcSlotDisplay').textContent = slot + ' min';
+
+  document.getElementById('calcResult').innerHTML = `
+    <strong>Total slot time:</strong> ${slot} min per student<br>
+    <strong>Total assessment time:</strong> ${totalHrs} hours (${cohort} × ${slot} min)<br>
+    <strong>Assessor-days needed:</strong> ${totalAssessorDays} (${assessors} assessors × ${daysPerAssessor} days each)<br>
+    <strong>Rooms needed:</strong> ${rooms} (1 per assessor running simultaneously)<br>
+    <strong>Assessment window:</strong> ${daysPerAssessor} days (with ${assessors} assessors at ${maxDay}/day)
+  `;
+
+  // Build schedule
+  const slotsPerSession = [5, 4, 5, 4];
+  const breaks = [0, 15, 45, 15];
+  let time = 9*60 + 30; // 9:30am
+  const table = document.getElementById('scheduleTable');
+  table.innerHTML = '<tr><th>Session</th><th>IOAs</th><th>Duration</th><th>Time</th></tr>';
+  const labels = ['Morning','Mid-morning','Afternoon','Late afternoon'];
+  let dayTotal = 0;
+
+  slotsPerSession.forEach((n, i) => {
+    if (i > 0) {
+      const bLabel = breaks[i] === 45 ? 'Lunch' : 'Break';
+      table.innerHTML += `<tr><td>${bLabel}</td><td>—</td><td>${breaks[i]} min</td><td>${fmtTime(time)} – ${fmtTime(time + breaks[i])}</td></tr>`;
+      time += breaks[i];
+    }
+    const sessionMins = n * slot;
+    table.innerHTML += `<tr><td>${labels[i]}</td><td>${n} IOAs</td><td>${(sessionMins/60).toFixed(1)} hrs</td><td>${fmtTime(time)} – ${fmtTime(time + sessionMins)}</td></tr>`;
+    time += sessionMins;
+    dayTotal += n;
+  });
+  table.innerHTML += `<tr style="background:var(--tealLight)"><td><strong>Total per day</strong></td><td><strong>${dayTotal} IOAs</strong></td><td></td><td><strong>Finish: ${fmtTime(time)}</strong></td></tr>`;
+}
+function fmtTime(mins) {
+  let h = Math.floor(mins/60); const m = mins%60;
+  const ampm = h >= 12 ? 'pm' : 'am';
+  if (h > 12) h -= 12; if (h === 0) h = 12;
+  return h + ':' + String(m).padStart(2,'0') + ampm;
+}
+
+// ── Capture & Export ──
+function gatherCapture() {
+  const data = {};
+  document.querySelectorAll('[data-capture]').forEach(el => {
+    const key = el.getAttribute('data-capture');
+    if (el.type === 'checkbox') { if (el.checked) data[key] = 'Yes'; }
+    else { const v = el.value.trim(); if (v) data[key] = v; }
+  });
+  return data;
+}
+function formatCapture(data) {
+  let out = '══════════════════════════════════════\n  IOA DESIGN PLAN\n  Exported: ' + new Date().toLocaleDateString('en-AU') + '\n══════════════════════════════════════\n\n';
+  const sections = {
+    'Unit Details': ['Unit','Cohort size','Current assessment'],
+    'Fit Assessment': Object.keys(data).filter(k=>k.startsWith('Fit:')),
+    'Design — Learning Outcomes': ['ULOs assessed','CLO mapping'],
+    'Design — Scenario': ['Student role','Assessor role','Scenario description','Key tension'],
+    'Design — Format': ['IOA format','IOA duration','Weighting','Classification'],
+    'Rubric': ['Rubric criterion 1','Criterion 1 weight','Rubric criterion 2','Criterion 2 weight','Rubric criterion 3','Criterion 3 weight'],
+    'Logistics': ['Calc: Cohort size','Calc: IOA duration','Calc: Assessors','Calc: Max per day','Delivery mode','Recording plan','Logistics notes'],
+    'Student Preparation': ['Student scaffolding plan']
+  };
+  for (const [section, keys] of Object.entries(sections)) {
+    const items = keys.filter(k => data[k]);
+    if (!items.length) continue;
+    out += `── ${section} ${'─'.repeat(Math.max(0,38-section.length))}\n`;
+    items.forEach(k => { const l = k.replace(/^(Fit|Calc): /,''); out += `  ${l}: ${data[k]}\n`; });
+    out += '\n';
+  }
+  if (!Object.keys(data).length) out += '  (No information captured yet)\n';
+  return out;
+}
+function buildSummary() {
+  const data = gatherCapture(); const box = document.getElementById('summaryBox');
+  if (!Object.keys(data).length) { box.innerHTML = '<p style="color:var(--muted); font-style:italic;">No information captured yet. Fill in some pages first.</p>'; return; }
+  let html = '';
+  const sections = {
+    'Unit Details': ['Unit','Cohort size','Current assessment'],
+    'Fit Indicators': Object.keys(data).filter(k=>k.startsWith('Fit:')),
+    'Design': ['ULOs assessed','CLO mapping','Student role','Assessor role','Scenario description','Key tension','IOA format','IOA duration','Weighting','Classification'],
+    'Rubric': ['Rubric criterion 1','Criterion 1 weight','Rubric criterion 2','Criterion 2 weight','Rubric criterion 3','Criterion 3 weight'],
+    'Logistics': ['Calc: Cohort size','Calc: IOA duration','Calc: Assessors','Calc: Max per day','Delivery mode','Recording plan','Logistics notes'],
+    'Student Prep': ['Student scaffolding plan']
+  };
+  for (const [s,keys] of Object.entries(sections)) {
+    const items = keys.filter(k=>data[k]);
+    if (!items.length) continue;
+    html += `<h3 style="font-size:15px; color:var(--teal); margin:14px 0 6px;">${s}</h3>`;
+    items.forEach(k => { const l = k.replace(/^(Fit|Calc): /,''); html += `<p style="font-size:13.5px; margin-bottom:3px;"><strong>${l}:</strong> ${data[k]}</p>`; });
+  }
+  box.innerHTML = html;
+}
+function exportCapture() {
+  document.getElementById('exportContent').textContent = formatCapture(gatherCapture());
+  document.getElementById('exportModal').classList.add('open');
+}
+function copyToClipboard() {
+  navigator.clipboard.writeText(document.getElementById('exportContent').textContent).then(() => {
+    const b = document.querySelector('.modal-btn.primary'); b.textContent='Copied!'; setTimeout(()=>b.textContent='Copy to clipboard',2000);
+  });
+}
+function downloadCapture() {
+  const b = new Blob([formatCapture(gatherCapture())],{type:'text/plain'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = 'IOA_Design_Plan.txt'; a.click();
+}
+function closeModal() { document.getElementById('exportModal').classList.remove('open'); }
+function resetAll() {
+  if (!confirm('Reset all entries?')) return;
+  document.querySelectorAll('[data-capture]').forEach(el => { if (el.type==='checkbox') el.checked=false; else el.value=''; });
+  history = ['pg-welcome']; goTo('pg-welcome');
+}
+
+updateNav(); runCalc();
+</script>
+</body>
+</html>
