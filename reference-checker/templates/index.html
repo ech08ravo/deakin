@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reference Checker</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Reference Checker</h1>
+            <p class="subtitle">Verify student reference lists against academic databases</p>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <label for="references">Paste the reference list below (APA 7th edition):</label>
+                <textarea
+                    id="references"
+                    placeholder="Smith, J. A., & Jones, B. C. (2020). Title of the article. Journal Name, 15(2), 123-145. https://doi.org/10.1000/example
+
+Brown, R. (2019). Title of the book. Publisher Name.
+
+..."
+                    rows="12"
+                ></textarea>
+                <div class="input-footer">
+                    <span class="hint">Separate each reference with a blank line, or place one per line.</span>
+                    <button id="check-btn" onclick="checkReferences()">Check References</button>
+                </div>
+            </section>
+
+            <div id="loading" class="loading hidden">
+                <div class="spinner"></div>
+                <p>Checking references against CrossRef and OpenAlex&hellip;</p>
+                <p class="loading-note">This may take a few seconds per reference.</p>
+            </div>
+
+            <section id="results-section" class="results-section hidden">
+                <div id="summary" class="summary"></div>
+                <div id="results-list"></div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Verification uses <a href="https://www.crossref.org/" target="_blank">CrossRef</a> and <a href="https://openalex.org/" target="_blank">OpenAlex</a> open academic databases. Results are indicative &mdash; a reference not found in these databases may still exist in sources they do not index.</p>
+        </footer>
+    </div>
+
+    <script>
+        async function checkReferences() {
+            const textarea = document.getElementById('references');
+            const text = textarea.value.trim();
+
+            if (!text) {
+                alert('Please paste a reference list first.');
+                return;
+            }
+
+            const btn = document.getElementById('check-btn');
+            const loading = document.getElementById('loading');
+            const resultsSection = document.getElementById('results-section');
+
+            btn.disabled = true;
+            btn.textContent = 'Checking...';
+            loading.classList.remove('hidden');
+            resultsSection.classList.add('hidden');
+
+            try {
+                const response = await fetch('/check', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ references: text }),
+                });
+
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.error || 'Server error');
+                }
+
+                const data = await response.json();
+                displayResults(data);
+            } catch (error) {
+                alert('Error: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Check References';
+                loading.classList.add('hidden');
+            }
+        }
+
+        function displayResults(data) {
+            const { results, summary } = data;
+            const resultsSection = document.getElementById('results-section');
+            const summaryDiv = document.getElementById('summary');
+            const resultsList = document.getElementById('results-list');
+
+            // Summary
+            summaryDiv.innerHTML = `
+                <h2>Results</h2>
+                <div class="summary-stats">
+                    <span class="stat verified">${summary.verified} Verified</span>
+                    <span class="stat uncertain">${summary.uncertain} Uncertain</span>
+                    <span class="stat not-found">${summary.not_found} Not Found</span>
+                    <span class="stat total">${summary.total} Total</span>
+                </div>
+            `;
+
+            // Individual results
+            resultsList.innerHTML = results.map((r, i) => {
+                const verdictClass = r.verdict.replace('_', '-');
+                const verdictLabel = {
+                    'verified': 'Verified',
+                    'uncertain': 'Uncertain',
+                    'not_found': 'Not Found',
+                }[r.verdict];
+                const verdictIcon = {
+                    'verified': '\u2705',
+                    'uncertain': '\u26A0\uFE0F',
+                    'not_found': '\u274C',
+                }[r.verdict];
+
+                let matchHtml = '';
+                if (r.match) {
+                    const doiLink = r.match.doi
+                        ? `<a href="https://doi.org/${escapeHtml(r.match.doi)}" target="_blank">${escapeHtml(r.match.doi)}</a>`
+                        : 'N/A';
+                    matchHtml = `
+                        <div class="match-details">
+                            <h4>Closest match found (${escapeHtml(r.match.source)}):</h4>
+                            <table>
+                                <tr><td class="label">Title</td><td>${escapeHtml(r.match.title || 'N/A')}</td></tr>
+                                <tr><td class="label">Authors</td><td>${escapeHtml(r.match.authors.join('; ') || 'N/A')}</td></tr>
+                                <tr><td class="label">Year</td><td>${escapeHtml(r.match.year || 'N/A')}</td></tr>
+                                ${r.match.journal ? `<tr><td class="label">Journal</td><td>${escapeHtml(r.match.journal)}</td></tr>` : ''}
+                                <tr><td class="label">DOI</td><td>${doiLink}</td></tr>
+                            </table>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="result-card ${verdictClass}">
+                        <div class="result-header">
+                            <span class="result-number">#${i + 1}</span>
+                            <span class="verdict-badge ${verdictClass}">${verdictIcon} ${verdictLabel}</span>
+                            <span class="confidence">Confidence: ${Math.round(r.confidence * 100)}%</span>
+                        </div>
+                        <div class="original-ref">${escapeHtml(r.raw)}</div>
+                        <div class="result-details">${escapeHtml(r.details)}</div>
+                        ${matchHtml}
+                    </div>
+                `;
+            }).join('');
+
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Allow Ctrl+Enter to submit
+        document.getElementById('references').addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                checkReferences();
+            }
+        });
+    </script>
+</body>
+</html>
